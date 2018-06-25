@@ -19,7 +19,10 @@ And config database connection:
     DB_DATABASE=your_database
     DB_USERNAME=your_username
     DB_PASSWORD=your_password
-    
+
+Generate key:
+
+    $ php artisan key:generate     
 ## How to create repository
 Add repository:
     

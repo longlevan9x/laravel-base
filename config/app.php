@@ -169,6 +169,12 @@ return [
          * Custom Provider
         */
         App\Providers\HelperServiceProvider::class,
+        App\Models\Providers\StudentServiceProvider::class,
+        App\Models\Providers\ScheduleServiceProvider::class,
+        App\Models\Providers\StudentScheduleServiceProvider::class,
+        App\Models\Providers\ScheduleExamServiceProvider::class,
+        App\Models\Providers\StudentScheduleExamServiceProvider::class,
+        App\Models\Providers\SemesterServiceProvider::class
     ],
 
     /*
@@ -226,6 +232,7 @@ return [
          * Custom Facade
         */
 	    'Helper' => App\Helpers\Facade\Helper::class,
+	    'Student' => \App\Models\Facade\Student::class
     ],
 
 ];

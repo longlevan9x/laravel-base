@@ -22,5 +22,13 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::prefix('v1')->namespace('Api\v1')->group(function () {
+    Route::get(ScheduleController::getResourceName(), ScheduleController::getControllerWithAction('getSchedule'));
+//	Route::resource('student', 'StudentController');
+	Route::get('students', StudentController::getControllerWithAction('getStudents'));
+	Route::prefix(StudentController::getResourceName())->group(function () {
+        Route::get('/{msv}', StudentController::getControllerWithAction('getStudent'));
+        Route::get('/{msv}/sync', StudentController::getControllerWithAction('syncStudent'));
+    });
 
+	Route::resource( SemesterController::getResourceName(), SemesterController::getClassName());
 });

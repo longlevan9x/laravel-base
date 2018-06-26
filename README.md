@@ -38,13 +38,13 @@ Add repository:
     
 Push: 
     
-    $ git push <repository name> branch(master)
+    $ git push <repository name> branch_name(master)
     
 After add repository. You can pull code base from repository `origin` and `push code to repository added`.
 
 #### Branch
 
-    $ git branch -d hotfix 
+    $ git branch -d <branch_name> 
 ## Install plugin && Library
 ##### Plugin require
 kartik-v bootstrap file-input:

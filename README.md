@@ -6,7 +6,7 @@
 Then run following command to install vendor
 
     $ composer install
-or run:
+Then run:
  
     $ composer update 
 
@@ -14,15 +14,22 @@ Continue run following command `using gitbash`:
 
     $ cp .env.example .env
 
+Generate key:
+
+    $ php artisan key:generate 
+    
 And config database connection:
     
     DB_DATABASE=your_database
     DB_USERNAME=your_username
     DB_PASSWORD=your_password
 
-Generate key:
+Then run:
 
-    $ php artisan key:generate     
+    $ php artisan migrate
+    $ php artisan db:seed --class=UsersTableSeeder
+   
+Login  admin with username/password: `admin/123456`
 ## How to create repository
 Add repository:
     

@@ -225,7 +225,6 @@ return [
 	    /**
          * Custom Facade
         */
-	    'Helper' => App\Helpers\Facade\Helper::class,
     ],
 
 ];

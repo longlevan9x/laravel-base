@@ -28,10 +28,11 @@ Then run:
 
     $ php artisan migrate
     $ php artisan db:seed --class=UsersTableSeeder
-   
+    
 Login  admin with username/password: `admin/123456`
 ## Using git
 #### How to create repository
+
 Add repository:
     
     $ git remote add <name repository> <url>
@@ -42,9 +43,35 @@ Push:
     
 After add repository. You can pull code base from repository `origin` and `push code to repository added`.
 
+### Remote
+Show Remote:
+    
+    $ git remote
+    
 #### Branch
 
     $ git branch -d <branch_name> 
+    
+Open `.git/.config` then change `remote` = `remote_new`
+
+### Git reset commit
+
+>- Chỉ đưa HEAD về như cũ
+
+    $ git reset --soft HEAD~
+    
+>- Đưa HEAD và index về như cũ
+   
+    $ git reset HEAD~
+    
+>- Đưa cả index, working tree về 1 commit trước đó
+    
+    $ git reset --hard HEAD~
+   
+### Git Log
+Preview oneline:
+
+    $ git log --pretty=oneline
 ## Install plugin && Library
 ##### Plugin require
 kartik-v bootstrap file-input:

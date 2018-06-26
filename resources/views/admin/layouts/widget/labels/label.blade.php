@@ -1,1 +1,0 @@
-<span class="label label-{{$type}}">{{$text}}</span>

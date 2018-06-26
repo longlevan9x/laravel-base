@@ -30,7 +30,8 @@ Then run:
     $ php artisan db:seed --class=UsersTableSeeder
    
 Login  admin with username/password: `admin/123456`
-## How to create repository
+## Using git
+#### How to create repository
 Add repository:
     
     $ git remote add <name repository> <url>
@@ -39,7 +40,11 @@ Push:
     
     $ git push <repository name> branch(master)
     
-After add repository. You can pull code base from repository `origin` and `push code to repository added`. 
+After add repository. You can pull code base from repository `origin` and `push code to repository added`.
+
+#### Branch
+
+    $ git branch -d hotfix 
 ## Install plugin && Library
 ##### Plugin require
 kartik-v bootstrap file-input:

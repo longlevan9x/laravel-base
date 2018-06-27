@@ -12,21 +12,23 @@ use App\Http\Controllers\Admin\AdminAuth\LoginController as AdminLoginController
 
 use Illuminate\Support\Facades\Route;
 
-/*===========Login Route============*/
-Route::get(AdminLoginController::getResourceName(), AdminLoginController::getControllerWithAction('showLoginForm', 'AdminAuth'))
-     ->name(AdminLoginController::getAdminRouteName('show-login'));
-Route::post(AdminLoginController::getResourceName(), AdminLoginController::getControllerWithAction('login', 'AdminAuth'))
-     ->name(AdminLoginController::getAdminRouteName('login'));
-/*===========Login Route============*/
+Route::middleware(['admin.guest'])->group(function() {
+	/*===========Login Route============*/
+	Route::get(AdminLoginController::getResourceName(), AdminLoginController::getControllerWithAction('showLoginForm', 'AdminAuth'))
+	     ->name(AdminLoginController::getAdminRouteName('show-login'));
+	Route::post(AdminLoginController::getResourceName(), AdminLoginController::getControllerWithAction('login', 'AdminAuth'))
+	     ->name(AdminLoginController::getAdminRouteName('login'));
+	/*===========Login Route============*/
+});
 
-/*===========Dashboard Route============*/
-Route::get('/', DashboardController::getControllerWithAction('index'))
-     ->name(DashboardController::getAdminRouteName('dashboard'));
-Route::get(DashboardController::getResourceName(), DashboardController::getControllerWithAction('index'))
-     ->name(DashboardController::getAdminRouteName('dashboard'));
-/*===========Dashboard Route============*/
+Route::middleware(['admin'])->group(function() {
+	/*===========Dashboard Route============*/
+	Route::get('/', DashboardController::getControllerWithAction('index'))
+	     ->name(DashboardController::getAdminRouteName('dashboard'));
+	Route::get(DashboardController::getResourceName(), DashboardController::getControllerWithAction('index'))
+	     ->name(DashboardController::getAdminRouteName('dashboard'));
+	/*===========Dashboard Route============*/
 
-Route::middleware(['admin', 'auth:admin'])->group(function() {
 	Route::resource(SettingController::getResourceName(), SettingController::getClassName());
 });
 

@@ -65,7 +65,8 @@ class Handler extends ExceptionHandler
 	 * @return \Illuminate\Http\Response
 	 */
 	protected function unauthenticated($request, AuthenticationException $exception) {
-    	if ($request->getPathInfo() == '/' . CConstant::GUARD_ADMIN) {
+
+    	if ($request->segment(1) == CConstant::GUARD_ADMIN) {
 		    return redirect('admin/login');
 	    }
     	return parent::unauthenticated($request, $exception);

@@ -74,3 +74,13 @@ if (!function_exists('asset_upload')) {
 		return asset($path);
 	}
 }
+
+if (!function_exists('asset_login')) {
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	function asset_login($path = '') {
+		return asset("login/$path");
+	}
+}

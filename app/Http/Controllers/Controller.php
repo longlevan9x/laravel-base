@@ -22,22 +22,33 @@ class Controller extends BaseController
 	}
 
 	/**
+	 * @param string $prefix
 	 * @return string
 	 */
-	public static function getResourceName() {
+	public static function getResourceName($prefix = '') {
 		$class    = self::getClassName();
 		$resource = str_replace('Controller', '', $class);
 		$resource = snake_case($resource, '-');
+
+		if (!empty($prefix)) {
+			$resource = "$prefix\\$resource";
+		}
 
 		return strtolower($resource);
 	}
 
 	/**
-	 * @param $action
+	 * @param        $action
+	 * @param string $prefix
 	 * @return string
 	 */
-	public static function getControllerWithAction($action) {
-		return self::getClassName() . "@" . $action;
+	public static function getControllerWithAction($action, $prefix = '') {
+		$action = self::getClassName() . "@" . $action;
+		if (!empty($prefix)) {
+			$action = "$prefix\\$action";
+		}
+
+		return $action;
 	}
 
 	/**

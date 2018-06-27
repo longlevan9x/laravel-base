@@ -11,9 +11,9 @@ class UsersTableSeeder extends Seeder
 	 */
 	public function run() {
 		$model            = new \App\User;
-		$model->username  = 'admin';
-		$model->name      = 'admin';
-		$model->email     = 'admin@gmail.com';
+		$model->username  = 'user';
+		$model->name      = 'user';
+		$model->email     = 'user@gmail.com';
 		$model->is_active = CConstant::STATE_ACTIVE;
 		$model->password  = bcrypt(123456);
 		$model->role      = CConstant::ROLE_ADMIN;

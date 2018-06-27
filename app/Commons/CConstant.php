@@ -33,4 +33,9 @@ class CConstant
 	const ROLE_USER    = 10;
 	const ROLE_MANAGER = 20;
 	/*const ROLE*/
+
+	/*const Guard*/
+	const GUARD_ADMIN = 'admin';
+	const GUARD_USER = 'user';
+	/*const Guard*/
 }

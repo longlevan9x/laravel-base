@@ -21,7 +21,7 @@ Route::middleware(['admin.guest'])->group(function() {
 	/*===========Login Route============*/
 });
 
-Route::middleware(['admin'])->group(function() {
+Route::middleware(['admin', 'auth:admin'])->group(function() {
 	/*===========Dashboard Route============*/
 	Route::get('/', DashboardController::getControllerWithAction('index'))
 	     ->name(DashboardController::getAdminRouteName('dashboard'));

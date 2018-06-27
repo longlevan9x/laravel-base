@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use App\Commons\CConstant;
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class Handler extends ExceptionHandler
@@ -55,5 +57,17 @@ class Handler extends ExceptionHandler
 	    }
 
         return parent::render($request, $exception);
+    }
+
+	/**
+	 * @param \Illuminate\Http\Request $request
+	 * @param AuthenticationException  $exception
+	 * @return \Illuminate\Http\Response
+	 */
+	protected function unauthenticated($request, AuthenticationException $exception) {
+    	if ($request->getPathInfo() == '/' . CConstant::GUARD_ADMIN) {
+		    return redirect('admin/login');
+	    }
+    	return parent::unauthenticated($request, $exception);
     }
 }

@@ -169,6 +169,7 @@ return [
          * Custom Provider
         */
         App\Providers\HelperServiceProvider::class,
+        App\Commons\providers\CommonServiceProvider::class
     ],
 
     /*

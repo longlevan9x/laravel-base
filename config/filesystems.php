@@ -45,7 +45,8 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app/uploads'),
+            'url' => env('APP_URL'). "/" . get_root_name() .'/storage/app/uploads',
         ],
 
         'public' => [

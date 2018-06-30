@@ -1,7 +1,0 @@
-.check-one, .check-all, #check-all{
-    /*-ms-transform: scale(1.5);*/
-    /*-moz-transform: scale(1.5);*/
-    /*-webkit-transform: scale(1.5);*/
-    /*-o-transform: scale(1.5);*/
-    zoom: 1.5;
-}

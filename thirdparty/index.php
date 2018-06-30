@@ -21,3 +21,7 @@ require_once __DIR__ . '/asset.php';
  * register public_path file
  */
 require_once __DIR__ . '/public_path.php';
+/**
+ * register url file
+ */
+require_once __DIR__ . '/url.php';

@@ -72,3 +72,15 @@ if (!function_exists('public_path_images')) {
 		return public_path($path);
 	}
 }
+/*store_path*/
+if (!function_exists('storage_app_uploads')) {
+	/**
+	 * @param string $folder
+	 * @param string $file
+	 * @return string
+	 */
+	function storage_app_uploads ($folder = '', $file = '') {
+		return storage_path("app/uploads/$folder/$file");
+	}
+}
+

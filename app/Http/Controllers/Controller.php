@@ -31,7 +31,7 @@ class Controller extends BaseController
 		$resource = snake_case($resource, '-');
 
 		if (!empty($prefix)) {
-			$resource = "$prefix\\$resource";
+			$resource = "$resource/$prefix";
 		}
 
 		return strtolower($resource);

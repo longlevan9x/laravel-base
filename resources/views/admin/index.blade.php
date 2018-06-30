@@ -9,6 +9,8 @@
 <!DOCTYPE html>
 <html lang="en">
     @include('admin.partials.style')
+    @stack('cssFile')
+    @stack('cssString')
     @include('admin.partials.script')
     @include('admin.partials.menu')
     @include('admin.partials.header')

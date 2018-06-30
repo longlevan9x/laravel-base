@@ -6,7 +6,9 @@
  * Time: 11:26 PM
  */
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\AdminAuth\LoginController as AdminLoginController;
 
@@ -19,9 +21,20 @@ Route::middleware(['admin.guest'])->group(function() {
 	Route::post(AdminLoginController::getResourceName(), AdminLoginController::getControllerWithAction('login', 'AdminAuth'))
 	     ->name(AdminLoginController::getAdminRouteName('login'));
 	/*===========Login Route============*/
+
 });
 
 Route::middleware(['admin', 'auth:admin'])->group(function() {
+	Route::post('logout', AdminLoginController::getControllerWithAction('logout', 'AdminAuth'))
+	     ->name(AdminLoginController::getAdminRouteName('logout'));
+	Route::post('change-password', AdminController::getControllerWithAction('change_password'))
+	     ->name(AdminController::getAdminRouteName('change-password'));
+	/*===========Profile============*/
+	Route::get('profile', AdminController::getControllerWithAction('show_profile'))
+	     ->name(AdminController::getAdminRouteName('show-profile'));
+	Route::post('profile/{id}', AdminController::getControllerWithAction('update_profile'))
+	     ->name(AdminController::getAdminRouteName('update-profile'));
+	/*===========Profile============*/
 	/*===========Dashboard Route============*/
 	Route::get('/', DashboardController::getControllerWithAction('index'))
 	     ->name(DashboardController::getAdminRouteName('dashboard'));

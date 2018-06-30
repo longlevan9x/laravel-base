@@ -36,9 +36,9 @@ if (!function_exists('asset_vendor')) {
 	 * @return string
 	 * @throws Exception
 	 */
-	function asset_vendor($path = '') {
-		if (is_exist_path('vendor')) {
-			return asset('vendor\\' . $path);
+	function asset_vendors($path = '') {
+		if (is_exist_path('vendors')) {
+			return asset('vendors/' . $path);
 		}
 
 		return asset($path);
@@ -53,22 +53,22 @@ if (!function_exists('asset_images')) {
 	 */
 	function asset_images($path = '') {
 		if (is_exist_path('images')) {
-			return asset('images\\' . $path);
+			return asset('images/' . $path);
 		}
 
 		return asset($path);
 	}
 }
 
-if (!function_exists('asset_upload')) {
+if (!function_exists('asset_uploads')) {
 	/**
 	 * @param string $path
 	 * @return string
 	 * @throws Exception
 	 */
-	function asset_upload($path = '') {
-		if (is_exist_path('upload')) {
-			return asset('upload\\' . $path);
+	function asset_uploads($path = '') {
+		if (is_exist_path('uploads')) {
+			return asset('uploads/' . $path);
 		}
 
 		return asset($path);

@@ -6,7 +6,9 @@ use App\Commons\CConstant;
 use App\Http\Controllers\Controller;
 use Hesto\MultiAuth\Traits\LogsoutGuard;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -62,9 +64,27 @@ class LoginController extends Controller
 		return Auth::guard(CConstant::GUARD_ADMIN);
 	}
 
+	/**
+	 * change column login
+	 * @return string
+	 */
 	public function username() {
 		return 'username';
 	}
 
+	/**
+	 * @return string
+	 */
+	public function logoutToPath() {
+		return 'admin/login';
+	}
 
+	/**
+	 * @param Request $request
+	 */
+	protected function sendFailedLoginResponse(Request $request) {
+		throw ValidationException::withMessages([
+			$this->username() => [__("The username or password not correct.")],
+		]);
+	}
 }

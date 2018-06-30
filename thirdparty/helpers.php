@@ -71,3 +71,21 @@ function vn2latin($cs, $delimiter = '-', $tolower = true) {
 
 	return str_replace($marTViet, $marKoDau, $cs);
 }
+
+if (!function_exists('get_root_name')) {
+	/**
+	 * @return mixed|string
+	 */
+	function get_root_name() {
+		$path     = base_path();
+		$path_arr = explode('/', $path);
+		if (empty($path_arr) || count($path_arr) == 1) {
+			$path_arr = explode('\\', $path);
+		}
+
+		if (!empty($path_arr)) {
+			return end($path_arr);
+		}
+		return "";
+	}
+}

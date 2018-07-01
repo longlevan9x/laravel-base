@@ -7,6 +7,8 @@
  */
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AreaController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\SettingController;
@@ -42,6 +44,8 @@ Route::middleware(['admin', 'auth:admin'])->group(function() {
 	     ->name(DashboardController::getAdminRouteName('dashboard'));
 	/*===========Dashboard Route============*/
 
+	Route::resource(CategoryController::getResourceName(), CategoryController::getClassName());
 	Route::resource(SettingController::getResourceName(), SettingController::getClassName());
+	Route::resource(AreaController::getResourceName(), AreaController::getClassName());
 });
 

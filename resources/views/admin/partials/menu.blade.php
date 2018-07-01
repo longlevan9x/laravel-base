@@ -24,7 +24,7 @@
                                     </li>
                                 @else
                                     <li>
-                                        <a href="{{$menu['url']}}">{!! strpos($menu['icon'], 'fa-') == 0 ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}} </a>
+                                        <a href="{{$menu['url']}}">{!! strpos($menu['icon'], 'fa-') == 0 ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}} <span class="fa fa-chevron-right"></span></a>
                                         <ul class="nav child_menu">
                                             @foreach($menu['children'] as $child)
                                                 <li>

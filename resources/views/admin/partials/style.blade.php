@@ -42,6 +42,10 @@
             .check-one {
                 zoom: 1.5;
             }
+
+            .vertical-middle {
+                vertical-align: middle !important;
+            }
         </style>
     @endpush
 @endpush

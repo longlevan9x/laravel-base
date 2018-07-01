@@ -80,7 +80,7 @@ if (!function_exists('storage_app_uploads')) {
 	 * @return string
 	 */
 	function storage_app_uploads ($folder = '', $file = '') {
-		return storage_path("app/uploads/$folder/$file");
+		return storage_path("app\\uploads\\$folder\\$file");
 	}
 }
 

@@ -17,3 +17,15 @@ if (!function_exists('url_admin')) {
 		return url("admin/$path", $parameters, $secured);
 	}
 }
+
+if (!function_exists('url_admin_with_class')) {
+	/**
+	 * @param string               $classController
+	 * @param string               $method
+	 * @param array|string|integer $parameters
+	 * @return mixed
+	 */
+	function url_admin_with_class($classController, $method, ...$parameters) {
+		return call_user_func([$classController, $method], $parameters);
+	}
+}

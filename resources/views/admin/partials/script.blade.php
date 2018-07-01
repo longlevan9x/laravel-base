@@ -83,11 +83,57 @@
                 }
             });
 
-            // $(document).on("click", "input[type=\"checkbox\"].check-one", function () {
-            //     console.log($("input[type=\"checkbox\"].check-one:checked").length);
-            // });
+            $(document).on("click", "input[type=\"checkbox\"].check-one", function () {
+                let $parent = $(this).parents("table");
+                let num_row = $parent.find("tbody tr").length;
+                if ($("input[type=\"checkbox\"].check-one:checked").length === num_row) {
+                    $parent.find("#check-all").prop("checked", true);
+                    $parent.find(".check-all").prop("checked", true);
+                }
+                else {
+                    $parent.find("#check-all").prop("checked", false);
+                    $parent.find(".check-all").prop("checked", false);
+                }
+            });
         });
 
+        /**
+         * @param {string} caption
+         * @param {string} message
+         */
+        function confirmDelete(message = "", caption = "Delete item?") {
+            let $modal = $("#modal-alert-delete");
+            $modal.find('.modal-title').text(caption);
+
+
+            if (typeof message === 'object') {
+                let _this = message;
+                message = _this.data('modal-title');
+                $modal.find('.modal-body .modal-message').text(message);
+                $modal.modal();
+                $('#delete-yes').click(function () {
+                    _this.parents('form').submit();
+                    return true;
+                });
+                $('#delete-no').click(function () {
+                    $modal.close();
+                    return false;
+                });
+                return false;
+            }
+        }
+
+        /**
+         * @param {string} caption
+         * @param {string} message
+         */
+        function alert(caption = "", message = "") {
+            let $modal = $("#modal-alert-delete");
+            $modal.find('.modal-title').text(caption);
+            $modal.find('.modal-body p').text(message);
+            $modal.modal();
+            return false;
+        }
 
         $(function () {
             var hash = window.location.hash;

@@ -56,6 +56,6 @@ class Admins extends Authenticatable
 	}
 
 	public function getImagePath() {
-		return CFile::getImageUrl($this::getTable(), $this->image, \App\Commons\CFile::DEFAULT_IMAGE_USER);
+		return CFile::getImageUrl($this->getTable(), $this->image, \App\Commons\CFile::DEFAULT_IMAGE_USER);
 	}
 }

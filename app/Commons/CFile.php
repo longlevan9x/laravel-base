@@ -20,17 +20,27 @@ class CFile extends Common
 	const DEFAULT_NO_IMAGE     = 'no_image.png';
 
 	/**
+	 * @var string
+	 */
+	public $errors;
+
+	/**
 	 * @param        $key
 	 * @param string $folder
 	 * @param string $old_file
-	 * @return string
+	 * @return string|boolean
 	 */
 	public function upload($key, $folder = '', $old_file = '') {
 		if (request()->has($key)) {
 			/** @var UploadedFile $file */
 			$file = request()->file($key);
 			$name = time() . "_" . $file->getClientOriginalName();
-			$file->storeAs($folder, $name);
+			$save = $file->storeAs($folder, $name);
+			if (!$save) {
+				$this->errors = $file->getErrorMessage();
+
+				return false;
+			}
 			if (!empty($old_file)) {
 				$this->removeFile($folder, $old_file);
 			}
@@ -65,11 +75,29 @@ class CFile extends Common
 	 * @return mixed
 	 */
 	public function getImageUrl($folder, $image, $default_image = self::DEFAULT_NO_IMAGE) {
+		if (filter_var($folder, FILTER_VALIDATE_URL)) {
+			return $folder;
+		}
+
 		$image_path = storage_app_uploads($folder, $image);
-		if (file_exists($image_path)) {
+		if (file_exists($image_path) && !is_dir($image_path)) {
 			return Storage::url($folder . '/' . $image);
 		}
 
 		return Storage::url(self::DEFAULT_IMAGE_FOLDER . "/$default_image");
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getErrors() {
+		return $this->errors;
+	}
+
+	/**
+	 * @param mixed $errors
+	 */
+	public function setErrors($errors) {
+		$this->errors = $errors;
 	}
 }

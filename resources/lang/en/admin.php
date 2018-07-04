@@ -10,6 +10,6 @@ return [
 
 	'submitButton' => 'Submit',
 	'resetButton' => 'Reset',
-	'cancelButton' => 'cancel',
+	'cancelButton' => 'Cancel',
 
 ];

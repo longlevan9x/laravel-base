@@ -29,6 +29,9 @@ trait ModelUploadTrait
 	 */
 	protected $key_file_upload = [];
 
+	public function folder() {
+		return $this->getTable();
+	}
 	/**
 	 * @param string $folder
 	 * @param string $field_image
@@ -37,7 +40,7 @@ trait ModelUploadTrait
 	 */
 	public function getImagePath($folder = '', $field_image = 'image', $default_image = \App\Commons\CFile::DEFAULT_NO_IMAGE) {
 		if (empty($folder)) {
-			$folder = $this->getTable();
+			$folder = $this->folder();
 		}
 
 		return CFile::getImageUrl($folder, $this->{$field_image}, $default_image);
@@ -51,7 +54,7 @@ trait ModelUploadTrait
 	 */
 	public function uploadImage($key = '', $folder = '', $old_image = '') {
 		if (empty($folder)) {
-			$folder = $this->getTable();
+			$folder = $this->folder();
 		}
 
 		if (!empty($key)) {
@@ -85,7 +88,7 @@ trait ModelUploadTrait
 	 */
 	public function removeImage($folder = '', $image = '') {
 		if (empty($folder)) {
-			$folder = $this->getTable();
+			$folder = $this->folder();
 		}
 		if (empty($image)) {
 			$key_image_upload = $this->getKeyImageUpload();

@@ -43,6 +43,7 @@ class AdminController extends Controller
 	/**
 	 * @param Request $request
 	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Exception
 	 */
 	public function change_password(Request $request) {
 		$validation = $this->validate($request, ['password' => 'required|confirmed|min:6']);
@@ -55,5 +56,91 @@ class AdminController extends Controller
 
 			return redirect(url_admin('profile#tab_content2'))->with('success', __("Change password success"));
 		}
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index() {
+		$models = Admins::where('id', '<>', CUser::userAdmin()->id)->where('role', "<", CUser::userAdmin()->role)->get();
+
+		return view('admin.admin.index', compact('models'));
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create() {
+		return view('admin.admin.create');
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 * @param AdminRequest $request
+	 * @return \Illuminate\Http\Response
+	 * @throws \Exception
+	 */
+	public function store(AdminRequest $request) {
+		$model = new Admins();
+		$model->fill($request->all());
+		$model->generatePassword();
+		$model->setAuthor_id();
+		$model->save();
+
+		//Store::create($request->all());
+		return redirect(self::getUrlAdmin());
+	}
+
+	/**
+	 * Display the specified resource.
+	 * @param Admins $admin
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show(Admins $admin) {
+		$model = $admin;
+
+		return view('admin.admin.view', compact('model'));
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 * @param Admins $admin
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function edit(Admins $admin) {
+		$model = $admin;
+
+		return view('admin.admin.update', compact('model'));
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 * @param AdminRequest $request
+	 * @param Admins        $admin
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws \Exception
+	 */
+	public function update(AdminRequest $request, Admins $admin) {
+		$admin->fill($request->all());
+		$admin->generatePassword();
+		$admin->setAuthor_id();
+		$admin->save();
+
+		return redirect(self::getUrlAdmin());
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 * @param Admins $admin
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 * @throws \Exception
+	 */
+	public function destroy(Admins $admin) {
+		if  ($admin->delete()) {
+			return redirect(self::getUrlAdmin());
+		}
+		return redirect(self::getUrlAdmin())->with('error', "Delete Fail");
 	}
 }

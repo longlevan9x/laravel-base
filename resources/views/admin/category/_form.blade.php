@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="parent_id"> {{__('Parent')}}</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        {!! Form::select('parent_id', \App\Models\Category::pluckWithCategory('name', 'id'), $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'parent_idF']) !!}
+                        {!! Form::select('parent_id', \App\Models\Category::pluckWithCategory('name', 'id'), $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'parent_id']) !!}
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Is active</label>
+                    <label for="is_active" class="control-label col-md-3 col-sm-3 col-xs-12">Is active</label>
                     <div class="col-md-9 col-sm-9 col-xs-12">
                         <div class="">
                             <label>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="picture" class="control-label col-md-3 col-sm-3 col-xs-12">{{__('Image')}}</label>
+                    <label for="image" class="control-label col-md-3 col-sm-3 col-xs-12">{{__('Image')}}</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::file('image', ['id' => 'image', 'accept' => 'image/*', 'class' => '', 'aria-describedby'=>"fileHelp"]) !!}
                     </div>

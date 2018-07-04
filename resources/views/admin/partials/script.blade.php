@@ -72,6 +72,12 @@
     <script src="{{asset('build/js/custom.min.js')}}" type="text/javascript"></script>
     <script src="{{asset_css('custom.css')}}" type="text/javascript"></script>
     <script>
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": $("meta[name=\"csrf-token\"]").attr("content")
+            }
+        });
+
         $(function () {
             $(document).on("click", "input[type=\"checkbox\"]#check-all,input[type=\"checkbox\"].check-all", function () {
                 let $parent = $(this).parents("table");
@@ -103,19 +109,19 @@
          */
         function confirmDelete(message = "", caption = "Delete item?") {
             let $modal = $("#modal-alert-delete");
-            $modal.find('.modal-title').text(caption);
+            $modal.find(".modal-title").text(caption);
 
 
-            if (typeof message === 'object') {
+            if (typeof message === "object") {
                 let _this = message;
-                message = _this.data('modal-title');
-                $modal.find('.modal-body .modal-message').text(message);
+                message   = _this.data("modal-title");
+                $modal.find(".modal-body .modal-message").text(message);
                 $modal.modal();
-                $('#delete-yes').click(function () {
-                    _this.parents('form').submit();
+                $("#delete-yes").click(function () {
+                    _this.parents("form").submit();
                     return true;
                 });
-                $('#delete-no').click(function () {
+                $("#delete-no").click(function () {
                     $modal.close();
                     return false;
                 });
@@ -129,8 +135,8 @@
          */
         function alert(caption = "", message = "") {
             let $modal = $("#modal-alert-delete");
-            $modal.find('.modal-title').text(caption);
-            $modal.find('.modal-body p').text(message);
+            $modal.find(".modal-title").text(caption);
+            $modal.find(".modal-body p").text(message);
             $modal.modal();
             return false;
         }
@@ -144,6 +150,58 @@
                 var scrollmem        = $("body").scrollTop() || $("html").scrollTop();
                 window.location.hash = this.hash;
                 $("html,body").scrollTop(scrollmem);
+            });
+        });
+
+        /**
+         * @param {object|string} $_this
+         * @param {string} $selector_change
+         * @param {string} $url
+         * @param {string} $type
+         */
+        function getCategory($_this, $selector_change, $url, $type = "") {
+            let $id  = $($_this).val();
+            let $xhr = $.ajax({
+                url:  $url,
+                type: "get",
+                data: {id: $id, type: $type}
+            });
+
+            $xhr.success(function (result) {
+                if (typeof result === "string") {
+                    $($selector_change).html(result);
+                    return false;
+                }
+                console.log(result);
+            });
+            $xhr.error(function (error) {
+                console.log(error);
+            });
+        }
+
+        $(function () {
+            $(document).on("change", ".get-category", function () {
+                let $selector_change = $(this).data("selector_change");
+
+                let $id   = $(this).val();
+                let $type = $(this).data("type");
+                let $url  = $(this).data("url");
+                let $xhr  = $.ajax({
+                    url:  $url,
+                    type: "get",
+                    data: {id: $id, type: $type}
+                });
+
+                $xhr.success(function (result) {
+                    if (typeof result === "string") {
+                        $($selector_change).html(result);
+                        return false;
+                    }
+                    console.log(result);
+                });
+                $xhr.error(function (error) {
+                    console.log(error);
+                });
             });
         });
     </script>

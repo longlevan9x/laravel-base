@@ -94,4 +94,9 @@ class CategoryController extends Controller
 		}
 		return redirect(self::getUrlAdmin())->with('error', "Delete Fail");
 	}
+
+	public function getOptionCategoryWithType(Request $request) {
+		$models = Category::getCategoryByParent($request->id, $request->type);
+		return view('admin.category.option', compact('models'));
+	}
 }

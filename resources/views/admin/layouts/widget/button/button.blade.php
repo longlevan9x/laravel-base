@@ -16,6 +16,7 @@
             }
         }
     }
+    $icon = $icon ?? '';
 @endphp
 <button type="{{$type ?? ""}}" class="{{$class}}" {!! $str_option !!} data-url="{{$url}}">
     @if(strpos($icon, 'fa-') > -1)

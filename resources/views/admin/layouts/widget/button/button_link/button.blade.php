@@ -16,6 +16,7 @@
             }
         }
     }
+    $icon = $icon ?? '';
 @endphp
 <a href="{{$url}}" class="{{$class}}" {!! $str_option !!}>
     @if(strpos($icon, 'fa-') > -1)

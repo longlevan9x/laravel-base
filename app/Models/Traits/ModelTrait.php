@@ -32,6 +32,12 @@ trait ModelTrait
 	/**
 	 * @return string
 	 */
+	public function fieldSlug() {
+		return "slug";
+	}
+	/**
+	 * @return string
+	 */
 	public function fieldSlugable() {
 		return '';
 	}
@@ -40,11 +46,15 @@ trait ModelTrait
 	 * @return array
 	 */
 	public function sluggable(): array {
-		return [
-			'slug' => [
-				'source' =>  $this->fieldSlugable()
-			]
-		];
+		$attribute = $this->getAttribute($this->fieldSlug());
+		if (isset($attribute)) {
+			return [
+				$this->fieldSlug() => [
+					'source' =>  $this->fieldSlugable()
+				]
+			];
+		}
+		return [];
 	}
 
 	/**

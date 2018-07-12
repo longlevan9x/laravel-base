@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -13,6 +14,7 @@ use Illuminate\Support\Collection;
  * @property string $type
  * @property int    $is_active
  * @property int    parent_id
+ * @property string name
  */
 class Category extends Model
 {
@@ -41,7 +43,7 @@ class Category extends Model
 	public static function pluckWithType($column, $key = null, $type = '') {
 		$category = Category::where('type', $type)->pluck($column, $key);
 		/** @var Collection $category */
-		$category->put(0, "Select " . ucfirst($type));
+		$category->put(0, __('admin.select') . " " . __("admin.$type"));
 		$category = $category->toArray();
 		ksort($category);
 
@@ -102,9 +104,18 @@ class Category extends Model
 	public static function getCategoryByParent($parent_id = 0, $type = self::TYPE_CATEGORY) {
 		$category = Category::where('type', $type)->where('parent_id', $parent_id)->pluck('name', 'id');
 		/** @var Collection $category */
-		$category->put(0, "Select " . ucfirst($type));
+		$category->put(0, __('admin.select'). " " . __("admin.$type"));
 		$category = $category->toArray();
 		ksort($category);
+
 		return new Collection($category);
+	}
+
+	/**
+	 * @param string $type
+	 * @return Builder
+	 */
+	public static function whereType($type = self::TYPE_CATEGORY) {
+		return Category::where('type', $type);
 	}
 }

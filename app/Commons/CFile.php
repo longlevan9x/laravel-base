@@ -80,6 +80,7 @@ class CFile extends Common
 		}
 
 		$image_path = storage_app_uploads($folder, $image);
+		$image_path = str_replace("\\", "/", $image_path);
 		if (file_exists($image_path) && !is_dir($image_path)) {
 			return Storage::url($folder . '/' . $image);
 		}

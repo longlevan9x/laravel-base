@@ -45,7 +45,7 @@ class Admins extends Authenticatable
 	public static $roles = [25 => 'Administrator', 20 => 'Management', 10 => 'Staff', 5 => 'Author'];
 
 	public static function getCollectionRoles() {
-		$roles = [0 => "Select Role"] + self::$roles;
+		$roles = [0 => __('admin.select') . " " . __('admin/user.role')] + self::$roles;
 
 		return new Collection($roles);
 	}
@@ -140,8 +140,8 @@ class Admins extends Authenticatable
 
 	public function getGenderLabel() {
 		if ($this->gender == 1) {
-			return view('admin.layouts.widget.labels.success', ['text' => 'Male']);
+			return view('admin.layouts.widget.labels.success', ['text' => __('admin.male')]);
 		}
-		return view('admin.layouts.widget.labels.info', ['text' => 'Female']);
+		return view('admin.layouts.widget.labels.info', ['text' => __('admin.female')]);
 	}
 }

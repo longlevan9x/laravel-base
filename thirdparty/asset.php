@@ -30,35 +30,52 @@ if (!function_exists('asset_js')) {
 	}
 }
 
-if (!function_exists('asset_vendor')) {
+if (!function_exists('asset_admin_vendors')) {
 	/**
 	 * @param string $path
 	 * @return string
 	 * @throws Exception
 	 */
-	function asset_vendors($path = '') {
-		if (is_exist_path('vendors')) {
-			return asset('vendors/' . $path);
+	function asset_admin_vendors($path = '') {
+		if (is_exist_path('admins/vendors')) {
+			return asset_admin('vendors/' . $path);
 		}
 
-		return asset($path);
+		return asset_admin($path);
 	}
 }
 
-if (!function_exists('asset_images')) {
+if (!function_exists('asset_admin_images')) {
 	/**
 	 * @param string $path
 	 * @return string
 	 * @throws Exception
 	 */
-	function asset_images($path = '') {
-		if (is_exist_path('images')) {
-			return asset('images/' . $path);
+	function asset_admin_images($path = '') {
+		if (is_exist_path('admins/images')) {
+			return asset_admin('images/' . $path);
 		}
 
-		return asset($path);
+		return asset_admin($path);
 	}
 }
+
+if (!function_exists('asset_admin_uploads')) {
+	/**
+	 * @param string $path
+	 * @return string
+	 * @throws Exception
+	 */
+	function asset_admin_uploads($path = '') {
+		if (is_exist_path('admins/uploads')) {
+			return asset_admin('uploads/' . $path);
+		}
+
+		return asset_admin($path);
+	}
+}
+
+
 
 if (!function_exists('asset_uploads')) {
 	/**
@@ -82,5 +99,45 @@ if (!function_exists('asset_login')) {
 	 */
 	function asset_login($path = '') {
 		return asset("login/$path");
+	}
+}
+
+if (!function_exists('asset_admin')) {
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	function asset_admin($path = '') {
+		return asset("admins/$path");
+	}
+}
+
+if (!function_exists('asset_app')) {
+	/**
+	 * @param $path
+	 * @return string
+	 */
+	function asset_app($path = '') {
+		return asset("app/$path");
+	}
+}
+
+if (!function_exists('asset_app_css')) {
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	function asset_app_css($path = '') {
+		return asset_app("css/$path");
+	}
+}
+
+if (!function_exists('asset_app_js')) {
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	function asset_app_js($path = '') {
+		return asset_app("js/$path");
 	}
 }

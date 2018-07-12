@@ -84,7 +84,7 @@ class LoginController extends Controller
 	 */
 	protected function sendFailedLoginResponse(Request $request) {
 		throw ValidationException::withMessages([
-			$this->username() => [__("The username or password not correct.")],
+			$this->username() => [__("auth.the username or password not correct.")],
 		]);
 	}
 }

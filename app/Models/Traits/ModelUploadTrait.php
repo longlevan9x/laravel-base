@@ -29,8 +29,27 @@ trait ModelUploadTrait
 	 */
 	protected $key_file_upload = [];
 
+	protected $folder = '';
+
+	/**
+	 * @param $folder
+	 */
+	public function setFolder($folder) {
+		$this->folder = $folder;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function folder() {
-		return $this->getTable();
+		if (empty($this->folder)) {
+			return $this->getTable();
+		}
+		return $this->folder;
+	}
+
+	public function getFolder() {
+		return $this->folder();
 	}
 	/**
 	 * @param string $folder

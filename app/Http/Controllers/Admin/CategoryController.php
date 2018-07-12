@@ -17,7 +17,7 @@ class CategoryController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$models = Category::all();
+		$models = Category::whereType(Category::TYPE_CATEGORY)->get();
 
 		return view('admin.category.index', compact('models'));
 	}
@@ -89,14 +89,16 @@ class CategoryController extends Controller
 	 * @throws \Exception
 	 */
 	public function destroy(Category $category) {
-		if  ($category->delete()) {
+		if ($category->delete()) {
 			return redirect(self::getUrlAdmin());
 		}
+
 		return redirect(self::getUrlAdmin())->with('error', "Delete Fail");
 	}
 
 	public function getOptionCategoryWithType(Request $request) {
 		$models = Category::getCategoryByParent($request->id, $request->type);
+
 		return view('admin.category.option', compact('models'));
 	}
 }

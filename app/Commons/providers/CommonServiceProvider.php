@@ -11,6 +11,7 @@ namespace App\Commons\providers;
 
 use App\Commons\CFile;
 use App\Commons\CUser;
+use App\Commons\Facade\Common;
 use Illuminate\Support\ServiceProvider;
 
 class CommonServiceProvider extends ServiceProvider
@@ -28,6 +29,10 @@ class CommonServiceProvider extends ServiceProvider
 	 * @return void
 	 */
 	public function register() {
+		$this->app->singleton('common', function() {
+			return new Common();
+		});
+
 		$this->app->singleton('c-user', function() {
 			return new CUser;
 		});

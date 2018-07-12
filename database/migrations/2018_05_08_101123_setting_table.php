@@ -14,10 +14,10 @@ class SettingTable extends Migration
     public function up()
     {
         //
-        Schema::create('setting', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('meta_key')->nullable();
-            $table->text('meta_value')->nullable();
+            $table->string('key')->nullable()->unique();
+            $table->text('value')->nullable();
             $table->tinyInteger('is_active')->nullable()->default(0);
             $table->timestamps();
         });

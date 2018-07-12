@@ -1,6 +1,6 @@
 <tr class="text-center">
     <td class="a-center vertical-middle ">
-        <input type="checkbox" class="check-one" name="table_records">
+        @include('admin.layouts.widget.table.input-check-one')
     </td>
     {{--<td class="a-center "><input type="checkbox" name="table_records"></td>--}}
     <td class="vertical-middle">{!! $model->showImage('image')!!}</td>

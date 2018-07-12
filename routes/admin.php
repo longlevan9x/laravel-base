@@ -8,6 +8,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AreaController;
+use App\Http\Controllers\Admin\BulkController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
@@ -43,9 +44,16 @@ Route::middleware(['admin', 'auth:admin'])->group(function() {
 	Route::get(DashboardController::getResourceName(), DashboardController::getControllerWithAction('index'))
 	     ->name(DashboardController::getAdminRouteName('dashboard'));
 	/*===========Dashboard Route============*/
+	Route::get(CategoryController::getResourceName('get-category'), CategoryController::getControllerWithAction('getOptionCategoryWithType'));
 
+	/*===========Resource===========*/
 	Route::resource(CategoryController::getResourceName(), CategoryController::getClassName());
 	Route::resource(SettingController::getResourceName(), SettingController::getClassName());
-	Route::resource(AreaController::getResourceName(), AreaController::getClassName());
+	Route::resource(AdminController::getResourceName(), AdminController::getClassName());
+
+	/*===========Route Ajax===========*/
+
+	/*===========Route Bulk===========*/
+	Route::delete(BulkController::getResourceName('bulk-delete'), BulkController::getControllerWithAction('bulkDelete'));
 });
 

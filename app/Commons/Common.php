@@ -11,5 +11,11 @@ namespace App\Commons;
 
 class Common
 {
-
+	/**
+	 * @param string $app_name
+	 * @return mixed
+	 */
+	public function showAppName($app_name = '') {
+		return str_replace('_', ' ', $app_name);
+	}
 }

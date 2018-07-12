@@ -1,12 +1,4 @@
 <?php
-
-namespace App\Models\Traits;
-
-use App\Commons\Facade\CFile;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Event;
-
 /**
  * Created by PhpStorm.
  * User: LongPC
@@ -14,10 +6,22 @@ use Illuminate\Support\Facades\Event;
  * Time: 23:21
  */
 
+namespace App\Models\Traits;
+
+use App\Commons\Facade\CFile;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
+
 /**
  * Trait ModelTrait
  * @package App\Models\Traits
  * @property Model $this
+ * @method  static Builder where(string $column, string $operator = null, string $value = null, string $boolean = 'and')
+ * @method  static Builder orWhere(string $column, string $operator = null, string $value = null)
+ * @method  static Builder|Model findOrFail(mixed | int | string $id, array $column = ['*'])
+ * @see     Builder
  */
 trait ModelTrait
 {
@@ -35,6 +39,7 @@ trait ModelTrait
 	public function fieldSlug() {
 		return "slug";
 	}
+
 	/**
 	 * @return string
 	 */
@@ -46,14 +51,15 @@ trait ModelTrait
 	 * @return array
 	 */
 	public function sluggable(): array {
-		$attribute = $this->getAttribute($this->fieldSlug());
-		if (isset($attribute)) {
+		$attribute = key_exists($this->fieldSlug(), $this->getAttributes());
+		if (isset($attribute) && $attribute) {
 			return [
 				$this->fieldSlug() => [
-					'source' =>  $this->fieldSlugable()
+					'source' => $this->fieldSlugable()
 				]
 			];
 		}
+
 		return [];
 	}
 
@@ -63,6 +69,9 @@ trait ModelTrait
 	 * @throws \Exception
 	 */
 	public function save(array $options = []) {
+		if (!$this->beforeSave()) {
+			return $this->beforeSave();
+		}
 		if (method_exists($this, 'uploadImage') && $this->isAutoUploadImage()) {
 			$this->uploadImage();
 		}
@@ -74,6 +83,7 @@ trait ModelTrait
 
 			return false;
 		}
+		$this->afterSave();
 
 		return $save;
 	}
@@ -100,14 +110,33 @@ trait ModelTrait
 		if (isset($attribute)) {
 			return view('admin.layouts.widget.labels.active', ['slot' => $this->is_active]);
 		}
+
 		return "";
 	}
 
 	public function showImage($key = '') {
-		$attribute = $this->getAttribute('is_active');
+		$attribute = $this->getAttribute($key);
 		if (isset($attribute)) {
 			return view('admin.layouts.widget.image.show', ['src' => $this->getImagePath('', $key)]);
 		}
+
 		return "";
+	}
+
+	public function beforeSave() {
+		return true;
+	}
+
+	public function afterSave() {
+		return true;
+	}
+
+	public static function table() {
+		return (new static)->getTable();
+	}
+
+	public function delete() {
+		parent::delete();
+
 	}
 }

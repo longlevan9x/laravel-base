@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
-            @include('admin.layouts.title_form', ['title' => "Form Depertment"])
+            @include('admin.layouts.title_form', ['title' => __('admin/menu.add user')])
             <div class="x_content">
                 {{ Form::model(isset($model) ? $model : null, [
                     'url' => \App\Http\Controllers\Admin\AdminController::getUrlAdmin(isset($model) ? $model->id : ''),
@@ -20,52 +20,54 @@
                     'method' => isset($model) ? 'put' : 'post'
                 ]) }}
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username<span class="required">*</span></label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">@lang('auth.username')
+                        <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::text('username', $value = null,['required' => "required", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'username']) !!}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">Password @if(!isset($model)) <span class="required">*</span> @endif</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">@lang('auth.password') @if(!isset($model))
+                            <span class="required">*</span> @endif</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::password('password', ['class' => 'form-control col-md-7 col-xs-12', 'id' => 'password']) !!}
                         @if(isset($model))
-                            <p class="help-inline">{{trans('Blank textbox. If you not change password')}}</p>
+                            <p class="help-inline">{{__('auth.blank textbox. if you not change password')}}</p>
                         @endif
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name*</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">@lang('admin/common.name')*</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::text('name', $value = null,['required' => "required", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'name']) !!}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email*</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">@lang('Email')*</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::email('email', $value = null,['required' => "required", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'email']) !!}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="role"> {{__('Role')}}</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="role"> {{__('admin/user.role')}}</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::select('role', \App\Models\Admins::getCollectionRoles(), $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'role']) !!}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">Phone</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">@lang('admin/common.phone')</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::text('phone', $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'phone']) !!}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">Address</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="address">@lang('admin/common.address')</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::text('address', $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'address']) !!}
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Is active</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">@lang('admin/common.is_active')</label>
                     <div class="col-md-9 col-sm-9 col-xs-12">
                         <div class="">
                             <label>
@@ -76,43 +78,17 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="gender">{{__('Gender')}}</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="gender">{{__('admin/common.gender')}}</label>
                     <div class="col-md-6 col-sm-6 col-xs-12 btn-group" id="gender" data-toggle="buttons">
                         <label class="btn btn-default {{\App\Commons\Facade\CUser::userAdmin()->gender == 1 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                            {{ Form::radio('gender', $value = 1, \App\Commons\Facade\CUser::userAdmin()->gender == 1 ? ['checked'] : '') }} {{__('Male')}}
+                            {{ Form::radio('gender', $value = 1, \App\Commons\Facade\CUser::userAdmin()->gender == 1 ? ['checked'] : '') }} {{__('admin.male')}}
                         </label>
                         <label class="btn btn-info {{\App\Commons\Facade\CUser::userAdmin()->gender == 2 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-danger">
-                            {{ Form::radio('gender', $value = 2, \App\Commons\Facade\CUser::userAdmin()->gender == 2 ? ['checked'] : '' ) }} {{__('Female')}}
+                            {{ Form::radio('gender', $value = 2, \App\Commons\Facade\CUser::userAdmin()->gender == 2 ? ['checked'] : '' ) }} {{__('admin.female')}}
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="image" class="control-label col-md-3 col-sm-3 col-xs-12">{{__('Image')}}</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        {!! Form::file('image', ['id' => 'image', 'accept' => 'image/*', 'class' => '', 'aria-describedby'=>"fileHelp"]) !!}
-                    </div>
-                </div>
-
-                @push('scriptString')
-                    <script>
-                        let configFileinput = {
-                            dropZoneEnabled:      false,
-                            showUpload:           false,
-                            initialPreviewAsData: true,
-                            initialPreviewConfig: [
-                                {caption: "logo.png"}
-                            ]
-                        };
-                        let segment         = `{{request()->segment(3)}}`;
-                        if (!isNaN(segment)) {
-                            configFileinput.dropZoneEnabled = true;
-                            configFileinput.initialPreview  = "{{isset($model) ?  $model->getImagePath() : ""}}";
-                        }
-                        console.log(configFileinput);
-                        $("#image").fileinput(configFileinput);
-
-                    </script>
-                @endpush
+                @include('admin.layouts.widget.form.image-col-6', ['model' => $model ?? null])
                 <div class="ln_solid"></div>
                 @include('admin.layouts.widget.button.button-action-form', ['url' => url_admin('admin')])
                 {{ Form::close() }}

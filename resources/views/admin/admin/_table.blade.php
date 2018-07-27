@@ -1,3 +1,4 @@
+@php /** @var App\Models\Traits\ModelTrait|\Illuminate\Database\Eloquent\Model|\App\Models\Post $model*/ @endphp
 <tr class="text-center">
     <td class="a-center vertical-middle ">
         @include('admin.layouts.widget.table.input-check-one')

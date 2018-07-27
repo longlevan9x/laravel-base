@@ -2,7 +2,8 @@
     $str_option = "";
     $btn_size = $btn_size ?? 'sm';
     $btn_type = $btn_type ?? 'primary';
-    $class = "btn btn-{$btn_size} btn-{$btn_type}";
+    $class = $class ?? '';
+    $class .= " btn btn-{$btn_size} btn-{$btn_type}";
     $name = $name ?? 'btn';
     $id = $id ?? 'id';
     if (isset($options) && !empty($options)) {

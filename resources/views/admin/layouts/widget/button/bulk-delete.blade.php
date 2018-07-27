@@ -1,7 +1,7 @@
 <form id="form-bulk-delete-{{$table}}" class="{{$class ?? ''}}" action="{{url_admin('bulk/bulk-delete')}}" method="post">
     @method('delete')
     @csrf
-    <input type="hidden" name="table" value="{{$table}}">
+    <input type="hidden" name="table" value="{{$classTable}}">
     <input type="hidden" name="ids" id="ids" value="">
     @include('admin.layouts.widget.button.button', [
         'text' => __('admin.delete bulk'),
@@ -13,7 +13,7 @@
             'data-reference-to-class' => $reference ?? $table,
             'id' => "bulk-delete-" . ($id ?? $table),
             'name'=>"bulk-delete-$table",
-            'data-modal-title'=> 'Are you sure delete item selected?'
+            'data-modal-title'=> __('admin.Are you sure delete this item')
         ]
     ])
 </form>

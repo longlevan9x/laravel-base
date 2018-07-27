@@ -1,1 +1,1 @@
-@include('admin.layouts.widget.labels.label', ['type' => 'warning', 'text' => $text])
+@include('admin.layouts.widget.labels.label', ['type' => 'warning', 'text' => $text, 'size' => $size ?? 'sm'])

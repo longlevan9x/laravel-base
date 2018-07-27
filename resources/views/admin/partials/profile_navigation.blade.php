@@ -14,8 +14,8 @@
 
 <!-- menu profile quick info -->
 <div class="profile clearfix">
-    <div class="profile_pic">
-        <img src="{{\App\Commons\Facade\CUser::userAdmin()->getImagePath()}}" alt="..." class="img-circle profile_img">
+    <div class="profile_pic user-profile">
+        <img style="width: 58px;height: 58px;" src="{{\App\Commons\Facade\CUser::userAdmin()->getImagePath()}}" alt="..." class="img-circle profile_img">
     </div>
     <div class="profile_info">
         <span>{{__('admin.welcome')}},</span>

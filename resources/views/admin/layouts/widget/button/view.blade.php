@@ -1,0 +1,1 @@
+@include('admin.layouts.widget.button.button_link.view', ['icon' => $icon ?? 'fa-eye', 'url' => $url, 'btn_type' => $btn_type ?? 'info', 'text' => $text ?? __('admin.view'), 'options' => $options ?? []])

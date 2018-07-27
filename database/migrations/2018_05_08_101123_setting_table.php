@@ -18,6 +18,7 @@ class SettingTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('key')->nullable()->unique();
             $table->text('value')->nullable();
+            $table->tinyInteger('autoload')->nullable()->default(0);
             $table->tinyInteger('is_active')->nullable()->default(0);
             $table->timestamps();
         });

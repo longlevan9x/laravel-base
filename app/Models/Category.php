@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ModelMethodTrait;
 use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +26,7 @@ class Category extends Model
 	const TYPE_CITY     = 'city';
 	const TYPE_DISTRICT = 'district';
 	const TYPE_STREET   = 'street';
-	protected $fillable = ['parent_id', 'image', 'name', 'slug', 'is_active', 'status', 'description', 'type'];
+	protected $fillable = ['parent_id', 'image', 'name', 'slug', 'is_active', 'status', 'description', 'type', 'path'];
 
 	/**
 	 * @param string $column
@@ -104,7 +105,7 @@ class Category extends Model
 	public static function getCategoryByParent($parent_id = 0, $type = self::TYPE_CATEGORY) {
 		$category = Category::where('type', $type)->where('parent_id', $parent_id)->pluck('name', 'id');
 		/** @var Collection $category */
-		$category->put(0, __('admin.select'). " " . __("admin.$type"));
+		$category->put(0, __('admin.select') . " " . __("admin.$type"));
 		$category = $category->toArray();
 		ksort($category);
 
@@ -116,6 +117,15 @@ class Category extends Model
 	 * @return Builder
 	 */
 	public static function whereType($type = self::TYPE_CATEGORY) {
-		return Category::where('type', $type);
+		return self::where('type', $type);
 	}
+
+	/**
+	 * @param string $type
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function getChildren() {
+		return $this->hasMany(self::class, 'parent_id', 'id');
+	}
+
 }

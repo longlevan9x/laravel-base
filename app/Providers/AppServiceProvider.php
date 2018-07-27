@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
 		(new Setting)->loadModel();
 		App::setLocale('vi');
 		Schema::defaultStringLength(191);
-		MenuController::render();
 		//
 	}
 

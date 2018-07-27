@@ -6,7 +6,7 @@
                 <div style="float: left;">
                     @include('admin.layouts.widget.button.button_link.create', ['text' => __("admin/menu.add user"), 'btn_size' => 'md', 'icon' => 'fa-plus', 'options' => ['data-style'=>"zoom-in", 'class' => 'ladda-button'], 'url' => route(\App\Http\Controllers\Admin\AdminController::getAdminRouteName('create'))])
                 </div>
-                @include('admin.layouts.widget.button.bulk-delete', ['table' => \App\Models\Admins::table()])
+                @include('admin.layouts.widget.button.bulk-delete', ['table' => \App\Models\Admins::table(), 'classTable' => \App\Models\Admins::class])
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -18,7 +18,7 @@
                                 <input type="checkbox" id="check-all" class="">
                             </th>
                             <th class="col-md-1 text-center vertical-middle">@lang('admin/common.image')</th>
-                            <th class="text-center vertical-middle">@lang('admin/news.author')</th>
+                            <th class="text-center vertical-middle">@lang('admin/common.user create')</th>
                             <th class="text-center vertical-middle">@lang('admin/common.name')</th>
                             <th class="text-center vertical-middle">@lang('auth.username')</th>
                             <th class="text-center vertical-middle">@lang('Email')</th>

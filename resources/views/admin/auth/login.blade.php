@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{config('app.name')}}</title>
+    <title>{{setting(KEY_WEBSITE_NAME, config('app.name'))}} | {{setting(KEY_WEBSITE_DESCRIPTION)}}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSRF Token -->
@@ -16,8 +16,6 @@
     <link rel="stylesheet" type="text/css" href="{{asset_login('login_v18/vendor/animate/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset_login('login_v18/vendor/css-hamburgers/hamburgers.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset_login('login_v18/vendor/animsition/css/animsition.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset_login('login_v18/vendor/select2/select2.min.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset_login('login_v18/vendor/daterangepicker/daterangepicker.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset_login('login_v18/css/util.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset_login('login_v18/css/main.css')}}">
 
@@ -31,15 +29,15 @@
         <div class="wrap-login100">
             <form class="login100-form validate-form" method="post" action="{{route(\App\Http\Controllers\Admin\AdminAuth\LoginController::getAdminRouteName('login'))}}">
 					<span class="login100-form-title p-b-43">
-						{{__('Login to continue')}}
+						{{__('auth.login to continue')}}
 					</span>
 
                 @include('admin.errors.validation-message')
 
-                <div id="txtUsername" class="wrap-input100 validate-input {{ $errors->has('email') ? ' is-invalid' : '' }}" data-validate="{{__('Username is required')}}">
-                    <input class="input100" type="text" id="" name="username" autofocus value="{{old('username')}}" title="{{__('Enter your username')}}" required>
+                <div id="txtUsername" class="wrap-input100 validate-input {{ $errors->has('email') ? ' is-invalid' : '' }}" data-validate="{{__('auth.Username is required')}}">
+                    <input class="input100" type="text" id="" name="username" autofocus value="{{old('username')}}" title="{{__('auth.enter your username')}}" required>
                     <span class="focus-input100"></span>
-                    <span class="label-input100">{{__('Username')}}</span>
+                    <span class="label-input100">{{__('auth.username')}}</span>
                     @if ($errors->has('username'))
                         <span class="invalid-feedback">
                             <strong>{{ $errors->first('username') }}</strong>
@@ -47,10 +45,10 @@
                     @endif
                 </div>
 
-                <div class="wrap-input100 validate-input {{ $errors->has('password') ? ' is-invalid' : '' }}" data-validate="{{__('Password is required')}}">
-                    <input class="input100" type="password" name="password" title="{{__('Enter your password')}}" required>
+                <div class="wrap-input100 validate-input {{ $errors->has('password') ? ' is-invalid' : '' }}" data-validate="{{__('auth.password is required')}}">
+                    <input class="input100" type="password" name="password" title="{{__('auth.enter your password')}}" required>
                     <span class="focus-input100"></span>
-                    <span class="label-input100">{{__('Password')}}</span>
+                    <span class="label-input100">{{__('auth.password')}}</span>
 
                     @if ($errors->has('password'))
                         <span class="invalid-feedback">
@@ -63,7 +61,7 @@
                     <div class="contact100-form-checkbox">
                         <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember">
                         <label class="label-checkbox100" for="ckb1">
-                            {{__('Remember me')}}
+                            {{__('auth.remember me')}}
                         </label>
                     </div>
                 </div>
@@ -72,7 +70,7 @@
 
                 <div class="container-login100-form-btn">
                     <button class="login100-form-btn">
-                        {{__('Login')}}
+                        {{__('auth.login')}}
                     </button>
                 </div>
             </form>
@@ -84,13 +82,8 @@
 </div>
 
 <script type="text/javascript" src="{{asset_login('login_v18/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
-<script type="text/javascript" src="{{asset_login('login_v18/vendor/animsition/js/animsition.min.js')}}"></script>
 <script type="text/javascript" src="{{asset_login('login_v18/vendor/bootstrap/js/popper.js')}}"></script>
 <script type="text/javascript" src="{{asset_login('login_v18/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-<script type="text/javascript" src="{{asset_login('login_v18/vendor/select2/select2.min.js')}}"></script>
-<script type="text/javascript" src="{{asset_login('login_v18/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
-<script type="text/javascript" src="{{asset_login('login_v18/vendor/daterangepicker/daterangepicker.js')}}"></script>
-<script type="text/javascript" src="{{asset_login('login_v18/vendor/daterangepicker/moment.min.js')}}"></script>
 <script type="text/javascript" src="{{asset_login('login_v18/js/main.js')}}"></script>
 </body>
 </html>

@@ -19,28 +19,29 @@
                         @foreach($menus as $menu)
                             @if($menu['visible'])
                                 @if(empty($menu['children']))
-                                    <li>
-                                        <a href="{{$menu['url']}}">{!! strpos($menu['icon'], 'fa-') == 0 ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}} </a>
+                                    <li class="{{isset($menu['active']) && $menu['active'] ? 'active' : '' }}">
+                                        <a href="{{$menu['url']}}">{!! is_int(strpos($menu['icon'], 'fa-')) ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}} </a>
                                     </li>
                                 @else
-                                    <li>
-                                        <a href="{{$menu['url']}}">{!! strpos($menu['icon'], 'fa-') == 0 ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}}
+                                    <li class="{{isset($menu['active']) && $menu['active'] ? 'active' : '' }}">
+                                        <a href="{{$menu['url']}}">{!! is_int(strpos($menu['icon'], 'fa-')) ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}}
                                             <span class="fa fa-chevron-right"></span></a>
-                                        <ul class="nav child_menu">
+                                        <ul class="nav child_menu" style="{{isset($menu['active']) && $menu['active'] ? 'display:block;' : '' }}" >
                                             @foreach($menu['children'] as $child)
                                                 @if($child['visible'])
                                                     @if(empty($child['children']))
                                                         <li>
-                                                            <a href="{{$child['url']}}">{!! strpos($child['icon'], 'fa-') == 0 ? "<i class='fa " . $child['icon']. "'></i>" : "<span class='glyphicon " . $child['icon'] . "'></span>" !!} {{$child['name']}} </a>
+                                                            <a href="{{$child['url']}}">{!!  strpos($child['icon'], 'fa-') == 0 ? "<i class='fa " . $child['icon']. "'></i>" : "<span class='glyphicon " . $child['icon'] . "'></span>"  !!} {{$child['name']}} </a>
                                                         </li>
                                                     @else
-                                                        <li>
-                                                            <a href="{{$child['url']}}">{!! strpos($child['icon'], 'fa-') == 0 ? "<i class='fa " . $child['icon']. "'></i>" : "<span class='glyphicon " . $child['icon'] . "'></span>" !!} {{$child['name']}}
+                                                        <li class="{{isset($child['active']) && $child['active'] ? 'active' : '' }}">
+                                                            <a href="{{$child['url']}}">{!! is_int(strpos($child['icon'], 'fa-')) ? "<i class='fa " . $child['icon']. "'></i>" : "<span class='glyphicon " . $child['icon'] . "'></span>" !!} {{$child['name']}}
                                                                 <span class="fa fa-chevron-right"></span></a>
-                                                            <ul class="nav child_menu">
+                                                            <ul class="nav child_menu" style="{{isset($child['active']) && $child['active'] ? 'display:block;' : '' }}">
                                                                 @foreach($child['children'] as $child_sub)
                                                                     <li class="sub_menu">
-                                                                        <a href="{{$child_sub['url']}}">{!! strpos($child_sub['icon'], 'fa-') == 0 ? "<i class='fa " . $child_sub['icon']. "'></i>" : "<span class='glyphicon " . $child_sub['icon'] . "'></span>" !!} {{$child_sub['name']}} </a>
+                                                                        {{--{!! strpos($child_sub['icon'], 'fa-') == 0 ? "<i class='fa " . $child_sub['icon']. "'></i>" : "<span class='glyphicon " . $child_sub['icon'] . "'></span>" !!}--}}
+                                                                        <a href="{{$child_sub['url']}}"> {{$child_sub['name']}} </a>
                                                                     </li>
                                                                 @endforeach
                                                             </ul>

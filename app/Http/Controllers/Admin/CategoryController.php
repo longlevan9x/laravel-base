@@ -27,7 +27,9 @@ class CategoryController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
-		return view('admin.category.create');
+		$model = new Category;
+
+		return view('admin.category.create', compact('model'));
 	}
 
 	/**

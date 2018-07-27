@@ -112,32 +112,32 @@ if (!function_exists('asset_admin')) {
 	}
 }
 
-if (!function_exists('asset_app')) {
+if (!function_exists('asset_website')) {
 	/**
 	 * @param $path
 	 * @return string
 	 */
-	function asset_app($path = '') {
-		return asset("app/$path");
+	function asset_website($path = '') {
+		return asset("website/$path");
 	}
 }
 
-if (!function_exists('asset_app_css')) {
+if (!function_exists('asset_website_css')) {
 	/**
 	 * @param string $path
 	 * @return string
 	 */
-	function asset_app_css($path = '') {
-		return asset_app("css/$path");
+	function asset_website_css($path = '') {
+		return asset_website("css/$path");
 	}
 }
 
-if (!function_exists('asset_app_js')) {
+if (!function_exists('asset_website_js')) {
 	/**
 	 * @param string $path
 	 * @return string
 	 */
-	function asset_app_js($path = '') {
-		return asset_app("js/$path");
+	function asset_website_js($path = '') {
+		return asset_website("js/$path");
 	}
 }

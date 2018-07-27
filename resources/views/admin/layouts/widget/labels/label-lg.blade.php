@@ -1,0 +1,1 @@
+@include('admin.layouts.widget.labels.label', ['text' => $text, 'type' => $type, 'size' => 'lg' ])

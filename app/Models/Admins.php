@@ -10,8 +10,6 @@ use App\Models\Traits\ModelUploadTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Admins
@@ -42,7 +40,19 @@ class Admins extends Authenticatable
 	use ModelTrait;
 	use ModelUploadTrait;
 	use ModelAuthTrait;
-	public static $roles = [25 => 'Administrator', 20 => 'Management', 10 => 'Staff', 5 => 'Author'];
+
+	const ROLE_SUPER_ADMIN = 30;
+	const ROLE_ADMIN       = 25;
+	const ROLE_MANAGEMENT  = 20;
+	const ROLE_AUTHOR      = 5;
+	const ROLE_ALL         = "*";
+
+	public static $roles = [
+		25 => 'Administrator',
+		20 => 'Management',
+		/*10 => 'Staff',*/
+		5  => 'Author'
+	];
 
 	public static function getCollectionRoles() {
 		$roles = [0 => __('admin.select') . " " . __('admin/user.role')] + self::$roles;
@@ -142,6 +152,7 @@ class Admins extends Authenticatable
 		if ($this->gender == 1) {
 			return view('admin.layouts.widget.labels.success', ['text' => __('admin.male')]);
 		}
+
 		return view('admin.layouts.widget.labels.info', ['text' => __('admin.female')]);
 	}
 }

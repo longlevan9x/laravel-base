@@ -7,14 +7,16 @@
  */
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\AreaController;
+use App\Http\Controllers\Admin\AjaxController;
 use App\Http\Controllers\Admin\BulkController;
 use App\Http\Controllers\Admin\CategoryController;
+
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\MenuController;
+
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\AdminAuth\LoginController as AdminLoginController;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['admin.guest'])->group(function() {
@@ -26,7 +28,6 @@ Route::middleware(['admin.guest'])->group(function() {
 	/*===========Login Route============*/
 
 });
-
 Route::middleware(['admin', 'auth:admin'])->group(function() {
 	Route::post('logout', AdminLoginController::getControllerWithAction('logout', 'AdminAuth'))
 	     ->name(AdminLoginController::getAdminRouteName('logout'));
@@ -44,15 +45,16 @@ Route::middleware(['admin', 'auth:admin'])->group(function() {
 	Route::get(DashboardController::getResourceName(), DashboardController::getControllerWithAction('index'))
 	     ->name(DashboardController::getAdminRouteName('dashboard'));
 	/*===========Dashboard Route============*/
+
 	Route::get(CategoryController::getResourceName('get-category'), CategoryController::getControllerWithAction('getOptionCategoryWithType'));
 
 	/*===========Resource===========*/
-	Route::resource(CategoryController::getResourceName(), CategoryController::getClassName());
 	Route::resource(SettingController::getResourceName(), SettingController::getClassName());
+	Route::resource(CategoryController::getResourceName(), CategoryController::getClassName());
 	Route::resource(AdminController::getResourceName(), AdminController::getClassName());
 
 	/*===========Route Ajax===========*/
-
+	Route::post(AjaxController::getResourceName('delete-file/{table}/{key}/{id?}'), AjaxController::getControllerWithAction('deleteFile'));
 	/*===========Route Bulk===========*/
 	Route::delete(BulkController::getResourceName('bulk-delete'), BulkController::getControllerWithAction('bulkDelete'));
 });

@@ -68,12 +68,13 @@ $baseUrl = '';
 $arr_self = explode('/', trim($self, '/'));
 if (!empty($arr_self)) {
 	if ($arr_self[0] == 'public') {
-		$baseUrl = '/public/uploads/';	
+		$baseUrl = '/storage/app/uploads/';
 	}
 	else {
-		$baseUrl = "/" . $arr_self[0] . "/public/uploads/";
+		$baseUrl = "/" . $arr_self[0] . "/storage/app/uploads/";
 	}
 }
+$baseUrl .= '/storage/app/uploads/';
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',

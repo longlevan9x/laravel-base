@@ -19,6 +19,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 trait ModelUploadTrait
 {
+	/**
+	 * @var
+	 */
 	protected $upload_errors;
 	/**
 	 * @var array|string
@@ -29,7 +32,19 @@ trait ModelUploadTrait
 	 */
 	protected $key_file_upload = [];
 
+	/**
+	 * @var string
+	 */
 	protected $folder = '';
+
+	/**
+	 * @var int
+	 */
+	protected $maxImageWidth  = 0;
+	/**
+	 * @var int
+	 */
+	protected $maxImageHeight = 0;
 
 	/**
 	 * @param $folder
@@ -45,12 +60,17 @@ trait ModelUploadTrait
 		if (empty($this->folder)) {
 			return $this->getTable();
 		}
+
 		return $this->folder;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getFolder() {
 		return $this->folder();
 	}
+
 	/**
 	 * @param string $folder
 	 * @param string $field_image
@@ -66,6 +86,16 @@ trait ModelUploadTrait
 	}
 
 	/**
+	 * @param string $folder
+	 * @param string $field_image
+	 * @param string $default_image
+	 * @return string
+	 */
+	public function getImagePathWithoutDefault($folder = '', $field_image = 'image', $default_image = '') {
+		return $this->getImagePath($folder, $field_image, $default_image);
+	}
+
+	/**
 	 * @param string $key
 	 * @param string $folder
 	 * @param string $old_image
@@ -77,15 +107,15 @@ trait ModelUploadTrait
 		}
 
 		if (!empty($key)) {
-			$attribute = $this->getAttribute($key);
-			if (isset($attribute)) {
+			if (key_exists($key, $this->getAttributes()) && request()->hasFile($key)) {
 				$this->{$item} = CFile::upload($key, $folder, $old_image);
-			} else {
+			}
+			else {
 				//throw  new \Exception(__("The {$attribute} doesn't exist"));
 			}
 		}
 
-		$key_upload_image = $this->key_image_upload;
+		$key_upload_image = $this->getKeyImageUpload();
 
 		if (!empty($key_upload_image)) {
 			if (is_string($key_upload_image)) {
@@ -121,11 +151,12 @@ trait ModelUploadTrait
 					}
 				}
 			}
-		} else {
-			$attribute = $this->getAttribute($image);
-			if (isset($attribute)) {
-				CFile::remove($folder, $this->{$item});
-			} else {
+		}
+		else {
+			if (key_exists($image, $this->getAttributes())) {
+				CFile::removeFile($folder, $this->{$item});
+			}
+			else {
 				//throw new \Exception("The {$attribute} doesn't exist");
 			}
 		}
@@ -139,15 +170,14 @@ trait ModelUploadTrait
 	 * @throws \Exception
 	 */
 	public function upload($key = '', $folder = '', $old_file = '') {
-		$attribute = $this->getAttribute($key);
-		if (isset($attribute)) {
+		if (key_exists($key, $this->getAttributes()) && request()->hasFile($key)) {
 			if ($this->isAutoUploadImage()) {
 				$old_file = $this->getOriginal($key);
 			}
 			/** @var CFile $save */
 			$save = CFile::upload($key, $folder, $old_file);
 			if (!$save) {
-				$this->upload_errors = $save->errors;
+				$this->upload_errors = CFile::getErrors();
 
 				return false;
 			}
@@ -160,13 +190,13 @@ trait ModelUploadTrait
 		}
 	}
 
-	public function remove($folder = '', $image = '') {
-		$attribute = $this->this->getAttribute($image);
-		if (isset($attribute)) {
-			CFile::remove($folder, $image);
-		} else {
-			//throw new \Exception("The {$attribute} doesn't exist");
-		}
+	/**
+	 * @param string $folder
+	 * @param string $file
+	 * @return bool
+	 */
+	public function remove($folder = '', $file = '') {
+		return CFile::removeFile($folder, $file);
 	}
 
 	/**
@@ -209,5 +239,68 @@ trait ModelUploadTrait
 	 */
 	public function setUploadErrors($upload_errors) {
 		$this->upload_errors = $upload_errors;
+	}
+
+	/**
+	 * @param string $key
+	 * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+	 */
+	public function getUrlDeleteFile($key) {
+		return url_admin("ajax/delete-file", [$this->getTable(), $key, $this->id]);
+	}
+
+	/**
+	 * @param string $key
+	 * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+	 */
+	public function getUrlDeleteImage($key = 'image') {
+		return $this->getUrlDeleteFile($key);
+	}
+
+
+	/**
+	 * @param string $key
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+	 */
+	public function showImage($key = '') {
+		$value = $this->getAttribute($key);
+		if (key_exists($key, $this->getAttributes())) {
+			$src = $value;
+			if (!filter_var($value, FILTER_VALIDATE_URL)) {
+				$src = $this->getImagePath('', $key);
+			}
+
+			return view('admin.layouts.widget.image.show', ['src' => $src]);
+		}
+
+		return "";
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMaxImageWidth(): int {
+		return $this->maxImageWidth;
+	}
+
+	/**
+	 * @param int $maxImageWidth
+	 */
+	public function setMaxImageWidth(int $maxImageWidth): void {
+		$this->maxImageWidth = $maxImageWidth;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMaxImageHeight(): int {
+		return $this->maxImageHeight;
+	}
+
+	/**
+	 * @param int $maxImageHeight
+	 */
+	public function setMaxImageHeight(int $maxImageHeight): void {
+		$this->maxImageHeight = $maxImageHeight;
 	}
 }

@@ -1,1 +1,1 @@
-<a href="{{$url}}" class="btn btn-{{$btn_size ?? 'sm'}} btn-{{$btn_type ?? 'primary'}}"><i class='fa fa-edit'></i>{{$text or ""}}</a>
+<a href="{{$url}}" class="btn btn-{{$btn_size ?? 'sm'}} btn-{{$btn_type ?? 'primary'}}"><i class='fa fa-edit'></i> {{$text or ""}}</a>

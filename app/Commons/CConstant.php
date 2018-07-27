@@ -24,8 +24,12 @@ class CConstant
 	/*const state*/
 
 	/*const number*/
-	const NUMBER_ZERO = 0;
-	const NUMBER_ONE  = 1;
+	const NUMBER_ZERO  = 0;
+	const NUMBER_ONE   = 1;
+	const NUMBER_TWO   = 2;
+	const NUMBER_THREE = 3;
+	const NUMBER_FOUR  = 4;
+	const NUMBER_FIVE  = 5;
 	/*const number*/
 
 	/*const ROLE*/
@@ -36,6 +40,6 @@ class CConstant
 
 	/*const Guard*/
 	const GUARD_ADMIN = 'admin';
-	const GUARD_USER = 'user';
+	const GUARD_USER  = 'user';
 	/*const Guard*/
 }

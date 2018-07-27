@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static Authenticatable|null|Admins userAdmin()
  * @method static Authenticatable|null|Admins user()
  * @method static Authenticatable|null|Admins getTableName(string $class)
+ * @method static boolean checkRole(int|array|string $role = "", int|array|string $role = "")
+ * @method static boolean|null getCurrentRoleAdmin()
  * @see     \App\Commons\CUser
  */
 class CUser extends Facade

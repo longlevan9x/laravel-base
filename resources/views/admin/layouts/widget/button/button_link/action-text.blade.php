@@ -12,17 +12,17 @@
 ])}}
 @if($showEdit)
     <div class="col-md-12 text-center">
-        @include('admin.layouts.widget.button.button_link.edit', ['icon' => $icon_edit ?? 'fa-edit', 'url' => $url_edit, 'btn_type' => $btn_type_edit ?? 'default', 'text' => $text_edit ?? __('admin.edit'), 'option' => $option_edit ?? []])
+        @include('admin.layouts.widget.button.button_link.edit', ['icon' => $icon_edit ?? 'fa-edit', 'url' => $url_edit, 'btn_type' => $btn_type_edit ?? 'default', 'text' => $text_edit ?? __('admin.edit'), 'options' => $option_edit ?? []])
     </div>
 @endif
 @if($showView)
     <div class="col-md-12 text-center">
-        @include('admin.layouts.widget.button.button_link.view', ['icon' => $icon_view ?? 'fa-eye', 'url' => $url_view, 'btn_type' => $btn_type_view ?? 'info', 'text' => $text_view ?? __('admin.view'), 'option' => $option_view ?? []])
+        @include('admin.layouts.widget.button.button_link.view', ['icon' => $icon_view ?? 'fa-eye', 'url' => $url_view, 'btn_type' => $btn_type_view ?? 'info', 'text' => $text_view ?? __('admin.view'), 'options' => $option_view ?? []])
     </div>
 @endif
 @if($showDelete)
     <div class="col-md-12 text-center">
-        @include('admin.layouts.widget.button.button_link.delete', ['icon' => $icon_delete ?? 'fa-remove', 'url' => $url_delete, 'btn_type' => $btn_type_delete ?? 'danger', 'text' => $text_delete ?? __('admin.delete'), 'option' => $option_delete ?? []])
+        @include('admin.layouts.widget.button.button_link.delete', ['icon' => $icon_delete ?? 'fa-remove', 'url' => $url_delete, 'btn_type' => $btn_type_delete ?? 'danger', 'text' => $text_delete ?? __('admin.delete'), 'options' => $option_delete ?? []])
     </div>
 @endif
 {{Form::close()}}

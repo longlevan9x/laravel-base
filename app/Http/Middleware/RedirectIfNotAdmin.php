@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Commons\CConstant;
-use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Menu\AdminMenu;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +20,7 @@ class RedirectIfNotAdmin
 		if (!Auth::guard($guard)->check()) {
 			return redirect('admin/login');
 		}
-		MenuController::render();
+		AdminMenu::render();
 		return $next($request);
 	}
 }

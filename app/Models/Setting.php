@@ -6,37 +6,67 @@ use App\Commons\CConstant;
 use App\Commons\Facade\CFile;
 use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
+use Cache;
 use Carbon\Carbon;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use function Symfony\Component\VarDumper\Dumper\esc;
+use Illuminate\Support\Facades\Schema;
 use Yadakhov\InsertOnDuplicateKey;
 
 /**
  * Class Setting
- * @package  App\Models
- * @property string $website_name
- * @property string $website_description
- * @property string $admin_email
- * @property string $lang_default
- * @property string $format_time
- * @property string $format_date
- * @property string $format_datetime
- * @property string $blog_charset
- * @property string _message_order
- * @property string _message_order_success
- * @property string _message_order_fail
- * @property mixed  value
- * @property mixed  key
+ * @package App\Models
+ * @property string                  $website_name
+ * @property string                  $website_description
+ * @property string                  $admin_email
+ * @property string                  $lang_default
+ * @property string                  $format_time
+ * @property string                  $format_date
+ * @property string                  $format_datetime
+ * @property string                  $blog_charset
+ * @property string                  _message_order
+ * @property string                  _message_order_success
+ * @property string                  _message_order_fail
+ * @property mixed                   value
+ * @property mixed                   key
+ * ======= method defined in ModelBaseTrait with function __call, __get, __set =======
+ * @method setMaxLogoHeight(int $maxImageHeight)
+ * @method setMaxLogoWidth(int $maxImageWidth)
+ * @method setMax_expert_imageHeight(int $maxImageHeight)
+ * @method setMax_expert_imageWidth(int $maxImageWidth)
+ * @method setMax_expert_thumbnailWidth(int $maxImageHeight)
+ * @method setMax_expert_thumbnailHeight(int $maxImageWidth)
+ * @property int                     $id
+ * @property int|null                $autoload
+ * @property int|null                $is_active
+ * @property Carbon|null             $created_at
+ * @property Carbon|null             $updated_at
+ * @property-read \App\Models\Admins $authorUpdated
+ * @method static Builder|Setting findSimilarSlugs($attribute, $config, $slug)
+ * @method static Builder|Setting whereAutoload($value)
+ * @method static Builder|Setting whereCreatedAt($value)
+ * @method static Builder|Setting whereId($value)
+ * @method static Builder|Setting whereIsActive($value)
+ * @method static Builder|Setting whereKey($value)
+ * @method static Builder|Setting whereSlug($slug)
+ * @method static Builder|Setting whereUpdatedAt($value)
+ * @method static Builder|Setting whereValue($value)
+ * @mixin Eloquent
  */
 class Setting extends Model
 {
 	use ModelTrait;
 	use ModelUploadTrait;
 	use InsertOnDuplicateKey;
-	const KEY_WEBSITE_NAME          = 'website_name';
-	const KEY_WEBSITE_DESCRIPTION   = 'website_description';
+	const KEY_WEBSITE_NAME        = 'website_name';
+	const KEY_WEBSITE_DESCRIPTION = 'website_description';
+	const KEY_WEBSITE_ADDRESS     = 'website_address';
+	const KEY_WEBSITE_PHONE       = 'website_phone';
+	const KEY_WEBSITE_COPYRIGHT   = 'website_copyright';
+	const KEY_WEBSITE_FAX         = 'website_fax';
+
 	const KEY_ADMIN_EMAIL           = 'admin_email';
 	const KEY_LANG_DEFAULT          = 'lang_default';
 	const KEY_FORMAT_TIME           = 'format_time';
@@ -205,13 +235,20 @@ class Setting extends Model
 
 
 	/**
-	 * @return \Illuminate\Database\Eloquent\Collection|static[]
+	 * @return Setting[]|bool|\Illuminate\Database\Eloquent\Collection
 	 */
 	public function loadModel() {
-		if (Session::has('settings')) {
-			return Session::get('settings');
+		if (env("APP_NAME") == null) {
+			return false;
 		}
 
+		if (Cache::has('settings')) {
+			return Cache::get('settings');
+		}
+
+		if (!Schema::hasTable('settings')) {
+			return false;
+		}
 		$models = Setting::where('autoload', 1)->get();
 		$models->map(function($item, $index) {
 			/**@var Setting $item */
@@ -222,7 +259,7 @@ class Setting extends Model
 			$this->{$key} = $value;
 		});
 
-		Session::put('settings', $this);
+		Cache::put('settings', $this, 120);
 
 		return $models;
 	}
@@ -239,8 +276,11 @@ class Setting extends Model
 			else {
 				/** @var self $model */
 				$model = self::where('key', $keys)->first();
-				$this->setAttribute($model->key, $model->value);
-				$this->{$model->key} = $model->value;
+				if (isset($model) && !empty($model)) {
+					$this->setAttribute($model->key, $model->value);
+					$this->{$model->key} = $model->value;
+				}
+
 				return $this;
 			}
 		}
@@ -266,15 +306,21 @@ class Setting extends Model
 	 * @throws \Exception
 	 */
 	public function getValue($key) {
-		if (Session::has('settings')) {
+		if (Cache::has('settings')) {
 			/** @var Setting $models */
-			$models    = Session::get('settings');
+			$models    = Cache::get('settings');
 			$attribute = key_exists($key, $models);
 			if (isset($attribute) && !empty($attribute)) {
 				return $models->{$key};
 			}
 			else {
-				throw  new  \Exception("$key " . __('admin/common.not found'));
+				if (isset($models->{$key})) {
+					return $models->{$key};
+				}
+				else {
+					return "";
+					//					throw  new  \Exception("$key " . __('admin/common.not found'));
+				}
 			}
 		}
 		else {
@@ -283,7 +329,14 @@ class Setting extends Model
 			if (isset($attribute) && !empty($attribute)) {
 				return $this->{$key};
 			}
-			throw  new  \Exception("$key " . __('admin/common.not found'));
+			else {
+				if (isset($this->{$key})) {
+					return $this->{$key};
+				}
+
+				return "";
+				//throw  new  \Exception("$key " . __('admin/common.not found'));
+			}
 		}
 	}
 
@@ -291,37 +344,34 @@ class Setting extends Model
 	 * @return mixed
 	 */
 	public static function getModel() {
-		if (!Session::has('settings')) {
+		if (!Cache::has('settings')) {
 			return (new static)->loadModel();
 		}
 
-		return Session::get('settings');
+		return Cache::get('settings');
 	}
 
 	/**
 	 * @param Request $request
 	 */
 	public function setModel(Request $request) {
-		$this->lang_default        = $request->get(self::KEY_LANG_DEFAULT);
-		$this->format_date         = $request->get(self::KEY_FORMAT_DATE);
-		$this->format_time         = $request->get(self::KEY_FORMAT_TIME);
-		$this->format_datetime     = $request->get(self::KEY_FORMAT_DATETIME);
+		$this->lang_default    = $request->get(self::KEY_LANG_DEFAULT);
+		$this->format_date     = $request->get(self::KEY_FORMAT_DATE);
+		$this->format_time     = $request->get(self::KEY_FORMAT_TIME);
+		$this->format_datetime = $request->get(self::KEY_FORMAT_DATETIME);
 	}
 
 	/**
 	 * @param array $options
 	 * @return bool|void
+	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
-	public function save(
-		array $options = [
-			self::KEY_WEBSITE_NAME,
-			self::KEY_WEBSITE_DESCRIPTION,
-			self::KEY_LANG_DEFAULT,
-			self::KEY_FORMAT_TIME,
-			self::KEY_FORMAT_DATE,
-			self::KEY_FORMAT_DATETIME,
-			self::KEY_LOGO
-		]
+	public function save(array $options = [
+		self::KEY_LANG_DEFAULT,
+		self::KEY_FORMAT_TIME,
+		self::KEY_FORMAT_DATE,
+		self::KEY_FORMAT_DATETIME,
+	]
 	) {
 		$data = [];
 		foreach ($options as $index => $option) {
@@ -346,7 +396,7 @@ class Setting extends Model
 				];
 			}
 		}
-		Session::remove('settings');
+		Cache::delete('settings');
 		Setting::insertOnDuplicateKey($data, ['value', 'updated_at']);
 	}
 
@@ -419,6 +469,7 @@ class Setting extends Model
 	 * @return Setting
 	 */
 	public function prepareKeyValue($key, $value, $options = []) {
+
 		$this->keyValues[] = [
 			'key'        => $key,
 			'value'      => $value,
@@ -450,7 +501,7 @@ class Setting extends Model
 	 * @return $this
 	 */
 	public function prepareKeyValueUpload($key, $options = []) {
-		$old_file = $this->loadModelByKey($key)->getAttribute($key);
+		$old_file          = $this->loadModelByKey($key)->getAttribute($key);
 		$this->keyValues[] = [
 			'key'        => $key,
 			'value'      => CFile::upload($key, $this->getTable(), $old_file),
@@ -467,9 +518,12 @@ class Setting extends Model
 
 	/**
 	 * @return int
+	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
 	public function saveModel() {
-		return self::insertOnDuplicateKey($this->keyValues, ['value', 'updated_at']);
+		Cache::delete('settings');
+
+		return self::insertOnDuplicateKey($this->keyValues, ['value', 'updated_at', 'autoload', 'is_active']);
 	}
 
 	/**

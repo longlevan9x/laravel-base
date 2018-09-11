@@ -4,6 +4,7 @@
     $maxImageWidth  = $maxImageWidth ?? 0;
     $maxImageHeight = $maxImageHeight ?? 0;
     $urlDelete = $urlDelete ?? '';
+
     if (isset($model)) {
         if (method_exists($model, 'getImagePathWithoutDefault')) {
             $imagePreview = $model->getImagePathWithoutDefault();
@@ -14,14 +15,14 @@
         }
 
         if ($maxImageWidth == 0) {
-            if (method_exists($model, "getMax".camel_case($name ?? 'image').'Width')) {
-                $maxImageWidth = $model->{"getMax".camel_case($name).'Width'}();
+            if (key_exists("max".ucfirst($name ?? 'image').'Height', $model)) {
+        	    $maxImageWidth = $model->{"getMax".ucfirst($name ?? 'image').'Width'}();
             }
         }
 
         if ($maxImageHeight == 0) {
-            if (method_exists($model, "getMax".camel_case($name ?? 'image').'Height')) {
-                $maxImageHeight = $model->{"getMax".camel_case($name ?? 'image')."Height"}();
+            if (key_exists("max".ucfirst($name ?? 'image').'Height', $model)) {
+        	    $maxImageHeight = $model->{"getMax".ucfirst($name ?? 'image')."Height"}();
             }
         }
     }
@@ -44,7 +45,7 @@
 </div>
 @push('scriptString')
     <script>
-        let configFileinput = {
+        let configFileinput{{$id ?? ($name ?? 'image')}} = {
             dropZoneEnabled:      false,
             showUpload:           false,
             initialPreviewAsData: true,
@@ -56,13 +57,13 @@
                 {caption: "{{$model->{$name ?? 'image'} ?? 'no_image.png'}}", url: '{{$urlDelete}}'}
             ]
         };
-        let _imagePreview   = '{{$imagePreview}}';
-        if (_imagePreview !== "") {
-            configFileinput.dropZoneEnabled = true;
-            configFileinput.initialPreview  = _imagePreview;
+        let _imagePreview{{$id ?? ($name ?? 'image')}}   = '{{$imagePreview}}';
+        if (_imagePreview{{$id ?? ($name ?? 'image')}} !== "") {
+            configFileinput{{$id ?? ($name ?? 'image')}}.dropZoneEnabled = true;
+            configFileinput{{$id ?? ($name ?? 'image')}}.initialPreview  = _imagePreview{{$id ?? ($name ?? 'image')}};
         }
 
-        $("#{{$id ?? 'image'}}").fileinput(configFileinput);
+        $("#{{$id ?? 'image'}}").fileinput(configFileinput{{$id ?? ($name ?? 'image')}});
         $("#{{$id ?? 'image'}}").on("filepredelete", function (jqXHR) {
             var abort = true;
             if (confirm("Are you sure you want to delete this image?")) {

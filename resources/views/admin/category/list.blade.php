@@ -18,7 +18,7 @@
                                 <input type="checkbox" id="check-all" class="">
                             </th>
                             <th class="col-md-1">@lang('admin/common.image')</th>
-                            <th>@lang('admin/category.parent')</th>
+{{--                            <th>@lang('admin/category.parent')</th>--}}
                             <th>@lang('admin/common.name')</th>
                             <th>@lang('admin/category.slug')</th>
                             <th>@lang('admin/common.is_active')</th>

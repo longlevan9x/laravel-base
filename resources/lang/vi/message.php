@@ -26,6 +26,6 @@ return [
 
 	'error'   => "Lỗi",
 	'success' => "Thành công",
-	'fail'    => 'Thất bại'
+	'fail'    => 'Thất bại',
 
 ];

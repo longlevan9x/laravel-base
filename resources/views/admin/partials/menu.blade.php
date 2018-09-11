@@ -14,17 +14,17 @@
         <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                 <div class="menu_section">
-                    <h3>General</h3>
+                    {{--<h3>General</h3>--}}
                     <ul class="nav side-menu">
                         @foreach($menus as $menu)
                             @if($menu['visible'])
                                 @if(empty($menu['children']))
                                     <li class="{{isset($menu['active']) && $menu['active'] ? 'active' : '' }}">
-                                        <a href="{{$menu['url']}}">{!! is_int(strpos($menu['icon'], 'fa-')) ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}} </a>
+                                        <a href="{{ !in_array($menu['url'], ['#', '']) ? $menu['url'] : 'javascript:void(0);'}}">{!! is_int(strpos($menu['icon'], 'fa-')) ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}} </a>
                                     </li>
                                 @else
                                     <li class="{{isset($menu['active']) && $menu['active'] ? 'active' : '' }}">
-                                        <a href="{{$menu['url']}}">{!! is_int(strpos($menu['icon'], 'fa-')) ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}}
+                                        <a href="{{ !in_array($menu['url'], ['#', '']) ? $menu['url'] : 'javascript:void(0);'}}">{!! is_int(strpos($menu['icon'], 'fa-')) ? "<i class='fa " . $menu['icon']. "'></i>" : "<span class='glyphicon " . $menu['icon'] . "'></span>" !!} {{$menu['name']}}
                                             <span class="fa fa-chevron-right"></span></a>
                                         <ul class="nav child_menu" style="{{isset($menu['active']) && $menu['active'] ? 'display:block;' : '' }}" >
                                             @foreach($menu['children'] as $child)
@@ -35,7 +35,7 @@
                                                         </li>
                                                     @else
                                                         <li class="{{isset($child['active']) && $child['active'] ? 'active' : '' }}">
-                                                            <a href="{{$child['url']}}">{!! is_int(strpos($child['icon'], 'fa-')) ? "<i class='fa " . $child['icon']. "'></i>" : "<span class='glyphicon " . $child['icon'] . "'></span>" !!} {{$child['name']}}
+                                                            <a href="{{ !in_array($child['url'], ['#', '']) ? $child['url'] : 'javascript:void(0);'}}">{!! is_int(strpos($child['icon'], 'fa-')) ? "<i class='fa " . $child['icon']. "'></i>" : "<span class='glyphicon " . $child['icon'] . "'></span>" !!} {{$child['name']}}
                                                                 <span class="fa fa-chevron-right"></span></a>
                                                             <ul class="nav child_menu" style="{{isset($child['active']) && $child['active'] ? 'display:block;' : '' }}">
                                                                 @foreach($child['children'] as $child_sub)

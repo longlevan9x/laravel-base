@@ -6,7 +6,7 @@
  * Time: 11:27 AM
  */
 
-namespace App\Commons\providers;
+namespace App\Commons\Providers;
 
 
 use App\Commons\CFile;

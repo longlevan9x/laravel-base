@@ -40,4 +40,22 @@ return [
 	'select image'        => 'Chọn ảnh',
 	'cover image'         => "Ảnh bìa",
 	'user create'         => "Người tạo",
+
+	'seo_title' => "Tiêu đề seo",
+	'seo_keyword' => "Từ khóa seo",
+	'seo_description' => "Miêu tả seo",
+
+	'latitude'        => "Vĩ độ",
+	'longitude'       => "Kinh độ",
+	'city'            => "Thành phố",
+	'district'        => "Quận / huyện",
+	'addressLocality' => '',
+	'streetAddress'   => "Địa chỉ đường",
+	'postalCode'      => 'Mã bưu điện',
+	'link google map' => 'Liên kết google map',
+
+	'confirm edit multiple records' => "Xác nhận sửa nhiều bản ghi?",
+
+	'visit website' => "Ghé thăm website",
+	'sort_order'    => "Thứ tự sắp xếp"
 ];

@@ -29,6 +29,7 @@
                 <div class="text-center text-center">
                     <h1 class="error-number">{{$exception->getStatusCode()}}</h1>
                     <h2>Sorry, the page you are looking for could not be found</h2>
+                    <h3>{{$exception->getMessage()}}</h3>
                     <a href="{{redirect()->getUrlGenerator()->previous()}}">Back to page previous?</a>
                     <h3>Or</h3>
                     <a href="{{url_admin('/')}}">Back to home page?</a>

@@ -1,6 +1,6 @@
 @php
     $showEdit   = !isset($showEdit) ? true : $showEdit;
-    $showView   = !isset($showView) ? true : $showView;
+    $showView   = !isset($showView) ? false : $showView;
     $showDelete = !isset($showDelete) ? true : $showDelete;
     $url_edit   = !isset($url_edit) ? $url . "/edit" : $url_edit;
     $url_view   = !isset($url_view) ? $url : $url_view;

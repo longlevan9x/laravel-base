@@ -31,7 +31,7 @@
                             <span class="required">*</span> @endif</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::password('password', ['class' => 'form-control col-md-7 col-xs-12', 'id' => 'password']) !!}
-                        @if(isset($model))
+                        @if(isset($model) && !empty($model))
                             <p class="help-inline">{{__('auth.blank textbox. if you not change password')}}</p>
                         @endif
                     </div>

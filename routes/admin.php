@@ -57,5 +57,6 @@ Route::middleware(['admin', 'auth:admin'])->group(function() {
 	Route::post(AjaxController::getResourceName('delete-file/{table}/{key}/{id?}'), AjaxController::getControllerWithAction('deleteFile'));
 	/*===========Route Bulk===========*/
 	Route::delete(BulkController::getResourceName('bulk-delete'), BulkController::getControllerWithAction('bulkDelete'));
+	Route::delete(BulkController::getResourceName('bulk'), BulkController::getControllerWithAction('bulk'));
 });
 

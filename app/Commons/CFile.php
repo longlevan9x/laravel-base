@@ -9,6 +9,7 @@
 namespace App\Commons;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 ;
@@ -60,7 +61,7 @@ class CFile extends Common
 	 * @return bool
 	 */
 	public function removeFile($folder, $file) {
-		$file_path = storage_app_uploads($folder, $file);
+		$file_path = storage_path("app/public/$folder/$file");
 		if (file_exists($file_path) && !is_dir($file_path)) {
 			return unlink($file_path);
 		}
@@ -83,17 +84,17 @@ class CFile extends Common
 			return $image;
 		}
 
-		$image_path = storage_app_uploads($folder, $image);
+		$image_path = storage_path("app/public/$folder/$image");
 		$image_path = str_replace("\\", "/", $image_path);
 		if (file_exists($image_path) && !is_dir($image_path)) {
-			return Storage::url($folder . '/' . $image);
+			return asset(Storage::url($folder . '/' . $image));
 		}
 
 		if (empty($default_image)) {
 			return '';
 		}
 
-		return Storage::url(self::DEFAULT_IMAGE_FOLDER . "/$default_image");
+		return asset(Storage::url(self::DEFAULT_IMAGE_FOLDER . "/$default_image"));
 	}
 
 	/**

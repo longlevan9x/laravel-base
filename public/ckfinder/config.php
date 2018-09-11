@@ -62,19 +62,20 @@ $config['images'] = array(
 
 /*=================================== Backends ========================================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_backends
-echo "<pre>";
+//echo "<pre>";
 $self = $_SERVER['PHP_SELF'];
-$baseUrl = '';
 $arr_self = explode('/', trim($self, '/'));
+$baseUrl = "http://" . $_SERVER['HTTP_HOST'];
 if (!empty($arr_self)) {
 	if ($arr_self[0] == 'public') {
-		$baseUrl = '/storage/app/uploads/';
+		$baseUrl .= '/storage/uploads/';
 	}
 	else {
-		$baseUrl = "/" . $arr_self[0] . "/storage/app/uploads/";
+		$baseUrl .= "/" . $arr_self[0] . "/public/storage/uploads/";
 	}
 }
-$baseUrl .= '/storage/app/uploads/';
+//$baseUrl .= '/storage/app/uploads/';
+
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',

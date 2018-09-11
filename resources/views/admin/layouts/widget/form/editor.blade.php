@@ -5,7 +5,7 @@
         throw  new Exception('Undefined variable $name');
     }
 @endphp
-<div class="form-group">
+<div class="form-group col-md-12">
     <label class=" col-md-12 col-sm-12 col-xs-12" for="{{$name ?? ($id ?? '')}}">{{$label ?? ''}}</label>
     <div class="col-md-{{$col}} col-sm-{{$col}} col-xs-12">
         {!! Form::textarea($name ?? '', $value = null, array_merge(['class' => "form-control col-md-7 col-xs-12 " . $class, 'id' => $name ?? ($id ?? ''), 'height' => ($height ?? 500)], $options ?? [])) !!}

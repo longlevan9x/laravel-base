@@ -1,1 +1,1 @@
-@include('admin.errors.error')
+@include('admin.errors.error1')

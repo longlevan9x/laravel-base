@@ -7,7 +7,6 @@ use App\Commons\Facade\CUser;
 use App\Http\Requests\AdminRequest;
 use App\Models\Admins;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -17,11 +16,24 @@ use Illuminate\Support\Str;
  */
 class AdminController extends Controller
 {
+	protected $_role = [Admins::ROLE_SUPER_ADMIN, Admins::ROLE_ADMIN, Admins::ROLE_MANAGEMENT];
+
+	public function __construct() {
+		parent::__construct();
+		if (!in_array($this->getCurrentMethod(), ['show_profile', 'update_profile', 'change_password'])) {
+			$this->setRoleExcept(Admins::ROLE_AUTHOR);
+		}
+	}
+
 	/**
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function show_profile() {
-		return view('admin.admin.profile');
+		$model = CUser::userAdmin();
+		$model->setMaxImageWidth(220);
+		$model->setMaxImageHeight(200);
+
+		return view('admin.admin.profile', compact('model'));
 	}
 
 	/**
@@ -63,7 +75,8 @@ class AdminController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$models = Admins::where('id', '<>', CUser::userAdmin()->id)->where('role', "<", CUser::userAdmin()->role)->get();
+		$models = Admins::where('id', '<>', CUser::userAdmin()->id)->where('role', "<", CUser::userAdmin()->role)
+		                ->get();
 
 		return view('admin.admin.index', compact('models'));
 	}
@@ -73,7 +86,9 @@ class AdminController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
-		return view('admin.admin.create');
+		$model = new Admins;
+
+		return view('admin.admin.create', compact('model'));
 	}
 
 	/**
@@ -83,7 +98,7 @@ class AdminController extends Controller
 	 * @throws \Exception
 	 */
 	public function store(AdminRequest $request) {
-		$model = new Admins();
+		$model = new Admins;
 		$model->fill($request->all());
 		$model->generatePassword();
 		$model->setAuthor_id();
@@ -118,7 +133,7 @@ class AdminController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 * @param AdminRequest $request
-	 * @param Admins        $admin
+	 * @param Admins       $admin
 	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
 	 * @throws \Exception
 	 */
@@ -138,9 +153,10 @@ class AdminController extends Controller
 	 * @throws \Exception
 	 */
 	public function destroy(Admins $admin) {
-		if  ($admin->delete()) {
+		if ($admin->delete()) {
 			return redirect(self::getUrlAdmin());
 		}
+
 		return redirect(self::getUrlAdmin())->with('error', "Delete Fail");
 	}
 }

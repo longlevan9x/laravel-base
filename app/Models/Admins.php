@@ -10,9 +10,12 @@ use App\Models\Traits\ModelUploadTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Admins
+ *
  * @package App\Models
  * @property int     $id
  * @property string  $username
@@ -32,7 +35,33 @@ use Illuminate\Support\Collection;
  * @property mixed   $last_logout
  * @property mixed   $created_at
  * @property mixed   $updated_at
- * @property int     author_id
+ * @property int|null $author_id
+ * @property string|null $remember_token
+ * @property-read \App\Models\Admins $authorUpdated
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins findSimilarSlugs($attribute, $config, $slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereIsOnline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereLastLogin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereLastLogout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereOverview($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereSlug($slug)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereUsername($value)
+ * @mixin \Eloquent
  */
 class Admins extends Authenticatable
 {

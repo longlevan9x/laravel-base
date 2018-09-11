@@ -73,6 +73,31 @@ if (!function_exists('replace_multiple_space')) {
 	}
 }
 
+if (!function_exists("get_time_line")) {
+	/**
+	 * @param int|string $time
+	 * @return false|int|string
+	 */
+	function get_time_line($time) {
+		if (!is_numeric($time)) {
+			$time = strtotime($time);
+		}
+		$now = time();
+
+		$timeline = $now - $time;
+
+		if ($timeline < 60 * 60) {
+			return (int)($timeline / 60) . " minute ago";
+		}
+		elseif ($timeline < 60 * 60 * 24) {
+			return (int)($timeline / 60 / 24) . " hour ago";
+		}
+		return (int) ($timeline / 60 / 60 / 24) . " day ago";
+
+		return $timeline;
+	}
+}
+
 if (!function_exists('responseJson')) {
 	/**
 	 * @param string $message

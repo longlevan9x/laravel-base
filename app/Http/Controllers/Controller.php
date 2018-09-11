@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Commons\Facade\CUser;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Route;
 
 class Controller extends BaseController
 {
@@ -110,5 +112,18 @@ class Controller extends BaseController
 		$params = [$id, 'edit'];
 
 		return self::getUrlAdmin($params);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentMethod() {
+		$action = Route::currentRouteAction();
+		$action = substr($action, strpos($action, '@') + 1);
+		if (!$action) {
+			return '';
+		}
+
+		return $action;
 	}
 }

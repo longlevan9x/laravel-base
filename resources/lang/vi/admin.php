@@ -9,6 +9,7 @@ return [
 	*/
 
 	'submitButton'    => 'Gửi',
+	'updateButton'    => 'Cập nhật',
 	'saveButton'      => "Lưu",
 	'resetButton'     => 'Reset',
 	'cancelButton'    => 'Hủy bỏ',
@@ -45,10 +46,18 @@ return [
 	'no'              => "Không",
 	'confirm'         => "Xác nhận",
 	'Confirm message' => "Tin nhắn xác nhận",
+	'new'             => 'Mới',
+	'old'             => 'Cũ',
+	'seen'            => "Đã xem",
+	'not seen'        => "Chưa xem",
+	'not contact'     => 'Chưa liên hệ',
+	'contacted'       => "Đã liên hệ",
 
 	'fax'     => 'Fax',
 	'hotline' => 'Hotline',
 	'social'  => 'Mạng xã hội',
+	'seo'  => 'Seo',
+	'information_general'  => 'Thông tin chung',
 
 	'notification message order'         => "Thông báo trang đặt hàng",
 	'notification message order success' => "Tin nhắn thông báo khi đặt hàng thành công",
@@ -57,7 +66,15 @@ return [
 	"confirm delete item?" => "Xác nhận xóa?",
 	'view on website'      => "Xem trên website",
 
-	'Are you sure delete this item' => 'Bạn chắc chắn xóa item này?',
+	'Are you sure delete this item'                => 'Bạn chắc chắn xóa item này?',
+	'are you sure you want to change this record?' => 'Bạn có chắc chắn thay đổi bản ghi này không?',
+
+	'total post'      => "Tổng số bài viết",
+	'total new'       => "Tổng số tin tức",
+	'total order'     => "Tổng số đơn hàng",
+	'total store'     => "Tổng số nhà thuốc",
+	'total answer'    => "Tổng số câu hỏi",
+	'recent question' => "Câu hỏi gần đây",
 
 	'lang_en' => "Tiếng anh",
 	'lang_vi' => "Tiếng việt",

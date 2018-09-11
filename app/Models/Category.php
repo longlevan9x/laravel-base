@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\ModelMethodTrait;
 use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -12,10 +13,40 @@ use Illuminate\Support\Collection;
 /**
  * Class Category
  * @package App\Models
- * @property string $type
- * @property int    $is_active
- * @property int    parent_id
- * @property string name
+ * @property string      $type
+ * @property int         $is_active
+ * @property int         parent_id
+ * @property string      name
+ * @property int         $id
+ * @property string|null $image
+ * @property string|null $slug
+ * @property string|null $status
+ * @property string|null $description
+ * @property string|null $path
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Admins $authorUpdated
+ * @method static Builder|Category findSimilarSlugs($attribute, $config, $slug)
+ * @method static Builder|Category whereCreatedAt($value)
+ * @method static Builder|Category whereDescription($value)
+ * @method static Builder|Category whereId($value)
+ * @method static Builder|Category whereImage($value)
+ * @method static Builder|Category whereIsActive($value)
+ * @method static Builder|Category whereName($value)
+ * @method static Builder|Category whereParentId($value)
+ * @method static Builder|Category wherePath($value)
+ * @method static Builder|Category whereSlug($value)
+ * @method static Builder|Category whereStatus($value)
+ * @method static Builder|Category whereUpdatedAt($value)
+ * @method static Builder|Category whereSortOrder($value)
+ * @method static Builder|Category sortOrder()
+ * @method static Builder|Category active()
+ * @mixin \Eloquent
+ * @property int         sort_order
+ * @property string      seo_title
+ * @property string      seo_keyword
+ * @property string      seo_description
+ * \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereType($value)
  */
 class Category extends Model
 {
@@ -26,7 +57,20 @@ class Category extends Model
 	const TYPE_CITY     = 'city';
 	const TYPE_DISTRICT = 'district';
 	const TYPE_STREET   = 'street';
-	protected $fillable = ['parent_id', 'image', 'name', 'slug', 'is_active', 'status', 'description', 'type', 'path'];
+	protected $fillable = [
+		'parent_id',
+		'image',
+		'name',
+		'slug',
+		'is_active',
+		'status',
+		'description',
+		'type',
+		'path',
+		'seo_title',
+		'seo_keyword',
+		'seo_description'
+	];
 
 	/**
 	 * @param string $column
@@ -42,7 +86,7 @@ class Category extends Model
 	}
 
 	public static function pluckWithType($column, $key = null, $type = '') {
-		$category = Category::where('type', $type)->pluck($column, $key);
+		$category = Category::where('type', $type)->where('parent_id', '>', 0)->pluck($column, $key);
 		/** @var Collection $category */
 		$category->put(0, __('admin.select') . " " . __("admin.$type"));
 		$category = $category->toArray();
@@ -114,7 +158,7 @@ class Category extends Model
 
 	/**
 	 * @param string $type
-	 * @return Builder
+	 * @return Builder|Category
 	 */
 	public static function whereType($type = self::TYPE_CATEGORY) {
 		return self::where('type', $type);
@@ -128,4 +172,11 @@ class Category extends Model
 		return $this->hasMany(self::class, 'parent_id', 'id');
 	}
 
+	/**
+	 * @param Builder $query
+	 * @return Builder
+	 */
+	public function scopeSortOrder($query) {
+		return $query->orderBy('sort_order');
+	}
 }

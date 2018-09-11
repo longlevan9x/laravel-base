@@ -8,7 +8,6 @@ use App\Http\Requests\StoreRequest;
 use App\Models\Category;
 use App\Models\Store;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -17,7 +16,7 @@ class CategoryController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$models = Category::whereType(Category::TYPE_CATEGORY)->get();
+		$models = Category::whereType(Category::TYPE_CATEGORY)->where('parent_id', ">", 0)->get();
 
 		return view('admin.category.index', compact('models'));
 	}
@@ -41,6 +40,7 @@ class CategoryController extends Controller
 	public function store(CategoryRequest $request) {
 		$model = new Category;
 		$model->fill($request->all());
+		$model->parent_id = Category::whereType()->whereSlug('#')->whereParentId(0)->first()->id;
 		$model->type = Category::TYPE_CATEGORY;
 		$model->save();
 

@@ -2,7 +2,9 @@
     $str_option = "";
     $btn_size = $btn_size ?? 'sm';
     $btn_type = $btn_type ?? 'primary';
-    $class = "btn btn-{$btn_size} btn-{$btn_type}";
+    $class = $class ?? '';
+    $class .= " btn btn-{$btn_size} btn-{$btn_type}  ";
+    $id = $id ?? '';
     if (isset($options) && !empty($options)) {
         foreach ($options as $key => $option) {
             if ($key == 'class') {
@@ -10,6 +12,9 @@
             }
             elseif ($key == 'href' || $key == 'url') {
                 $url = $option;
+            }
+            elseif ($key == 'id') {
+                $id .= " $id";
             }
             else {
         	    $str_option .= "$key=\"$option\"";

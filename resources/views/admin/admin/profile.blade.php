@@ -121,7 +121,7 @@
                                             <br>
                                             @include('admin.layouts.widget.alert-error')
                                             <br>
-                                            {{ Form::open(array(
+                                            {{ Form::model($model , array(
                                                 'url' => url_admin('profile', [Auth::id()]),
                                                 'files' => true,
                                                 'class' => 'form-horizontal form-label-left',
@@ -134,25 +134,25 @@
                                             <div class="form-group row">
                                                 <label for="name" class="col-xs-2 col-form-label">{{__('admin/common.name')}}</label>
                                                 <div class="col-xs-10">
-                                                    {!! Form::text('name', $value = \App\Commons\Facade\CUser::userAdmin()->name,['required' => "required", 'placeholder'=>"Name", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'name']) !!}
+                                                    {!! Form::text('name', $value = null,['required' => "required", 'placeholder'=>"Name", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'name']) !!}
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <label for="email" class="col-xs-2 col-form-label">{{__('Email')}}</label>
                                                 <div class="col-xs-10">
-                                                    {!! Form::email('email', $value = \App\Commons\Facade\CUser::userAdmin()->email,['required' => "required", 'placeholder'=>"Email", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'email']) !!}
+                                                    {!! Form::email('email', $value = null,['required' => "required", 'placeholder'=>"Email", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'email']) !!}
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <label for="gender" class="col-xs-2 col-form-label">{{__('admin/common.gender')}}</label>
                                                 <div class="col-xs-10 btn-group" id="gender" data-toggle="buttons">
-                                                    <label class="btn btn-default {{\App\Commons\Facade\CUser::userAdmin()->gender == 1 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                                        {{ Form::radio('gender', $value = 1, \App\Commons\Facade\CUser::userAdmin()->gender == 1 ? ['checked'] : '') }} {{__('admin.male')}}
+                                                    <label class="btn btn-default {{$model->gender == 1 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                                        {{ Form::radio('gender', $value = 1, $model->gender == 1 ? ['checked'] : '') }} {{__('admin.male')}}
                                                     </label>
-                                                    <label class="btn btn-info {{\App\Commons\Facade\CUser::userAdmin()->gender == 2 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-danger">
-                                                        {{ Form::radio('gender', $value = 2, \App\Commons\Facade\CUser::userAdmin()->gender == 2 ? ['checked'] : '' ) }} {{__('admin.female')}}
+                                                    <label class="btn btn-info {{$model->gender == 2 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-danger">
+                                                        {{ Form::radio('gender', $value = 2, $model->gender == 2 ? ['checked'] : '' ) }} {{__('admin.female')}}
                                                     </label>
                                                 </div>
                                             </div>
@@ -160,25 +160,25 @@
                                             <div class="form-group row">
                                                 <label for="phone" class="col-xs-2 col-form-label">{{__('admin/common.phone number')}}</label>
                                                 <div class="col-xs-10">
-                                                    {!! Form::text('phone', $value = \App\Commons\Facade\CUser::userAdmin()->phone,['placeholder'=>"Phone", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'phone']) !!}
+                                                    {!! Form::text('phone', $value = null,['placeholder'=>"Phone", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'phone']) !!}
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <label for="email" class="col-xs-2 col-form-label">{{__('admin/common.address')}}</label>
                                                 <div class="col-xs-10">
-                                                    {!! Form::textarea('address', $value = \App\Commons\Facade\CUser::userAdmin()->address, ['rows' => '2', 'placeholder'=>"Address", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'address'])!!}
+                                                    {!! Form::textarea('address', $value = null, ['rows' => '2', 'placeholder'=>"Address", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'address'])!!}
                                                 </div>
                                             </div>
 
                                             <div class="form-group row">
                                                 <label for="email" class="col-xs-2 col-form-label">{{__('admin/common.overview')}}</label>
                                                 <div class="col-xs-10">
-                                                    {!! Form::textarea('overview', $value = \App\Commons\Facade\CUser::userAdmin()->overview, ['rows' => '3', 'placeholder'=>"Overview", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'overview'])!!}
+                                                    {!! Form::textarea('overview', $value = null, ['rows' => '3', 'placeholder'=>"Overview", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'overview'])!!}
                                                 </div>
                                             </div>
 
-                                            @include('admin.layouts.widget.form.image', ['id' => 'image', 'label' => __('admin/common.image'), 'model' => \App\Commons\Facade\CUser::userAdmin()])
+                                            @include('admin.layouts.widget.form.image', ['id' => 'image', 'label' => __('admin/common.image')])
 
                                             <div class="form-group row">
                                                 <label for="zipcode" class="col-xs-2 col-form-label"></label>

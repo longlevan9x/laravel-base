@@ -53,6 +53,9 @@
     <!--Bootstrapt fileinput-->
     <script src="{{asset_admin_vendors('bootstrap-fileinput/js/fileinput.js')}}" type="text/javascript"></script>
     <script src="{{asset_admin_vendors('bootstrap-fileinput/js/locales/vi.js')}}" type="text/javascript"></script>
+    <!-- Jquery ui -->
+    <script src="{{asset_admin_vendors('jqueryui/jquery-ui.js')}}" type="text/javascript"></script>
+
     <!-- Custom Theme Scripts -->
 
     <script src="{{asset_admin_vendors('datatables.net/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
@@ -71,6 +74,10 @@
     <script src="{{asset_admin_vendors('datatables.net-buttons/js/buttons.html5.min.js')}}" type="text/javascript"></script>
     <script src="{{asset_admin_vendors('datatables.net-buttons/js/buttons.print.min.js')}}" type="text/javascript"></script>
 
+    <script src="{{asset_admin_vendors('pnotify/dist/pnotify.js')}}"></script>
+    <script src="{{asset_admin_vendors('pnotify/dist/pnotify.buttons.js')}}"></script>
+    <script src="{{asset_admin_vendors('pnotify/dist/pnotify.nonblock.js')}}"></script>
+
     <script src="{{asset_admin_vendors('jszip/dist/jszip.min.js')}}" type="text/javascript"></script>
     <script src="{{asset_admin_vendors('pdfmake/build/pdfmake.min.js')}}" type="text/javascript"></script>
     <script src="{{asset_admin_vendors('pdfmake/build/vfs_fonts.js')}}" type="text/javascript"></script>
@@ -78,7 +85,7 @@
     @stack('scriptFileAppend')
 
     <script src="{{asset_admin('build/js/custom.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset_css('custom.css')}}" type="text/javascript"></script>
+    <script src="{{asset_js('custom.js')}}" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
             let value1 = $("#datetimepicker1 input").attr("value");
@@ -213,7 +220,7 @@
             $modal.find(".modal-title").text(caption);
 
             if (typeof _this === "object") {
-                let message   = _this.data("modal-title");
+                let message = _this.data("modal-title");
                 $modal.find(".modal-body .modal-message").text(message);
                 $modal.modal();
                 $("#delete-yes").click(function () {

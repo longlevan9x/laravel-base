@@ -12,6 +12,10 @@ namespace App\Models\Traits;
 use App\Commons\Facade\CUser;
 use App\Models\Admins;
 
+/**
+ * Trait ModelRelateTrait
+ * @package App\Models\Traits
+ */
 trait ModelRelateTrait
 {
 	/**

@@ -1,0 +1,10 @@
+lamp mặc định.
+vào /etc/httpd/conf/httpd.conf
+
+sửa
+<Directory "/var/www/html"> thành <Directory "/var/www/html/public">
+DocumentRoot "/var/www/html" thành  DocumentRoot "/var/www/html/public"
+
+và chạy systemctl restart httpd.
+
+

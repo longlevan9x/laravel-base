@@ -75,8 +75,7 @@ class AdminController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$models = Admins::where('id', '<>', CUser::userAdmin()->id)->where('role', "<", CUser::userAdmin()->role)
-		                ->get();
+		$models = Admins::where('id', '<>', CUser::userAdmin()->id)->where('role', "<", CUser::userAdmin()->role)->get();
 
 		return view('admin.admin.index', compact('models'));
 	}
@@ -102,10 +101,9 @@ class AdminController extends Controller
 		$model->fill($request->all());
 		$model->generatePassword();
 		$model->setAuthor_id();
-		$model->save();
+		$check = $model->save();
 
-		//Store::create($request->all());
-		return redirect(self::getUrlAdmin());
+		return $this->redirectWithModel(self::getUrlAdmin(), $check, $model);
 	}
 
 	/**
@@ -141,9 +139,9 @@ class AdminController extends Controller
 		$admin->fill($request->all());
 		$admin->generatePassword();
 		$admin->setAuthor_id();
-		$admin->save();
+		$check = $admin->save();
 
-		return redirect(self::getUrlAdmin());
+		return $this->redirectWithModel(self::getUrlAdmin(), $check, $admin);
 	}
 
 	/**
@@ -153,10 +151,8 @@ class AdminController extends Controller
 	 * @throws \Exception
 	 */
 	public function destroy(Admins $admin) {
-		if ($admin->delete()) {
-			return redirect(self::getUrlAdmin());
-		}
+		$check = $admin->delete();
 
-		return redirect(self::getUrlAdmin())->with('error', "Delete Fail");
+		return $this->redirectWithModel(self::getUrlAdmin(), $check, $admin);
 	}
 }

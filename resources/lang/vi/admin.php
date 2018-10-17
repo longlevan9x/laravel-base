@@ -53,11 +53,11 @@ return [
 	'not contact'     => 'Chưa liên hệ',
 	'contacted'       => "Đã liên hệ",
 
-	'fax'     => 'Fax',
-	'hotline' => 'Hotline',
-	'social'  => 'Mạng xã hội',
-	'seo'  => 'Seo',
-	'information_general'  => 'Thông tin chung',
+	'fax'                 => 'Fax',
+	'hotline'             => 'Hotline',
+	'social'              => 'Mạng xã hội',
+	'seo'                 => 'Seo',
+	'information_general' => 'Thông tin chung',
 
 	'notification message order'         => "Thông báo trang đặt hàng",
 	'notification message order success' => "Tin nhắn thông báo khi đặt hàng thành công",
@@ -78,4 +78,8 @@ return [
 
 	'lang_en' => "Tiếng anh",
 	'lang_vi' => "Tiếng việt",
+
+	'store'   => 'Thêm mới',
+	'destroy' => "Xóa"
+
 ];

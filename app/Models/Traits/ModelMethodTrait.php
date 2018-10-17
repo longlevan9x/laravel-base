@@ -11,6 +11,7 @@ namespace App\Models\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Collection;
 
 /**
  * Trait ModelMethodTrait
@@ -36,7 +37,37 @@ trait ModelMethodTrait
 		return $query->where('is_active', $value);
 	}
 
+	/**
+	 * @param QueryBuilder $query
+	 * @return QueryBuilder
+	 */
 	public function scopeInActive($query) {
-		return $this->scopeActive($query,0);
+		return $this->scopeActive($query, 0);
+	}
+
+	/**
+	 * @param QueryBuilder $query
+	 * @return QueryBuilder
+	 */
+	public function scopeOrderBySortOrder($query) {
+		return $query->orderBy('sort_order');
+	}
+
+	/**
+	 * @param QueryBuilder $query
+	 * @return QueryBuilder
+	 */
+	public function scopeOrderBySortOrderDesc($query) {
+		return $query->orderByDesc('sort_order');
+	}
+
+	public function scopeMyPluck($query, $column, $key = null, $title = '') {
+		$models = $query->pluck($column, $key);
+		/** @var Collection $models */
+		$models->put(0, __('admin.select') . " " . $title);
+		$models = $models->toArray();
+		ksort($models, SORT_STRING);
+		//dd($models);
+		return new Collection($models);
 	}
 }

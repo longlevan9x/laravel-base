@@ -37,7 +37,11 @@
     <link href="{{asset_admin_vendors('pnotify/dist/pnotify.css')}}" rel="stylesheet">
     <link href="{{asset_admin_vendors('pnotify/dist/pnotify.buttons.css')}}" rel="stylesheet">
     <link href="{{asset_admin_vendors('pnotify/dist/pnotify.nonblock.css')}}" rel="stylesheet">
+
+    <link href="{{asset_admin_vendors('select2/dist/css/select2.min.css')}}" rel="stylesheet">
     <!-- Custom Theme Style -->
+
+
     <link href="{{asset_admin('build/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('css/custom.css')}}" rel="stylesheet" type="text/css" />
 

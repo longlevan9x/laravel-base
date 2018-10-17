@@ -17,9 +17,17 @@ class AdminMenu
 {
 	/**
 	 * render menus in file Middleware\RedirectIfNotAdmin
+	 * @return void
 	 */
 	public static function render() {
-		View::share('menus', (new AdminMenu)->menu());
+		View::share('menus', (new self)->menu());
+	}
+
+	/**
+	 * @return array
+	 */
+	public static function getMenu() {
+		return (new  self)->menu();
 	}
 
 	/**
@@ -48,265 +56,52 @@ class AdminMenu
 				'children' => []
 			],
 			/*Profile*/
-			/*Product*/
+			/*Tags*/
 			[
-				'name'     => __("admin/menu.Product"),
-				'url'      => url_admin('product/detail'),
-				'visible'  => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
-				'icon'     => 'fa-rocket',
-				'children' => []
-			],
-			/*Product*/
-			/*Order*/
-			[
-				'name'     => __("admin/menu.order"),
-				'url'      => url_admin('order'),
-				'active'   => $controller == 'order',
-				'visible'  => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
-				'icon'     => 'fa-inbox',
-				'children' => []
-			],
-			/*Order*/
-			/*News*/
-			[
-				'name'     => __('admin/menu.News'),
+				'name'     => __('admin/menu.tag'),
 				'url'      => '#',
 				'visible'  => true,
-				'active'   => $controller == 'news' && $action > 0,
-				'icon'     => 'fa-bullhorn',
+				'active'   => $controller == 'tag' && $action > 0,
+				'icon'     => 'fa-list-alt',
 				'children' => [
 					[
-						'name'    => __('admin/menu.list_news'),
-						'url'     => url_admin('news'),
+						'name'    => __('admin/menu.list'),
+						'url'     => url_admin('tag'),
 						'visible' => true,
 						'icon'    => 'fa-bullhorn',
 					],
 					[
-						'name'    => __('admin/menu.add_news'),
-						'url'     => url_admin('news/create'),
+						'name'    => __('admin/menu.add'),
+						'url'     => url_admin('tag/create'),
 						'visible' => true,
 						'icon'    => 'fa-plus',
-					],
-					[
-						'name'    => __("admin/menu.setting_banner"),
-						'url'     => url_admin('news/banner'),
-						'visible' => true,
-						'icon'    => 'fa-plus',
-					],
+					]
 				]
 			],
-			/*News*/
-			/*Post*/
+			/*Tags*/
+			/*Category*/
 			[
-				'name'     => __("admin/menu.post"),
+				'name'     => __('admin/menu.category'),
 				'url'      => '#',
 				'visible'  => true,
-				'icon'     => 'glyphicon-pushpin',
-				'active'   => in_array($controller, ['post', 'category', 'expert']) && $action > 0,
+				'active'   => $controller == 'category' && $action > 0,
+				'icon'     => 'fa-list-alt',
 				'children' => [
-					/*Post*/
 					[
-						'name'     => __("admin/menu.post by category"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'glyphicon-pushpin',
-						'active'   => $controller == 'post' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('post'),
-								'visible' => true,
-								'icon'    => 'glyphicon-pushpin',
-							],
-							[
-								'name'    => __("admin/menu.add_new"),
-								'url'     => url_admin('post/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						],
+						'name'    => __('admin/menu.list'),
+						'url'     => url_admin('category'),
+						'visible' => true,
+						'icon'    => 'fa-bullhorn',
 					],
-					/*Category*/
 					[
-						'name'     => __("admin/menu.category"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'fa-list-alt',
-						'active'   => $controller == 'category' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('category'),
-								'visible' => true,
-								'icon'    => 'fa-list-alt',
-							],
-							[
-								'name'    => __("admin/menu.add_new"),
-								'url'     => url_admin('category/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*Category*/
-					/*Expert*/
-					[
-						'name'     => __("admin/menu.post expert"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'fa-slideshare',
-						'active'   => $controller == 'expert' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('expert'),
-								'visible' => true,
-								'icon'    => 'fa-slideshare',
-							],
-							[
-								'name'    => __("admin/menu.add"),
-								'url'     => url_admin('expert/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*Expert*/
+						'name'    => __('admin/menu.add'),
+						'url'     => url_admin('category/create'),
+						'visible' => true,
+						'icon'    => 'fa-plus',
+					]
 				]
 			],
-			/*Post*/
-			/*System Store*/
-			[
-				'name'     => __("admin/menu.system_store"),
-				'url'      => '#',
-				'visible'  => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
-				'icon'     => 'fa-globe',
-				'active'   => $controller == in_array($controller, [
-						'store',
-						'area',
-						'category-city',
-						'category-district',
-						'category-street'
-					]) && $action > 0,
-				'children' => [
-					/*Store*/
-					[
-						'name'     => __("admin/menu.store"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'fa-cube',
-						'active'   => $controller == 'store' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list store"),
-								'url'     => url_admin('store'),
-								'visible' => true,
-								'icon'    => 'fa-cube',
-							],
-							[
-								'name'    => __("admin/menu.add store"),
-								'url'     => url_admin('store/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*Store*/
-					/*Area*/
-					[
-						'name'     => __("admin/menu.area"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'fa-globe',
-						'active'   => $controller == 'area' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('area'),
-								'visible' => true,
-								'icon'    => 'fa-globe',
-							],
-							[
-								'name'    => __("admin/menu.add"),
-								'url'     => url_admin('area/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*Area*/
-					/*City*/
-					[
-						'name'     => __("admin/menu.city"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'fa-cab',
-						'active'   => $controller == 'category-city' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('category-city'),
-								'visible' => true,
-								'icon'    => 'fa-cab',
-							],
-							[
-								'name'    => __("admin/menu.add"),
-								'url'     => url_admin('category-city/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*City*/
-					/*District*/
-					[
-						'name'     => __("admin/menu.district"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'fa-building',
-						'active'   => $controller == 'category-district' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('category-district'),
-								'visible' => true,
-								'icon'    => 'fa-building',
-							],
-							[
-								'name'    => __("admin/menu.add"),
-								'url'     => url_admin('category-district/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*District*/
-					/*Street*/
-					[
-						'name'     => __("admin/menu.street"),
-						'url'      => '#',
-						'visible'  => true,
-						'icon'     => 'glyphicon-road',
-						'active'   => $controller == 'category-street' && $action > 0,
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('category-street'),
-								'visible' => true,
-								'icon'    => 'glyphicon-road',
-							],
-							[
-								'name'    => __("admin/menu.add"),
-								'url'     => url_admin('category-street/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*Street*/
-				]
-			],
-			/*System Store*/
+			/*Category*/
 			/*Page*/
 			[
 				'name'     => __("admin/menu.page"),
@@ -315,86 +110,18 @@ class AdminMenu
 				'active'   => in_array($controller, ['answer', 'advice', 'share']) && $action > 0,
 				'icon'     => 'fa-file-powerpoint-o',
 				'children' => [
-					/*Q & A*/
-					[
-						'name'     => __("admin/menu.q & a"),
-						'url'      => url_admin('answer'),
-						'visible'  => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
-						'icon'     => 'fa-question-circle',
-						'children' => []
-					],
-					/*Q & A*/
-					/*Advice*/
-					[
-						'name'     => __("admin/menu.advices"),
-						'url'      => '#',
-						'active'   => $controller == 'advice',
-						'visible'  => true,
-						'icon'     => 'fa-toggle-right',
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('advice'),
-								'visible' => true,
-								'icon'    => 'fa-toggle-right',
-							],
-							[
-								'name'    => __("admin/menu.add"),
-								'url'     => url_admin('advice/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*Advice*/
-					/*Share*/
-					[
-						'name'     => __("admin/menu.share experience"),
-						'url'      => '#',
-						'visible'  => true,
-						'active'   => $controller == 'share',
-						'icon'     => 'fa-share-alt',
-						'children' => [
-							[
-								'name'    => __("admin/menu.list"),
-								'url'     => url_admin('share'),
-								'visible' => true,
-								'icon'    => 'fa-share-alt',
-							],
-							[
-								'name'    => __("admin/menu.add"),
-								'url'     => url_admin('share/create'),
-								'visible' => true,
-								'icon'    => 'fa-plus',
-							],
-						]
-					],
-					/*Share*/
 				]
 			],
 			/*Page*/
-			/*Consultation & contact*/
+			/*contact*/
 			[
-				'name'     => __("admin/menu.consultation and contact"),
-				'url'      => '#',
+				'name'     => __("admin/menu.contact"),
+				'url'      => url_admin('contact'),
 				'visible'  => CUser::checkRole([Admins::ROLE_SUPER_ADMIN, Admins::ROLE_ADMIN]),
 				'icon'     => 'fa-bell-o',
-				'children' => [
-					[
-						'name'    => __("admin/menu.consultation"),
-						'url'     => url_admin('website/subscribe'),
-						'visible' => true,
-						'icon'    => 'fa-bell-o',
-					],
-					[
-						'name'    => __("admin/menu.contact"),
-						'url'     => url_admin('website/contact'),
-						'visible' => true,
-						'icon'    => 'fa-linode',
-					],
-				]
+				'children' => []
 			],
-			/*Consultation & contact*/
+			/*contact*/
 			/*User*/
 			[
 				'name'     => __("admin/menu.users"),
@@ -417,6 +144,12 @@ class AdminMenu
 				]
 			],
 			/*User*/
+			[
+				'name'    => __("Video"),
+				'url'     => url_admin('website/video'),
+				'visible' => true,
+				'icon'    => 'fa-rss-square',
+			],
 			/*Website*/
 			[
 				'name'     => __("admin/menu.website"),
@@ -431,12 +164,6 @@ class AdminMenu
 						'icon'    => 'fa-home',
 					],
 					[
-						'name'    => __("admin/menu.information expert"),
-						'url'     => url_admin('website/info-expert'),
-						'visible' => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
-						'icon'    => 'fa-bars',
-					],
-					[
 						'name'    => __("admin/menu.slide"),
 						'url'     => url_admin('slide'),
 						'visible' => true,
@@ -445,7 +172,7 @@ class AdminMenu
 					[
 						'name'    => __("admin/menu.content message website"),
 						'url'     => url_admin('website/message'),
-						'visible' => true,
+						'visible' => false,
 						'icon'    => 'fa-columns',
 					],
 					[
@@ -454,6 +181,12 @@ class AdminMenu
 						'visible' => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
 						'icon'    => 'fa-bars',
 					],
+					[
+						'name'    => __("admin/menu.comment"),
+						'url'     => url_admin('comment'),
+						'visible' => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
+						'icon'    => 'fa-bars',
+					]
 				]
 			],
 			/*Website*/
@@ -462,6 +195,15 @@ class AdminMenu
 				'name'     => __("admin/menu.setting"),
 				'url'      => url_admin('setting'),
 				'visible'  => CUser::checkRole([Admins::ROLE_SUPER_ADMIN, Admins::ROLE_ADMIN]),
+				'icon'     => 'fa-cog',
+				'children' => []
+			],
+			/*Setting*/
+			/*Setting*/
+			[
+				'name'     => __("Refresh Cache"),
+				'url'      => url_admin('refresh-cache'),
+				'visible'  => true,
 				'icon'     => 'fa-cog',
 				'children' => []
 			],

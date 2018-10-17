@@ -30,6 +30,53 @@ if (!function_exists('setting')) {
 	}
 }
 
+if (!function_exists('get_code_video_youtube')) {
+	/**
+	 * @param string $urlVideo
+	 * @return bool|mixed|string
+	 */
+	function get_code_video_youtube($urlVideo = '') {
+		if (\Illuminate\Support\Str::startsWith($urlVideo, 'https://www.youtube.com/')) {
+			$urlVideo = substr($urlVideo, strpos($urlVideo, '='));
+			$listUrl  = explode("=", $urlVideo);
+			if (count($listUrl) > 1) {
+				$urlVideo  = $listUrl[1];
+				$urlVideo1 = substr($urlVideo, strpos($urlVideo, '&'));
+				$urlVideo  = str_replace($urlVideo1, '', $urlVideo);
+			}
+		}
+
+		return $urlVideo;
+	}
+}
+
+
+if (!function_exists('get_url_video_youtube')) {
+	/**
+	 * @param string $urlVideo
+	 * @return bool|mixed|string
+	 */
+	function get_url_video_youtube($urlVideo = '') {
+		return 'https://www.youtube.com/embed/' . get_code_video_youtube($urlVideo);
+	}
+}
+
+
+if (!function_exists('show_video_youtube')) {
+	/**
+	 * @param string $urlVideo
+	 * @param int    $width
+	 * @param int    $height
+	 * @return bool|mixed|string
+	 */
+	function show_video_youtube($urlVideo = '', $width = 560, $height = 315) {
+		$urlVideo = get_url_video_youtube($urlVideo);
+
+		return '<iframe width="' . $width . '" height="' . $height . '" src="' . $urlVideo . '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+	}
+}
+
+
 if (!function_exists('is_exist_path')) {
 	/**
 	 * @param string $path
@@ -53,6 +100,17 @@ if (!function_exists('action_method_push_post')) {
 		return isset($model) && !empty($model->getAttributes()) ? 'put' : 'post';
 	}
 }
+
+if (!function_exists('get_model')) {
+	/**
+	 * @param \Illuminate\Database\Eloquent\Model $model
+	 * @return string
+	 */
+	function get_model($model = null) {
+		return isset($model) ? $model : null;
+	}
+}
+
 if (!function_exists('public_path_admin')) {
 	/**
 	 * @param string $path
@@ -87,11 +145,12 @@ if (!function_exists("get_time_line")) {
 		$timeline = $now - $time;
 
 		if ($timeline < 60 * 60) {
-			return (int)($timeline / 60) . " minute ago";
+			return (int) ($timeline / 60) . " minute ago";
 		}
 		elseif ($timeline < 60 * 60 * 24) {
-			return (int)($timeline / 60 / 24) . " hour ago";
+			return (int) ($timeline / 60 / 24) . " hour ago";
 		}
+
 		return (int) ($timeline / 60 / 60 / 24) . " day ago";
 
 		return $timeline;

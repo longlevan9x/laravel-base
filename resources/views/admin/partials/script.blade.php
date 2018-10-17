@@ -78,6 +78,9 @@
     <script src="{{asset_admin_vendors('pnotify/dist/pnotify.buttons.js')}}"></script>
     <script src="{{asset_admin_vendors('pnotify/dist/pnotify.nonblock.js')}}"></script>
 
+    <script src="{{asset_admin_vendors('select2/dist/js/select2.full.min.js')}}"></script>
+
+
     <script src="{{asset_admin_vendors('jszip/dist/jszip.min.js')}}" type="text/javascript"></script>
     <script src="{{asset_admin_vendors('pdfmake/build/pdfmake.min.js')}}" type="text/javascript"></script>
     <script src="{{asset_admin_vendors('pdfmake/build/vfs_fonts.js')}}" type="text/javascript"></script>
@@ -181,6 +184,14 @@
                     $parent.find(".check-all").prop("checked", false);
                 }
             });
+
+            /*Notification*/
+            if ('{{Session::exists('error')}}')  {
+                PNotifyError("Thông báo", '{{Session::get('error')}}');
+            }else if('{{Session::exists('success')}}') {
+                PNotifyError("Thông báo", '{{Session::get('success')}}');
+            }
+            /*Notification*/
         });
 
         /**

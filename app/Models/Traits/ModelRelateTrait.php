@@ -47,4 +47,32 @@ trait ModelRelateTrait
 		return $this->author_updated_id = CUser::userAdmin()->id;
 	}
 
+	/**
+	 * @return int
+	 */
+	public function setAuthorId() {
+		return $this->author_id = CUser::userAdmin()->id;
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Admins
+	 */
+	public function author() {
+		return $this->belongsTo(Admins::class, 'author_id', 'id');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAuthorName() {
+		if (isset($this->author)) {
+			if ($this->author->username == CUser::userAdmin()->username) {
+				return __("admin/common.you");
+			}
+
+			return $this->author->username;
+		}
+
+		return '-';
+	}
 }

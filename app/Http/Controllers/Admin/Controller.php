@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Commons\Facade\CFile;
 use App\Commons\Facade\CUser;
 use App\Models\Admins;
+use App\Models\Contact;
 use App\Models\Post;
 use App\Models\Traits\ModelMethodTrait;
+use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -53,10 +55,6 @@ class Controller extends \App\Http\Controllers\Controller
 			return $next($request);
 		});
 
-		$totalNewContact   = Post::whereType(Post::TYPE_CONTACT)->whereIsActive(1)->count();
-		$totalNewSubscribe = Post::whereType(Post::TYPE_SUBSCRIBE)->whereIsActive(1)->count();
-
-		view()->share(compact('totalNewSubscribe', 'totalNewContact'));
 	}
 
 	/**
@@ -172,7 +170,7 @@ class Controller extends \App\Http\Controllers\Controller
 
 	public function bulk(Request $request) {
 		$table = $request->table;
-		$key = $request->key;
+		$key   = $request->key;
 		$value = $request->value;
 		$ids   = $request->ids;
 
@@ -195,5 +193,53 @@ class Controller extends \App\Http\Controllers\Controller
 		}
 
 		return redirect()->back()->with('fail', __('message.update fail'));
+	}
+
+	/**
+	 * phuong thuc dung de dieu huong va tra ve message
+	 * $message co the truyen vao la 1 object Model hoac 1 mang message cua success va error
+	 * neu message la mang success va error
+	 * @param              $to
+	 * @param bool         $check
+	 * param message can is Model or messages
+	 * @param array|object $message
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
+	protected function redirectWithMessage($to = null, $check = false, ...$message) {
+		$current_method = $this->getCurrentMethod();
+		$current_method = in_array($current_method, ['store', 'update', 'destroy']) ? __('admin.' . $current_method) : $current_method;
+		if ($check) {
+			$mess = ($message[0][0] ?? $current_method);
+			$type = 'success';
+		}
+		else {
+			$mess = ($message[0][1] ?? $current_method);
+			$type = 'error';
+		}
+
+		return redirect($to, 302, [], null)->with($type, $mess);
+	}
+
+	protected function redirectWithModel($to = null, $check = false, $model = null) {
+		$obj = $model;
+
+		$text = '';
+		if ($obj instanceof Model) {
+			/** @var ModelTrait $obj */
+			$text = $obj->{$obj->fieldSlugable()} ?? '';
+		}
+
+		$current_method = $this->getCurrentMethod();
+		$current_method = in_array($current_method, ['store', 'update', 'destroy']) ? __('admin.' . $current_method) : $current_method;
+		if ($check) {
+			$mess = $current_method . " " . $text;
+			$type = 'success';
+		}
+		else {
+			$mess = $current_method . " " . $text;
+			$type = 'error';
+		}
+
+		return redirect($to, 302, [], null)->with($type, $mess);
 	}
 }

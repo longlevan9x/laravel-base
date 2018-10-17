@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Post;
 
 class DashboardController extends Controller
 {
@@ -19,8 +20,9 @@ class DashboardController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-
-		return view('admin.dashboard.index');
+		$totalPost = 0;
+		$totalNews = 0;
+		return view('admin.dashboard.index', compact('totalPost', 'totalNews'));
 	}
 
 }

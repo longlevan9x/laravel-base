@@ -19,13 +19,13 @@ class UpdateLastLogin
     {
     }
 
-	/**
-	 * Handle the event.
-	 * @param  Login $event
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function handle(Login $event)
+    /**
+     * Handle the event.
+     *
+     * @param  Login  $event
+     * @return void
+     */
+    public function handle(Login $event)
     {
 	    /** @var Admins $user */
 	    $user             = $event->user;

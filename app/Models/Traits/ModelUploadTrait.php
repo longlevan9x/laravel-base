@@ -40,7 +40,7 @@ trait ModelUploadTrait
 	/**
 	 * @var int
 	 */
-	protected $maxImageWidth  = 0;
+	protected $maxImageWidth = 0;
 	/**
 	 * @var int
 	 */
@@ -83,6 +83,30 @@ trait ModelUploadTrait
 		}
 
 		return CFile::getImageUrl($folder, $this->{$field_image}, $default_image);
+	}
+
+	/**
+	 * @param string $folder
+	 * @param string $field_image
+	 * @param string $default_image
+	 * @return string
+	 */
+	public function getImageUrl($folder = '', $field_image = 'image', $default_image = \App\Commons\CFile::DEFAULT_NO_IMAGE) {
+		if (empty($folder)) {
+			$folder = $this->folder();
+		}
+
+		return CFile::getImageUrl($folder, $this->{$field_image}, $default_image);
+	}
+
+	/**
+	 * @param string $folder
+	 * @param string $field_image
+	 * @param string $default_image
+	 * @return string
+	 */
+	public function getImageUrlWithoutDefault($folder = '', $field_image = 'image', $default_image = '') {
+		return $this->getImageUrl($folder, $field_image, $default_image);
 	}
 
 	/**

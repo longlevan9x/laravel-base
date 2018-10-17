@@ -2,21 +2,31 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Commons\Facade\CFile;
 use App\Http\Requests\CategoryRequest;
-use App\Http\Requests\StoreRequest;
 use App\Models\Category;
-use App\Models\Store;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+	protected $type;
+
+	/**
+	 * CategoryController constructor.
+	 * @param Category $category
+	 */
+	public function __construct(Category $category) {
+		parent::__construct();
+		$this->model = $category;
+		$type        = $this->type = request()->query('type', Category::TYPE_CATEGORY);
+		view()->share(compact('type'));
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$models = Category::whereType(Category::TYPE_CATEGORY)->where('parent_id', ">", 0)->get();
+		$models = Category::query()->get();
 
 		return view('admin.category.index', compact('models'));
 	}
@@ -40,12 +50,9 @@ class CategoryController extends Controller
 	public function store(CategoryRequest $request) {
 		$model = new Category;
 		$model->fill($request->all());
-		$model->parent_id = Category::whereType()->whereSlug('#')->whereParentId(0)->first()->id;
-		$model->type = Category::TYPE_CATEGORY;
-		$model->save();
+		$check = $model->save();
 
-		//Store::create($request->all());
-		return redirect(self::getUrlAdmin());
+		return $this->redirectWithModel(self::getUrlAdmin(), $check, $model);
 	}
 
 	/**
@@ -79,9 +86,9 @@ class CategoryController extends Controller
 	 */
 	public function update(CategoryRequest $request, Category $category) {
 		$category->fill($request->all());
-		$category->save();
+		$check = $category->save();
 
-		return redirect(self::getUrlAdmin());
+		return $this->redirectWithModel(self::getUrlAdmin(), $check, $category);
 	}
 
 	/**
@@ -91,11 +98,9 @@ class CategoryController extends Controller
 	 * @throws \Exception
 	 */
 	public function destroy(Category $category) {
-		if ($category->delete()) {
-			return redirect(self::getUrlAdmin());
-		}
+		$check = $category->delete();
 
-		return redirect(self::getUrlAdmin())->with('error', "Delete Fail");
+		return $this->redirectWithModel(self::getUrlAdmin(), $check, $category);
 	}
 
 	public function getOptionCategoryWithType(Request $request) {

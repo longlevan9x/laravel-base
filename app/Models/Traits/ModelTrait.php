@@ -34,6 +34,7 @@ trait ModelTrait
 	use SluggableScopeHelpers;
 	use ModelMethodTrait;
 	use ModelRelateTrait;
+	use ModelStaticTrait;
 
 	public function getSlugKeyName() {
 		return 'slug';
@@ -195,7 +196,7 @@ trait ModelTrait
 	 * @throws \Exception
 	 */
 	public function delete() {
-		parent::delete();
+		return parent::delete();
 	}
 
 	/**

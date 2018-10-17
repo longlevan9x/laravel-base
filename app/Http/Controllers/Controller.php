@@ -126,4 +126,12 @@ class Controller extends BaseController
 
 		return $action;
 	}
+
+	/**
+	 * @param $model
+	 * @return \Illuminate\Contracts\Routing\UrlGenerator|string
+	 */
+	public static function getUrlAdminWithModel($model) {
+		return self::getUrlAdmin(isset($model) ? $model->id : '');
+	}
 }

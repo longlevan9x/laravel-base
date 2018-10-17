@@ -20,6 +20,8 @@ class CreateTableCategory extends Migration
         	$table->string('name');
         	$table->string('slug')->nullable();
         	$table->tinyInteger('is_active')->default(0);
+        	$table->tinyInteger('is_detail')->default(0)->nullable();
+        	$table->tinyInteger('is_home')->default(0)->nullable();
         	$table->integer('sort_order')->default(0);
         	$table->string('status', 50)->nullable();
         	$table->string('description')->nullable();

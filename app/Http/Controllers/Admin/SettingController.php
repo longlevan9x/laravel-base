@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admins;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,8 @@ class SettingController extends Controller
 
 	public function __construct(Setting $model) {
 		$this->model = $model;
+		parent::__construct();
+		$this->setRoleExcept(Admins::ROLE_AUTHOR);
 	}
 
 	/**
@@ -24,14 +27,18 @@ class SettingController extends Controller
 	 */
 	public function index() {
 		$model = Setting::getModel();
-
 		return view('admin.setting.index', compact('model'));
 	}
 
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws \Psr\SimpleCache\InvalidArgumentException
+	 */
 	public function store(Request $request) {
 		$this->model->setModel($request);
-		$this->model->save();
+		$check = $this->model->save();
 
-		return redirect(url_admin('setting'));
+		return $this->redirectWithModel(url_admin('setting'), $check, $this->model);
 	}
 }

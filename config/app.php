@@ -169,7 +169,6 @@ return [
 	    /**
          * Custom Provider
         */
-	    App\Providers\HelperServiceProvider::class,
 	    App\Commons\Providers\CommonServiceProvider::class,
 	    App\Models\Providers\ModelServiceProvider::class
     ],

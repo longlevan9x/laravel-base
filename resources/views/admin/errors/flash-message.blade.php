@@ -1,6 +1,6 @@
 @if(Session::has('success') || Session::has('error'))
     <div class="col-lg-12">
-        <div class="alert alert-{{ Session::has('success') ? 'success' : 'danger' }} alert-errors">
+        <div class="alert alert-{{ Session::has('success') ? 'success' : 'danger' }}">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

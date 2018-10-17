@@ -24,7 +24,8 @@ class AjaxController extends Controller
 		if (isset($model) && !empty($model)) {
 			if (key_exists('path', $model) && !empty($model->path)) {
 				$folder = $model->path;
-			} else {
+			}
+			else {
 				$folder = $table;
 			}
 
@@ -41,8 +42,10 @@ class AjaxController extends Controller
 			}
 
 			return responseJson(1, [], 404);
-		} else {
+		}
+		else {
 			$this->deleteFileSetting($table, $key);
+
 			return responseJson(CConstant::STATUS_SUCCESS);
 		}
 
@@ -73,5 +76,18 @@ class AjaxController extends Controller
 		}
 
 		return responseJson(1, [], 404);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param string  $table
+	 * @param string  $column
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function select2(Request $request, $table = '', $column = '') {
+		$keyword = $request->get('q');
+		$results = DB::table($table)->selectRaw("id as id, $column as text")->where($column, 'LIKE', '%' . $keyword . '%')->get();
+
+		return responseJson(CConstant::STATUS_SUCCESS, $results);
 	}
 }

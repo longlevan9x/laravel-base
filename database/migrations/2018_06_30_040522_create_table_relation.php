@@ -13,14 +13,13 @@ class CreateTableRelation extends Migration
      */
     public function up()
     {
-        Schema::create('relationship', function(Blueprint $table) {
+        Schema::create('relationships', function(Blueprint $table) {
         	$table->increments('id');
-        	$table->integer('object1_id')->default(0)->default(0)->nullable();
-        	$table->string('object1_type', 50)->nullable();
-        	$table->integer('object2_id')->default(0)->default(0)->nullable();
-	        $table->string('object2_type', 50)->nullable();
+        	$table->integer('relation1_id')->default(0)->default(0)->nullable();
+        	$table->integer('relation2_id')->default(0)->default(0)->nullable();
         	$table->string('relation_type')->nullable();
         	$table->timestamps();
+        	$table->unique(['relation1_id', 'relation2_id', 'relation_type']);
         });
     }
 

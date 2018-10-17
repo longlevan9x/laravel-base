@@ -44,6 +44,17 @@
         "laravel": {
             "dont-discover": [
             ]
+        },
+        "Illuminate\\Foundation\\ComposerScripts::postCreateProject": {
+            "setPermission": [
+                {
+                    "storage": "0777",
+                    "storage/logs": "0777",
+                    "storage/framework": "0777",
+                    "storage/app": "0777",
+                    "bootstrap": "0777"
+                }
+            ]
         }
     },
     "scripts": {
@@ -51,7 +62,9 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate"
+            "@php artisan key:generate",
+            "@php artisan storage:link",
+            "Illuminate\\Foundation\\ComposerScripts::postCreateProject"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

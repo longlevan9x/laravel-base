@@ -2,6 +2,7 @@
 
 namespace App\Models\Providers;
 
+use App\Models\Comment;
 use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,5 +25,10 @@ class ModelServiceProvider extends ServiceProvider
 		$this->app->singleton('setting', function() {
 			return new Setting;
 		});
+
+		$this->app->singleton('comment', function() {
+			return new Comment;
+		});
+
 	}
 }

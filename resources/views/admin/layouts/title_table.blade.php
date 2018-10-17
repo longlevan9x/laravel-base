@@ -18,3 +18,6 @@
     </ul>
     <div class="clearfix"></div>
 </div>
+@include('admin.layouts.error-message.success')
+@include('admin.layouts.error-message.error')
+@include('admin.layouts.error-message.errors')

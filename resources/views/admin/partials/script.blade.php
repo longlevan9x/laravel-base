@@ -80,6 +80,7 @@
 
     <script src="{{asset_admin_vendors('select2/dist/js/select2.full.min.js')}}"></script>
 
+    <script src="{{asset('plugins/jquery-confirm/jquery-confirm.min.js')}}" type="text/javascript"></script>
 
     <script src="{{asset_admin_vendors('jszip/dist/jszip.min.js')}}" type="text/javascript"></script>
     <script src="{{asset_admin_vendors('pdfmake/build/pdfmake.min.js')}}" type="text/javascript"></script>
@@ -186,9 +187,9 @@
             });
 
             /*Notification*/
-            if ('{{Session::exists('error')}}')  {
+            if ('{{Session::exists('error')}}') {
                 PNotifyError("Thông báo", '{{Session::get('error')}}');
-            }else if('{{Session::exists('success')}}') {
+            } else if ('{{Session::exists('success')}}') {
                 PNotifyError("Thông báo", '{{Session::get('success')}}');
             }
             /*Notification*/

@@ -16,7 +16,6 @@ use Yadakhov\InsertOnDuplicateKey;
 
 /**
  * Class Setting
- *
  * @package App\Models
  * @property string                  $website_name
  * @property string                  $website_description
@@ -245,6 +244,10 @@ class Setting extends Model
 	 */
 	public function loadModel() {
 		if (env("APP_NAME") == null) {
+			return false;
+		}
+
+		if (env("APP_KEY") == null) {
 			return false;
 		}
 

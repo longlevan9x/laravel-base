@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->dateTime('last_login')->nullable();
             $table->dateTime('last_logout')->nullable();
             $table->text('overview')->nullable();
+            $table->string('authen_key', 50)->unique()->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

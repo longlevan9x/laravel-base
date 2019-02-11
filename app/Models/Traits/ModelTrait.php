@@ -8,6 +8,7 @@ use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 
 /**
  * Created by PhpStorm.
@@ -29,12 +30,14 @@ use Illuminate\Support\Facades\Event;
  */
 trait ModelTrait
 {
+	use ModelBootTrait;
 	use ModelBaseTrait;
-	use Sluggable;
-	use SluggableScopeHelpers;
 	use ModelMethodTrait;
 	use ModelRelateTrait;
 	use ModelStaticTrait;
+
+	use Sluggable;
+	use SluggableScopeHelpers;
 
 	public function getSlugKeyName() {
 		return 'slug';
@@ -90,30 +93,30 @@ trait ModelTrait
 		return [];
 	}
 
-	/**
-	 * @param array $options
-	 * @return bool
-	 * @throws \Exception
-	 */
-	public function save(array $options = []) {
-		if (!$this->beforeSave()) {
-			return $this->beforeSave();
-		}
-		if (method_exists($this, 'uploadImage') && $this->isAutoUploadImage()) {
-			$this->uploadImage();
-		}
-		$save = parent::save($options);
-		if (!$save) {
-			if (method_exists($this, 'removeImage') && $this->isAutoUploadImage()) {
-				$this->removeImage();
-			}
-
-			return false;
-		}
-		$this->afterSave();
-
-		return $save;
-	}
+	//	/**
+	//	 * @param array $options
+	//	 * @return bool
+	//	 * @throws \Exception
+	//	 */
+	//	public function save(array $options = []) {
+	//		if (!$this->beforeSave()) {
+	//			return $this->beforeSave();
+	//		}
+	//		if (method_exists($this, 'uploadImage') && $this->isAutoUploadImage()) {
+	//			$this->uploadImage();
+	//		}
+	//		$save = parent::save($options);
+	//		if (!$save) {
+	//			if (method_exists($this, 'removeImage') && $this->isAutoUploadImage()) {
+	//				$this->removeImage();
+	//			}
+	//
+	//			return false;
+	//		}
+	//		$this->afterSave();
+	//
+	//		return $save;
+	//	}
 
 	/**
 	 * @return bool
@@ -203,9 +206,9 @@ trait ModelTrait
 	 * @param int $value
 	 * @return Builder
 	 */
-//	public function whereIsActive($value = 1) {
-//		return self::where('is_active', $value);
-//	}
+	//	public function whereIsActive($value = 1) {
+	//		return self::where('is_active', $value);
+	//	}
 
 	/**
 	 * @return int|string
@@ -229,9 +232,7 @@ trait ModelTrait
 	 * @return \Illuminate\Contracts\Routing\UrlGenerator|string
 	 */
 	public function getUrlSlugAndId($prefix = '', $params = []) {
-		if (!empty($prefix)) {
-			$prefix .= '/';
-		}
+		$prefix = str_finish($prefix, '/');
 
 		return url($prefix . $this->getSlugAndId(), $params);
 	}
@@ -242,10 +243,7 @@ trait ModelTrait
 	 * @return \Illuminate\Contracts\Routing\UrlGenerator|string
 	 */
 	public function getUrlSlug($prefix = '', $params = '') {
-
-		if (!empty($prefix)) {
-			$prefix .= '/';
-		}
+		$prefix = str_finish($prefix, '/');
 
 		return url($prefix . $this->{$this->fieldSlug()}, $params);
 	}

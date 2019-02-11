@@ -38,13 +38,17 @@ trait ModelUploadTrait
 	protected $folder = '';
 
 	/**
-	 * @var int
+	 * @var string
 	 */
-	protected $maxImageWidth = 0;
-	/**
-	 * @var int
-	 */
-	protected $maxImageHeight = 0;
+	protected $default_image = '';
+	//	/**
+	//	 * @var int
+	//	 */
+	//	protected $maxImageWidth = 0;
+	//	/**
+	//	 * @var int
+	//	 */
+	//	protected $maxImageHeight = 0;
 
 	/**
 	 * @param $folder
@@ -82,6 +86,10 @@ trait ModelUploadTrait
 			$folder = $this->folder();
 		}
 
+		if (!empty($this->getDefaultImage())) {
+			$default_image = $this->getDefaultImage();
+		}
+
 		return CFile::getImageUrl($folder, $this->{$field_image}, $default_image);
 	}
 
@@ -94,6 +102,10 @@ trait ModelUploadTrait
 	public function getImageUrl($folder = '', $field_image = 'image', $default_image = \App\Commons\CFile::DEFAULT_NO_IMAGE) {
 		if (empty($folder)) {
 			$folder = $this->folder();
+		}
+
+		if (!empty($this->getDefaultImage())) {
+			$default_image = $this->getDefaultImage();
 		}
 
 		return CFile::getImageUrl($folder, $this->{$field_image}, $default_image);
@@ -302,6 +314,8 @@ trait ModelUploadTrait
 
 	/**
 	 * @return int
+	 * property auto create from method call in ModelBase
+	 * @see ModelBaseTrait
 	 */
 	public function getMaxImageWidth(): int {
 		return $this->maxImageWidth;
@@ -316,6 +330,8 @@ trait ModelUploadTrait
 
 	/**
 	 * @return int
+	 * property auto create from method call in ModelBase
+	 * @see ModelBaseTrait
 	 */
 	public function getMaxImageHeight(): int {
 		return $this->maxImageHeight;
@@ -326,5 +342,19 @@ trait ModelUploadTrait
 	 */
 	public function setMaxImageHeight(int $maxImageHeight): void {
 		$this->maxImageHeight = $maxImageHeight;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getDefaultImage(): string {
+		return $this->default_image;
+	}
+
+	/**
+	 * @param string $default_image
+	 */
+	public function setDefaultImage(string $default_image): void {
+		$this->default_image = $default_image;
 	}
 }

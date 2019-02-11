@@ -2,71 +2,84 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Jobs\SendMailRegisterJob;
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+	/*
+	|--------------------------------------------------------------------------
+	| Register Controller
+	|--------------------------------------------------------------------------
+	|
+	| This controller handles the registration of new users as well as their
+	| validation and creation. By default this controller uses a trait to
+	| provide this functionality without requiring any additional code.
+	|
+	*/
 
-    use RegistersUsers;
+	use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+	/**
+	 * Where to redirect users after registration.
+	 * @var string
+	 */
+	protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+	/**
+	 * Create a new controller instance.
+	 * @return void
+	 */
+	public function __construct() {
+		$this->middleware('guest');
+		view()->share('current_method', 'index');
+	}
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-    }
+	/**
+	 * Get a validator for an incoming registration request.
+	 * @param  array $data
+	 * @return \Illuminate\Contracts\Validation\Validator
+	 */
+	protected function validator(array $data) {
+		return Validator::make($data, [
+			'name'        => 'required|string|max:255',
+			'email'       => 'required|string|email|max:255|unique:users',
+			'password'    => 'required|string|min:6',
+			're-password' => 'required|string|min:6|same:password',
+			'phone'       => 'required|min:10|numeric'
+		]);
+	}
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
+	/**
+	 * Create a new user instance after a valid registration.
+	 * @param  array $data
+	 * @return \App\User
+	 */
+	protected function create(array $data) {
+		return User::create([
+			'name'       => $data['name'],
+			'email'      => $data['email'],
+			'username'   => $data['email'],
+			'phone'      => $data['phone'],
+			'password'   => $data['password'],
+			'role'       => 10,
+			'authen_key' => base64_encode(strtotime("+3days"))
+		]);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param         $user
+	 */
+	protected function registered(Request $request, $user) {
+		//send email here
+		$this->dispatch(new SendMailRegisterJob($user, $request->password));
+	}
 }

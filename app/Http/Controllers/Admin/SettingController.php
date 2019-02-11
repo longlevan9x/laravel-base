@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admins;
+use App\Models\Facade\SettingFacade;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,6 @@ class SettingController extends Controller
 	public function __construct(Setting $model) {
 		$this->model = $model;
 		parent::__construct();
-		$this->setRoleExcept(Admins::ROLE_AUTHOR);
 	}
 
 	/**
@@ -36,9 +36,9 @@ class SettingController extends Controller
 	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
 	public function store(Request $request) {
-		$this->model->setModel($request);
-		$check = $this->model->save();
+		$model = SettingFacade::prepareKeyValues($request->all(), ['autoload' => 1]);
+		$model->prepareKeyValueUploads([config('common.settings.keys._background_login')], ['autoload' => 1])->saveModel();
 
-		return $this->redirectWithModel(url_admin('setting'), $check, $this->model);
+		return $this->redirectWithMessage(url_admin('setting'), $model, __("admin.update"). " " .  __('message.success'), __("admin.update"). " " .  __('message.error'));
 	}
 }

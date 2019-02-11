@@ -29,5 +29,5 @@
     @else
         <span class="glyphicon {{$icon}}"></span>
     @endif
-    {{$text or ""}}
+    {{$text ?? ""}}
 </a>

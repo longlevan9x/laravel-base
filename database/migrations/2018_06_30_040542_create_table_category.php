@@ -6,40 +6,36 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateTableCategory extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('categories', function(Blueprint $table) {
-        	$table->increments('id');
-        	$table->integer('parent_id')->default(0);
-        	$table->string('image')->nullable();
-        	$table->string('name');
-        	$table->string('slug')->nullable();
-        	$table->tinyInteger('is_active')->default(0);
-        	$table->tinyInteger('is_detail')->default(0)->nullable();
-        	$table->tinyInteger('is_home')->default(0)->nullable();
-        	$table->integer('sort_order')->default(0);
-        	$table->string('status', 50)->nullable();
-        	$table->string('description')->nullable();
-	        $table->string('seo_title', 500)->nullable();
-	        $table->string('seo_keyword', 500)->nullable();
-	        $table->text('seo_description')->nullable();
-        	$table->string('path')->nullable()->comment('folder file');
-        	$table->timestamps();
-        });
-    }
+	/**
+	 * Run the migrations.
+	 * @return void
+	 */
+	public function up() {
+		Schema::create('categories', function(Blueprint $table) {
+			$table->increments('id');
+			$table->integer('parent_id')->default(0);
+			$table->string('image')->nullable();
+			$table->string('name')->nullable();
+			$table->string('slug')->nullable();
+			$table->tinyInteger('is_active')->default(0);
+			$table->tinyInteger('is_detail')->default(0)->nullable();
+			$table->tinyInteger('is_home')->default(0)->nullable();
+			$table->integer('sort_order')->default(0);
+			$table->string('status', 50)->nullable();
+			$table->string('description')->nullable();
+			$table->string('seo_title', 500)->nullable();
+			$table->string('seo_keyword', 500)->nullable();
+			$table->text('seo_description')->nullable();
+			$table->string('path')->nullable()->comment('folder file');
+			$table->timestamps();
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        //
-    }
+	/**
+	 * Reverse the migrations.
+	 * @return void
+	 */
+	public function down() {
+		Schema::dropIfExists('categories');
+	}
 }

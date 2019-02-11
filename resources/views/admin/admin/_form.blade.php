@@ -5,11 +5,14 @@
  * Date: 5/7/2018
  * Time: 10:56 PM
  */
+/**
+ * @var \App\Models\Admins $model
+ */
 ?>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
-            @include('admin.layouts.title_form', ['title' => __('admin/menu.add user')])
+            @include('admin.layouts.title_form', ['title' => __('admin/menu.add user'), 'small_title' => '12'])
             <div class="x_content">
                 {{ Form::model(isset($model) ? $model : null, [
                     'url' => \App\Http\Controllers\Admin\AdminController::getUrlAdmin(isset($model) ? $model->id : ''),
@@ -31,7 +34,7 @@
                             <span class="required">*</span> @endif</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         {!! Form::password('password', ['class' => 'form-control col-md-7 col-xs-12', 'id' => 'password']) !!}
-                        @if(isset($model) && !empty($model))
+                        @if(isset($model->password) && !empty($model->password))
                             <p class="help-inline">{{__('auth.blank textbox. if you not change password')}}</p>
                         @endif
                     </div>
@@ -51,7 +54,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="role"> {{__('admin/user.role')}}</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        {!! Form::select('role', \App\Models\Admins::getCollectionRoles(), $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'role']) !!}
+                        {!! Form::select('role', $roles, $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'role']) !!}
                     </div>
                 </div>
                 <div class="form-group">

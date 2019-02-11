@@ -3,10 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Commons\Facade\CFile;
-use App\Commons\Facade\CUser;
-use App\Models\Admins;
-use App\Models\Contact;
-use App\Models\Post;
 use App\Models\Traits\ModelMethodTrait;
 use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
@@ -14,8 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -24,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class Controller extends \App\Http\Controllers\Controller
 {
+	protected $guard = 'admin';
 	/**
 	 * @var
 	 */
@@ -32,72 +28,39 @@ class Controller extends \App\Http\Controllers\Controller
 	 * @var \Illuminate\Contracts\Auth\Authenticatable|null
 	 */
 	protected $user = null;
-	/**
-	 * @var \App\Commons\CUser|null
-	 */
-	protected $cUser = null;
-	/**
-	 * @var array
-	 */
-	protected $role       = [Admins::ROLE_ALL];
-	protected $roleExcept = 0;
 
 	/**
 	 * Controller constructor.
 	 */
 	public function __construct() {
-		$this->cUser = new \App\Commons\CUser;
 		$this->middleware(function($request, $next) {
 			$this->user = Auth::user();
-			$this->cUser->setUser($this->user);
-			$this->role($this->getRole(), $this->getRoleExcept());
+			/** @var Request $request */
+			//			$this->user = $request->user($this->getGuard());
 
 			return $next($request);
 		});
-
-	}
-
-	/**
-	 * @param string|int|array $role
-	 * @param string           $roleExcept
-	 * @return void
-	 */
-	public function role($role = Admins::ROLE_ALL, $roleExcept = '') {
-		if (!$this->cUser->checkRole($role, $roleExcept)) {
-			throw new HttpException(401, "You do not have permission to access this url.");
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	protected function checkRole() {
-		$this->role($this->getRole(), $this->getRoleExcept());
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getRole() {
-		return $this->role;
-	}
-
-	public function setRole($role) {
-		$this->role = $role;
+	public function getModel() {
+		return $this->model;
 	}
 
 	/**
-	 * @return string|array
+	 * @param mixed $model
 	 */
-	public function getRoleExcept() {
-		return $this->roleExcept;
+	public function setModel($model): void {
+		$this->model = $model;
 	}
 
 	/**
-	 * @param string|array $roleExcept
+	 * @return null
 	 */
-	public function setRoleExcept($roleExcept) {
-		$this->roleExcept = $roleExcept;
+	protected function getGuard() {
+		return property_exists($this, 'guard') ? $this->guard : null;
 	}
 
 	/**
@@ -124,6 +87,42 @@ class Controller extends \App\Http\Controllers\Controller
 		}
 
 		return responseJson('fail');
+	}
+
+	/**
+	 * @param      $action
+	 * @param null $object
+	 * @return bool
+	 */
+	protected function before($action, $object = null) {
+		switch ($action) {
+			case 'index':
+			case 'show':
+			case 'type':
+				$action = 'index';
+				break;
+			case 'create':
+			case 'store':
+				$action = 'create';
+				break;
+			case 'edit':
+			case 'update':
+				$action = 'edit';
+				break;
+			case 'destroy':
+				$action = 'destroy';
+				break;
+		}
+
+		if (!$object) {
+			$object = $this->getModel();
+		}
+
+		if ($this->user->cannot($action, $object)) {
+			return abort(Response::HTTP_FORBIDDEN, __('repositories.text.forbiden_to_perform'));
+		}
+
+		return true;
 	}
 
 	/**
@@ -155,9 +154,12 @@ class Controller extends \App\Http\Controllers\Controller
 			else {
 				$path = $item->getTable();
 			}
-			$files = $item->getKeyImageUpload();
-			foreach ($files as $k_f => $file) {
-				CFile::removeFile($path, $item->{$file});
+
+			if (method_exists($item, 'getKeyImageUpload')) {
+				$files = $item->getKeyImageUpload();
+				foreach ($files as $k_f => $file) {
+					CFile::removeFile($path, $item->{$file});
+				}
 			}
 		});
 
@@ -168,6 +170,10 @@ class Controller extends \App\Http\Controllers\Controller
 		return redirect()->back()->with('fail', __('message.delete fail'));
 	}
 
+	/**
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function bulk(Request $request) {
 		$table = $request->table;
 		$key   = $request->key;
@@ -209,19 +215,29 @@ class Controller extends \App\Http\Controllers\Controller
 		$current_method = $this->getCurrentMethod();
 		$current_method = in_array($current_method, ['store', 'update', 'destroy']) ? __('admin.' . $current_method) : $current_method;
 		if ($check) {
-			$mess = ($message[0][0] ?? $current_method);
+			$mess = ($message[0] ?? $current_method);
 			$type = 'success';
 		}
 		else {
-			$mess = ($message[0][1] ?? $current_method);
+			$mess = ($message[1] ?? $current_method);
 			$type = 'error';
 		}
 
 		return redirect($to, 302, [], null)->with($type, $mess);
 	}
 
+	/**
+	 * @param null $to
+	 * @param bool $check
+	 * @param null $model
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	protected function redirectWithModel($to = null, $check = false, $model = null) {
 		$obj = $model;
+
+		if ($model == null) {
+			$obj = $this->getModel();
+		}
 
 		$text = '';
 		if ($obj instanceof Model) {

@@ -7,13 +7,20 @@ return [
 	| Admin Language Lines
 	|--------------------------------------------------------------------------
 	*/
+	'buttons' => [
+		'submit' => 'Gửi',
+		'update' => 'Cập nhật',
+		'save'   => "Lưu",
+		'reset'  => 'Reset',
+		'cancel' => 'Hủy bỏ',
+		'back'   => 'Trở lại',
+		'edit'   => "Chỉnh sửa",
+	],
 
-	'submitButton'    => 'Gửi',
-	'updateButton'    => 'Cập nhật',
-	'saveButton'      => "Lưu",
-	'resetButton'     => 'Reset',
-	'cancelButton'    => 'Hủy bỏ',
-	'backButton'      => 'Trở lại',
+	'label' => [
+		'edit' => "Chỉnh sửa",
+	],
+
 	'welcome'         => 'Chào mừng',
 	'Hello'           => "Xin chào",
 	'setting'         => 'Cài đặt',
@@ -80,6 +87,10 @@ return [
 	'lang_vi' => "Tiếng việt",
 
 	'store'   => 'Thêm mới',
-	'destroy' => "Xóa"
+	'destroy' => "Xóa",
+	'lang'    => [
+		'en' => "Tiếng anh",
+		'vi' => "Tiếng việt"
+	]
 
 ];

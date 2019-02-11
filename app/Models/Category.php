@@ -6,6 +6,7 @@ use App\Models\Traits\ModelMethodTrait;
 use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
 use Carbon\Carbon;
+use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -14,17 +15,17 @@ use Illuminate\Support\Collection;
  * Class Category
  *
  * @package App\Models
- * @property string      $type
- * @property int         $is_active
- * @property int         $id
- * @property string|null $image
- * @property string|null $slug
- * @property string|null $status
- * @property string|null $description
- * @property string|null $path
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property-read Admins $authorUpdated
+ * @property string                                                                          $type
+ * @property int                                                                             $is_active
+ * @property int                                                                             $id
+ * @property string|null                                                                     $image
+ * @property string|null                                                                     $slug
+ * @property string|null                                                                     $status
+ * @property string|null                                                                     $description
+ * @property string|null                                                                     $path
+ * @property Carbon|null                                                                     $created_at
+ * @property Carbon|null                                                                     $updated_at
+ * @property-read Admins                                                                     $authorUpdated
  * @method static Builder|Category findSimilarSlugs($attribute, $config, $slug)
  * @method static Builder|Category whereCreatedAt($value)
  * @method static Builder|Category whereDescription($value)
@@ -41,32 +42,51 @@ use Illuminate\Support\Collection;
  * @method static Builder|Category sortOrder()
  * @method static Builder|Category active()
  * @mixin \Eloquent
- * @property int         $parent_id
- * @property string      $name
- * @property int|null    $sort_order
- * @property string|null $seo_title
- * @property string|null $seo_keyword
- * @property string|null $seo_description
+ * @property int                                                                             $parent_id
+ * @property string                                                                          $name
+ * @property int|null                                                                        $sort_order
+ * @property string|null                                                                     $seo_title
+ * @property string|null                                                                     $seo_keyword
+ * @property string|null                                                                     $seo_description
  * @method static Builder|Category inActive()
  * @method static Builder|Category whereSeoDescription($value)
  * @method static Builder|Category whereSeoKeyword($value)
  * @method static Builder|Category whereSeoTitle($value)
  * @method static Builder|Category whereType($value = '')
- * @property-read Admins $author
+ * @property-read Admins                                                                     $author
  * @method static Builder|Category orderBySortOrder()
  * @method static Builder|Category orderBySortOrderDesc()
- * @property int|null    $block_id
- * @property int|null    $is_detail
- * @property int|null    $is_home
+ * @property int|null                                                                        $block_id
+ * @property int|null                                                                        $is_detail
+ * @property int|null                                                                        $is_home
  * @method static Builder|Category whereBlockId($value)
  * @method static Builder|Category whereIsDetail($value)
  * @method static Builder|Category whereIsHome($value)
  * @method static Builder|Category myPluck($column, $key = null, $title = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category query()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CategoryTranslation[] $translations
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category listsTranslations($translationField)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category notTranslatedIn($locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category orWhereTranslation($key, $value, $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category orWhereTranslationLike($key, $value, $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category orderByTranslation($key, $sortmethod = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category translated()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category translatedIn($locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereTranslation($key, $value, $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category whereTranslationLike($key, $value, $locale = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category withTranslation()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category withTranslations()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relationship[] $relationships
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Category postTime($time = '')
  */
 class Category extends Model
 {
 	use ModelTrait;
 	use ModelUploadTrait;
+	use Translatable;
+
 	const TYPE_CATEGORY = 'category';
 	protected $fillable = [
 		'parent_id',
@@ -85,6 +105,24 @@ class Category extends Model
 		'seo_keyword',
 		'seo_description'
 	];
+
+	public $translatedAttributes = [
+		'name',
+		'description',
+		'seo_title',
+		'seo_keyword',
+		'seo_description'
+	];
+
+	/**
+	 * Category constructor.
+	 * @param array $attributes
+	 */
+	public function __construct(array $attributes = []) {
+		parent::__construct($attributes);
+		$this->setMaxImageWidth(500);
+		$this->setMaxImageHeight(500);
+	}
 
 	/**
 	 * @param string $column
@@ -178,12 +216,12 @@ class Category extends Model
 		return $this->type;
 	}
 
-//	/**
-//	 * @return Builder
-//	 */
-//	public function newQuery() {
-//		return parent::newQuery()->whereType($this->getType()); // TODO: Change the autogenerated stub
-//	}
+	//	/**
+	//	 * @return Builder
+	//	 */
+	//	public function newQuery() {
+	//		return parent::newQuery()->whereType($this->getType()); // TODO: Change the autogenerated stub
+	//	}
 
 	/**
 	 * @param Builder $query
@@ -212,5 +250,13 @@ class Category extends Model
 	 */
 	public function scopeSortOrder($query) {
 		return $query->orderBy('sort_order');
+	}
+
+	/**
+	 * @param $modelClass
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function relations($modelClass) {
+		return $this->hasMany($modelClass)->withTranslation();
 	}
 }

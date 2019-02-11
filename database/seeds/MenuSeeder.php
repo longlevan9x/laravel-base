@@ -10,61 +10,46 @@ class MenuSeeder extends Seeder
 	 * @throws Exception
 	 */
 	public function run() {
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Tin Tức";
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+		DB::table('menu_translations')->truncate();
+		DB::table('menus')->truncate();
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+		$menu             = new \App\Models\Menu;
+		$menu->name       = "Tin tức";
 		$menu->is_active  = 1;
-		$menu->slug       = 'tin-tuc';
+		$menu->url        = 'tin-tuc';
 		$menu->sort_order = 1;
 		$menu->save();
-
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Sản phẩm";
+		$menu             = new \App\Models\Menu;
+		$menu->name       = "Bán hàng";
 		$menu->is_active  = 1;
-		$menu->slug       = 'san-pham';
+		$menu->url        = 'san-pham';
 		$menu->sort_order = 1;
 		$menu->save();
-
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Các loại bệnh";
+		$menu             = new \App\Models\Menu;
+		$menu->name       = "Ý kiến khách hàng";
 		$menu->is_active  = 1;
-		$menu->type       = 'category';
-		$menu->slug       = '#';
+		$menu->url        = 'y-kien-khach-hang';
 		$menu->sort_order = 1;
 		$menu->save();
-
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Chia sẻ của mẹ";
-		$menu->slug       = 'chia-se';
-		$menu->sort_order = 2;
+		$menu             = new \App\Models\Menu;
+		$menu->name       = "Tuyển dụng";
 		$menu->is_active  = 1;
+		$menu->url        = 'tuyen-dung';
+		$menu->sort_order = 1;
 		$menu->save();
-
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Chuyên gia";
-		$menu->slug       = 'chuyen-gia';
-		$menu->sort_order = 2;
+		$menu             = new \App\Models\Menu;
+		$menu->name       = "Dịch vụ";
 		$menu->is_active  = 1;
+		$menu->url        = 'dich-vu';
+		$menu->sort_order = 1;
 		$menu->save();
-
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Hỏi đáp";
-		$menu->slug       = 'hoi-dap';
-		$menu->sort_order = 2;
+		$menu             = new \App\Models\Menu;
+		$menu->name       = "Giới thiệu";
 		$menu->is_active  = 1;
-		$menu->save();
-
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Hệ thống nhà thuốc";
-		$menu->slug       = 'he-thong-nha-thuoc';
-		$menu->sort_order = 2;
-		$menu->is_active  = 1;
-		$menu->save();
-
-		$menu             = new \App\Models\Category();
-		$menu->name      = "Đặt hàng";
-		$menu->slug       = 'dat-hang';
-		$menu->sort_order = 2;
-		$menu->is_active  = 1;
+		$menu->url        = 'gioi-thieu';
+		$menu->sort_order = 1;
 		$menu->save();
 	}
 }

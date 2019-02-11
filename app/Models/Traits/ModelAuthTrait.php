@@ -21,4 +21,13 @@ trait ModelAuthTrait
 	public function generatePassword() {
 		return $this->password = Hash::make($this->password);
 	}
+
+	/**
+	 * @param $password
+	 */
+	public function setPasswordAttribute($password) {
+		if (!empty($password)) {
+			$this->attributes['password'] = bcrypt($password);
+		}
+	}
 }

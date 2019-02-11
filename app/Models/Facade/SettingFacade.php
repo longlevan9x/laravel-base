@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\Facade;
  * @package App\Models\Facade
  * @method static Setting prepareKeyValues(array $keyValues, array $options = [])
  * @method static Setting fillKeyValues(array $keys, array $data = [])
- * @method static Setting loadModelByKey(string|array $key = '')
+ * @method static Setting loadModelByKey(string | array $key = '')
  * @method static Setting getValue(string $key = '')
  * @method static Setting setKeyFillable(...$key)
- * @see Setting
+ * @method static string getLanguage()
+ * @see     Setting
  */
 class SettingFacade extends Facade
 {

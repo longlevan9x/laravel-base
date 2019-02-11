@@ -28,7 +28,8 @@ return [
 	'quantity'            => 'Số lượng',
 	'title'               => "Tiêu đề",
 	'content'             => "Nội dung",
-	'is_active'           => 'Tình trạng',
+	'is_active'           => 'Trạng thái',
+	'is_comment'          => 'TT.Bình luận',
 	'is_home'             => 'Hiện trang chủ',
 	'is_detail'           => 'Là chi tiết',
 	'created date'        => "Ngày tạo",
@@ -49,6 +50,10 @@ return [
 	'select image'        => 'Chọn ảnh',
 	'cover image'         => "Ảnh bìa",
 	'user create'         => "Người tạo",
+	'author'              => 'Người tạo',
+    'price'               => "Giá",
+    'sale_price'          => "Giá bán ra",
+	'abilities' => 'Quyền hạn',
 
 	'add'             => "Thêm",
 	'tag'             => 'Tag',
@@ -76,4 +81,15 @@ return [
 	'approved'   => "Đã duyệt",
 	'show'       => "Hiển thị",
 	'hide'       => "Ẩn",
+
+	'label' => [
+		'code' => "Mã",
+		'is'   => [
+			'active'  => "Trạng thái",
+			'home'    => "Hiện trang chủ",
+			'detail'  => "Là chi tiết",
+			'default' => "Là mặc định",
+			'comment' => "TT. Bình luận"
+		]
+	]
 ];

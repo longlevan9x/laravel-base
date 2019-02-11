@@ -6,6 +6,7 @@ use App\Commons\Facade\CFile;
 use App\Commons\Facade\CUser;
 use App\Http\Requests\AdminRequest;
 use App\Models\Admins;
+use Bouncer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -16,13 +17,11 @@ use Illuminate\Support\Str;
  */
 class AdminController extends Controller
 {
-	protected $_role = [Admins::ROLE_SUPER_ADMIN, Admins::ROLE_ADMIN, Admins::ROLE_MANAGEMENT];
+	protected $roles = [];
 
 	public function __construct() {
 		parent::__construct();
-		if (!in_array($this->getCurrentMethod(), ['show_profile', 'update_profile', 'change_password'])) {
-			$this->setRoleExcept(Admins::ROLE_AUTHOR);
-		}
+		$this->roles = Bouncer::Role()->pluck('name', 'id');
 	}
 
 	/**
@@ -75,7 +74,8 @@ class AdminController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$models = Admins::where('id', '<>', CUser::userAdmin()->id)->where('role', "<", CUser::userAdmin()->role)->get();
+		$this->before(__FUNCTION__);
+		$models = Admins::where('id', '<>', CUser::userAdmin()->id)->where('role', ">", CUser::userAdmin()->role)->get();
 
 		return view('admin.admin.index', compact('models'));
 	}
@@ -85,23 +85,26 @@ class AdminController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
+		$this->before(__FUNCTION__);
 		$model = new Admins;
+		$roles = $this->roles;
 
-		return view('admin.admin.create', compact('model'));
+		return view('admin.admin.create', compact('model', 'roles'));
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 * @param AdminRequest $request
-	 * @return \Illuminate\Http\Response
-	 * @throws \Exception
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function store(AdminRequest $request) {
+		$this->before(__FUNCTION__);
 		$model = new Admins;
 		$model->fill($request->all());
-		$model->generatePassword();
-		$model->setAuthor_id();
+		//$model->generatePassword();
+		//$model->setAuthor_id();
 		$check = $model->save();
+		$model->roles()->sync($request->role);
 
 		return $this->redirectWithModel(self::getUrlAdmin(), $check, $model);
 	}
@@ -112,6 +115,7 @@ class AdminController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show(Admins $admin) {
+		$this->before(__FUNCTION__);
 		$model = $admin;
 
 		return view('admin.admin.view', compact('model'));
@@ -123,9 +127,11 @@ class AdminController extends Controller
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function edit(Admins $admin) {
+		$this->before(__FUNCTION__);
 		$model = $admin;
+		$roles = $this->roles;
 
-		return view('admin.admin.update', compact('model'));
+		return view('admin.admin.update', compact('model', 'roles'));
 	}
 
 	/**
@@ -136,10 +142,12 @@ class AdminController extends Controller
 	 * @throws \Exception
 	 */
 	public function update(AdminRequest $request, Admins $admin) {
+		$this->before(__FUNCTION__);
 		$admin->fill($request->all());
-		$admin->generatePassword();
-		$admin->setAuthor_id();
+		//$admin->generatePassword();
+
 		$check = $admin->save();
+		$admin->roles()->sync($request->role);
 
 		return $this->redirectWithModel(self::getUrlAdmin(), $check, $admin);
 	}
@@ -151,8 +159,16 @@ class AdminController extends Controller
 	 * @throws \Exception
 	 */
 	public function destroy(Admins $admin) {
+		$this->before(__FUNCTION__);
 		$check = $admin->delete();
 
 		return $this->redirectWithModel(self::getUrlAdmin(), $check, $admin);
+	}
+
+	/**
+	 * @return Admins|mixed
+	 */
+	public function getModel() {
+		return new Admins();
 	}
 }

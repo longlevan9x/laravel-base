@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Menu;
 
 use App\Commons\Facade\CUser;
 use App\Models\Admins;
+use Bouncer;
 use Illuminate\Support\Facades\View;
 
 class AdminMenu
@@ -20,7 +21,7 @@ class AdminMenu
 	 * @return void
 	 */
 	public static function render() {
-		View::share('menus', (new self)->menu());
+		View::share('menusAdmin', (new self)->menu());
 	}
 
 	/**
@@ -36,7 +37,7 @@ class AdminMenu
 	public function menu() {
 		$controller = request()->segment(2);
 		$action     = request()->segment(3);
-
+//dd(\Auth::user(),  can_index('post'),  Bouncer::can('contact'));
 		return [
 			/*Dashboard*/
 			[
@@ -56,100 +57,50 @@ class AdminMenu
 				'children' => []
 			],
 			/*Profile*/
-			/*Tags*/
+			/*Admin*/
 			[
-				'name'     => __('admin/menu.tag'),
+				'name'     => __("abilities.admin.name"),
 				'url'      => '#',
-				'visible'  => true,
-				'active'   => $controller == 'tag' && $action > 0,
-				'icon'     => 'fa-list-alt',
-				'children' => [
-					[
-						'name'    => __('admin/menu.list'),
-						'url'     => url_admin('tag'),
-						'visible' => true,
-						'icon'    => 'fa-bullhorn',
-					],
-					[
-						'name'    => __('admin/menu.add'),
-						'url'     => url_admin('tag/create'),
-						'visible' => true,
-						'icon'    => 'fa-plus',
-					]
-				]
-			],
-			/*Tags*/
-			/*Category*/
-			[
-				'name'     => __('admin/menu.category'),
-				'url'      => '#',
-				'visible'  => true,
-				'active'   => $controller == 'category' && $action > 0,
-				'icon'     => 'fa-list-alt',
-				'children' => [
-					[
-						'name'    => __('admin/menu.list'),
-						'url'     => url_admin('category'),
-						'visible' => true,
-						'icon'    => 'fa-bullhorn',
-					],
-					[
-						'name'    => __('admin/menu.add'),
-						'url'     => url_admin('category/create'),
-						'visible' => true,
-						'icon'    => 'fa-plus',
-					]
-				]
-			],
-			/*Category*/
-			/*Page*/
-			[
-				'name'     => __("admin/menu.page"),
-				'url'      => '#',
-				'visible'  => true,
-				'active'   => in_array($controller, ['answer', 'advice', 'share']) && $action > 0,
-				'icon'     => 'fa-file-powerpoint-o',
-				'children' => [
-				]
-			],
-			/*Page*/
-			/*contact*/
-			[
-				'name'     => __("admin/menu.contact"),
-				'url'      => url_admin('contact'),
-				'visible'  => CUser::checkRole([Admins::ROLE_SUPER_ADMIN, Admins::ROLE_ADMIN]),
-				'icon'     => 'fa-bell-o',
-				'children' => []
-			],
-			/*contact*/
-			/*User*/
-			[
-				'name'     => __("admin/menu.users"),
-				'url'      => '#',
-				'visible'  => CUser::checkRole([Admins::ROLE_SUPER_ADMIN, Admins::ROLE_ADMIN]),
+				'visible'  => can_index('admin'),
 				'icon'     => 'fa-users',
 				'children' => [
 					[
-						'name'    => __("admin/menu.list user"),
+						'name'    => __("admin/menu.list"),
 						'url'     => url_admin('admin'),
 						'visible' => true,
 						'icon'    => 'fa-user-circle',
 					],
 					[
-						'name'    => __("admin/menu.add user"),
+						'name'    => __("admin/menu.add"),
 						'url'     => url_admin('admin/create'),
 						'visible' => true,
 						'icon'    => 'fa-plus',
 					],
 				]
 			],
+			/*Admin*/
 			/*User*/
 			[
-				'name'    => __("Video"),
-				'url'     => url_admin('website/video'),
-				'visible' => true,
-				'icon'    => 'fa-rss-square',
+				'name'     => __("abilities.user.name"),
+				'url'      => '#',
+				'visible'  => can_index('user'),
+				'icon'     => 'fa-users',
+				'children' => [
+					[
+						'name'    => __("admin/menu.list"),
+						'url'     => url_admin('user'),
+						'visible' => true,
+						'icon'    => 'fa-user-circle',
+					],
+					[
+						'name'    => __("admin/menu.add"),
+						'url'     => url_admin('user/create'),
+						'visible' => true,
+						'icon'    => 'fa-plus',
+					],
+				]
 			],
+			/*User*/
 			/*Website*/
 			[
 				'name'     => __("admin/menu.website"),
@@ -160,13 +111,13 @@ class AdminMenu
 					[
 						'name'    => __("admin/menu.config"),
 						'url'     => url_admin('website/config'),
-						'visible' => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
+						'visible' => Bouncer::can('website-config'),
 						'icon'    => 'fa-home',
 					],
 					[
 						'name'    => __("admin/menu.slide"),
 						'url'     => url_admin('slide'),
-						'visible' => true,
+						'visible' => can_index('slide'),
 						'icon'    => 'fa-rss-square',
 					],
 					[
@@ -178,36 +129,68 @@ class AdminMenu
 					[
 						'name'    => __("admin/menu.menu"),
 						'url'     => url_admin('menu'),
-						'visible' => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
+						'visible' => can_index('menu'),
 						'icon'    => 'fa-bars',
 					],
+					/*Comment*/
 					[
-						'name'    => __("admin/menu.comment"),
+						'name'    => __("repositories.menu.comment.name"),
 						'url'     => url_admin('comment'),
-						'visible' => CUser::checkRole(Admins::ROLE_ALL, Admins::ROLE_AUTHOR),
+						'visible' => can_index('comment'),
 						'icon'    => 'fa-bars',
 					]
+					/*Comment*/
 				]
 			],
 			/*Website*/
-			/*Setting*/
+			/*Config*/
 			[
-				'name'     => __("admin/menu.setting"),
-				'url'      => url_admin('setting'),
-				'visible'  => CUser::checkRole([Admins::ROLE_SUPER_ADMIN, Admins::ROLE_ADMIN]),
+				'name'     => __("admin/menu.config"),
+				'url'      => '#',
+				'visible'  => true,
 				'icon'     => 'fa-cog',
-				'children' => []
+				'children' => [
+					/*Setting*/
+					[
+						'name'     => __("admin/menu.setting"),
+						'url'      => url_admin('setting'),
+						'visible'  => Bouncer::can('admin-setting'),
+						'icon'     => 'fa-cog',
+						'children' => []
+					],
+					/*Setting*/
+					/*Role*/
+					[
+						'name'     => __("abilities.role.name"),
+						'url'      => url_admin('role'),
+						'visible'  => can_index('role'),
+						'icon'     => 'fa-cog',
+						'children' => []
+					],
+					/*Role*/
+					/*Translation*/
+					[
+						'name'     => __("abilities.translation-manager"),
+						'url'      => url('translation-manager'),
+						'visible'  => can_index('role'),
+						'icon'     => 'fa-cog',
+						'children' => []
+					],
+					/*Translation*/
+				]
 			],
-			/*Setting*/
-			/*Setting*/
+
+
+			/*Config*/
+			/*Cache*/
 			[
 				'name'     => __("Refresh Cache"),
 				'url'      => url_admin('refresh-cache'),
 				'visible'  => true,
-				'icon'     => 'fa-cog',
+				'icon'     => 'fa-refresh',
 				'children' => []
 			],
-			/*Setting*/
+			/*Cache*/
 		];
 	}
 }

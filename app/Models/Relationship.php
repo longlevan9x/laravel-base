@@ -33,6 +33,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Relationship whereRelation1Id($value)
  * @method static Builder|Relationship whereRelation2Id($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relationship myPluck($column, $key = null, $title = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relationship newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relationship newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relationship query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relationship withTranslations()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relationship[] $relationships
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Relationship postTime($time = '')
  */
 class Relationship extends Model
 {

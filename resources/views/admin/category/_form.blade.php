@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
-            @include('admin.layouts.title_form', ['title' => __('admin/category.add category')])
+            @include('admin.layouts.title_form', ['title' => __('admin/category.add_category')])
             <div class="x_content">
                 {{ Form::model(isset($model) ? $model : null, [
                     'url' => \App\Http\Controllers\Admin\CategoryController::getUrlAdmin(isset($model) ? $model->id : ''),
@@ -25,6 +25,7 @@
                         {{--{!! Form::select('parent_id', \App\Models\Category::pluckWithCategory('name', 'id'), $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'parent_id']) !!}--}}
                     {{--</div>--}}
                 {{--</div>--}}
+                {{Form::hidden('type', $value = ($type ?? null))}}
                 <div class="col-md-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -33,13 +34,13 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">@lang('admin/category.name')<span class="required">*</span></label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-9 col-sm-9 col-xs-12">
                             {!! Form::text('name', $value = null,['required' => "required", 'class' => 'form-control col-md-7 col-xs-12', 'id' => 'name']) !!}
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="slug">@lang('admin/category.slug')</label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-9 col-sm-9 col-xs-12">
                             {!! Form::text('slug', $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'slug']) !!}
                             <p class="help-block">@lang('admin/category.will be automatically generated from your title, if left empty.')</p>
                         </div>
@@ -56,6 +57,13 @@
                         </div>
                     </div>
                     @include('admin.layouts.widget.form.image-col-6', ['model' => $model ?? null])
+                    <div class="form-group">
+                        <label class=" control-label col-md-3 col-sm-3 col-xs-12" for="editor">@lang('admin/common.description')</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            {!! Form::textarea('description', $value = null,['class' => 'form-control col-md-7 col-xs-12', 'id' => 'editor1' , 'height' => 250]) !!}
+                        </div>
+                    </div>
+
                 </div>
                 <div class="col-md-4">
                     {{--Seo--}}

@@ -26,11 +26,6 @@ return [
 	'seo_keyword'                        => "Từ khóa seo",
 	'seo_description'                    => "Miêu tả seo",
 	'setting website'                    => 'Cấu hình chung website',
-	'_expert_name'                       => "Họ & Tên",
-	'_expert_image'                      => "Hình ảnh",
-	'_expert_thumbnail'                  => "Hình ảnh nhỏ",
-	'_expert_phone'                      => "Số điện thoại",
-	'_expert_workplace'                  => "Nơi làm việc và chức vụ",
-	'_expert_quote'                      => "Trích dẫn",
-	'_expert_video'                      => "Video Youtube",
+	'background_image'                   => "Ảnh nền",
+	'login_version'                      => "Phiên bản giao diện đăng nhập"
 ];

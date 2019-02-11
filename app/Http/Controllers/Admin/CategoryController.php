@@ -17,8 +17,18 @@ class CategoryController extends Controller
 	public function __construct(Category $category) {
 		parent::__construct();
 		$this->model = $category;
-		$type        = $this->type = request()->query('type', Category::TYPE_CATEGORY);
+		$type        = $this->type = request('type', Category::TYPE_CATEGORY);
 		view()->share(compact('type'));
+	}
+
+	/**
+	 * @param $type
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
+	public function type($type) {
+		$models = Category::whereType($this->type)->withTranslation()->get();
+
+		return view('admin.category.index', compact('models'));
 	}
 
 	/**
@@ -26,7 +36,8 @@ class CategoryController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$models = Category::query()->get();
+		$this->before(__FUNCTION__);
+		$models = Category::whereType($this->type)->withTranslation()->get();
 
 		return view('admin.category.index', compact('models'));
 	}
@@ -36,6 +47,7 @@ class CategoryController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function create() {
+		$this->before(__FUNCTION__);
 		$model = new Category;
 
 		return view('admin.category.create', compact('model'));
@@ -44,15 +56,18 @@ class CategoryController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 * @param CategoryRequest $request
-	 * @return \Illuminate\Http\Response
-	 * @throws \Exception
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function store(CategoryRequest $request) {
+		$this->before(__FUNCTION__);
 		$model = new Category;
 		$model->fill($request->all());
 		$check = $model->save();
 
-		return $this->redirectWithModel(self::getUrlAdmin(), $check, $model);
+		$params = ['type', $this->type];
+		$this->cacheFlush();
+
+		return $this->redirectWithModel(self::getUrlAdmin($params), $check, $model);
 	}
 
 	/**
@@ -61,6 +76,7 @@ class CategoryController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show(Category $category) {
+		$this->before(__FUNCTION__);
 		$model = $category;
 
 		return view('admin.category.view', compact('model'));
@@ -72,7 +88,10 @@ class CategoryController extends Controller
 	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
 	 */
 	public function edit(Category $category) {
+		$this->before(__FUNCTION__);
 		$model = $category;
+
+		view()->share('type', $category->type);
 
 		return view('admin.category.update', compact('model'));
 	}
@@ -85,10 +104,14 @@ class CategoryController extends Controller
 	 * @throws \Exception
 	 */
 	public function update(CategoryRequest $request, Category $category) {
+		$this->before(__FUNCTION__);
 		$category->fill($request->all());
-		$check = $category->save();
+		$check  = $category->save();
+		$params = ['type', $category->type];
 
-		return $this->redirectWithModel(self::getUrlAdmin(), $check, $category);
+		$this->cacheFlush();
+
+		return $this->redirectWithModel(self::getUrlAdmin($params), $check, $category);
 	}
 
 	/**
@@ -98,14 +121,22 @@ class CategoryController extends Controller
 	 * @throws \Exception
 	 */
 	public function destroy(Category $category) {
-		$check = $category->delete();
+		$this->before(__FUNCTION__);
+		$check  = $category->delete();
+		$params = ['type', $category->type];
+		$this->cacheFlush();
 
-		return $this->redirectWithModel(self::getUrlAdmin(), $check, $category);
+		return $this->redirectWithModel(self::getUrlAdmin($params), $check, $category);
 	}
 
 	public function getOptionCategoryWithType(Request $request) {
 		$models = Category::getCategoryByParent($request->id, $request->type);
 
 		return view('admin.category.option', compact('models'));
+	}
+
+	public function cacheFlush() {
+		\Cache::delete(config('common.cache.keys.products.productCategories'));
+		\Cache::delete(config('common.cache.keys.website.menus'));
 	}
 }

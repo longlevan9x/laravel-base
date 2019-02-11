@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'An Phu Sinh'),
+    'name' => env('APP_NAME', 'Laravel base'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://localhost/vias_website'),
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'vi',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'vi',
 
     /*
     |--------------------------------------------------------------------------
@@ -165,7 +165,8 @@ return [
          */
 	    Collective\Html\HtmlServiceProvider::class,
 	    Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-
+	    Silber\Bouncer\BouncerServiceProvider::class,
+	    Dimsav\Translatable\TranslatableServiceProvider::class,
 	    /**
          * Custom Provider
         */
@@ -224,6 +225,7 @@ return [
          */
 	    'Form' => Collective\Html\FormFacade::class,
 	    'Html' => Collective\Html\HtmlFacade::class,
+	    'Bouncer' => Silber\Bouncer\BouncerFacade::class,
 	    /**
          * Custom Facade
         */

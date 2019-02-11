@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\BulkController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\AdminAuth\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\WebsiteController;
@@ -55,10 +56,17 @@ Route::middleware(['admin', 'auth:admin'])->group(function() {
 	Route::resource(AdminController::getResourceName(), AdminController::getClassName());
 	Route::resource(WebsiteController::getResourceName(), WebsiteController::getClassName());
 	Route::resource(MenuController::getResourceName(), MenuController::getClassName());
+	Route::resource(RoleController::getResourceName(), RoleController::getClassName());
 
+	Route::resource(\App\Http\Controllers\Admin\UserController::getResourceName(), \App\Http\Controllers\Admin\UserController::getClassName());
+
+	Route::get(CategoryController::getResourceName('type/{type}'), CategoryController::getControllerWithAction('type'));
+
+	//can remove
 	/*===========Route Ajax===========*/
 	Route::post(AjaxController::getResourceName('delete-file/{table}/{key}/{id?}'), AjaxController::getControllerWithAction('deleteFile'));
 	Route::get(AjaxController::getResourceName('select2/{table}/{column}'), AjaxController::getControllerWithAction('select2'));
+	Route::get(AjaxController::getResourceName('view/{id}/{folder}/{classModel}'), AjaxController::getControllerWithAction('show'));
 	/*===========Route Bulk===========*/
 	Route::delete(BulkController::getResourceName('bulk-delete'), BulkController::getControllerWithAction('bulkDelete'));
 	Route::delete(BulkController::getResourceName('bulk'), BulkController::getControllerWithAction('bulk'));

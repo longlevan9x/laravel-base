@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Admins;
 use App\Models\Facade\SettingFacade;
-use App\Models\Post;
 use App\Models\Setting;
 use Cache;
 use Illuminate\Http\Request;
@@ -79,22 +78,18 @@ class WebsiteController extends Controller
 	}
 
 	public function showConfig() {
-		$this->setRoleExcept(Admins::ROLE_AUTHOR);
-		$this->checkRole();
 		$model = SettingFacade::loadModelByKey();
-		$model->setMaxLogoWidth(107);
-		$model->setMaxLogoHeight(48);
+		$model->setMaxLogoWidth(222);
+		$model->setMaxLogoHeight(108);
 
 		return view('admin.website.config', compact('model'));
 	}
 
 	public function postConfig(Request $request) {
-		$this->setRoleExcept(Admins::ROLE_AUTHOR);
-		$this->checkRole();
 		$model = SettingFacade::prepareKeyValues($request->all(), ['autoload' => 1]);
 		$model->prepareKeyValueUploads([Setting::KEY_LOGO, 'website_image'], ['autoload' => 1])->saveModel();
 
-		return $this->redirectWithMessage(url(self::getConfigUrlAdmin('config')), $model, ['Cập nhật thành công', 'Cập nhật thất bại']);
+		return $this->redirectWithMessage(url(self::getConfigUrlAdmin('config')), $model, 'Cập nhật thành công', 'Cập nhật thất bại');
 	}
 
 	public function showMessage() {
@@ -112,7 +107,7 @@ class WebsiteController extends Controller
 		$model = SettingFacade::setKeyFillable(Setting::KEY_MESSAGE_ORDER, Setting::KEY_MESSAGE_ORDER_SUCCESS, Setting::KEY_MESSAGE_ORDER_FAIL);
 		$model->prepareValue($request->all())->saveModel();
 
-		return $this->redirectWithMessage(url(self::getConfigUrlAdmin('message')), $model, ['Cập nhật thành công', 'Cập nhật thất bại']);
+		return $this->redirectWithMessage(url(self::getConfigUrlAdmin('message')), $model, 'Cập nhật thành công', 'Cập nhật thất bại');
 
 	}
 
@@ -133,7 +128,7 @@ class WebsiteController extends Controller
 	public function postVideo(Request $request) {
 		$model = SettingFacade::prepareKeyValues($request->all(), ['autoload' => 1])->saveModel();
 
-		return $this->redirectWithMessage(url(self::getConfigUrlAdmin('video')), $model, ['Cập nhật thành công', 'Cập nhật thất bại']);
+		return $this->redirectWithMessage(url(self::getConfigUrlAdmin('video')), $model, 'Cập nhật thành công', 'Cập nhật thất bại');
 	}
 
 	/**

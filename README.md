@@ -92,3 +92,11 @@ or add:
     $ composer require symfony/dom-crawler
     
 ### Library
+##### Library require
+> - silber/bouncer => role & permission
+> - barryvdh/laravel-debugbar
+> - cviebrock/eloquent-sluggable =>  sluggable
+> - dimsav/laravel-translatable => translatable
+> - doctrine/dbal => generate comment in model
+> - barryvdh/laravel-ide-helper => generate helper & meta
+> - yadakhov/insert-on-duplicate-key

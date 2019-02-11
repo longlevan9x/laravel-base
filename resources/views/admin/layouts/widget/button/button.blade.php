@@ -21,7 +21,7 @@
                 $id = $option;
             }
             else {
-        	    $str_option .= "$key=\"$option\"";
+        	    $str_option .= " $key=\"$option\" ";
             }
         }
     }
@@ -33,5 +33,5 @@
     @else
         <span class="glyphicon {{$icon}}"></span>
     @endif
-    {{$text or ""}}
+    {{$text ?? ""}}
 </button>

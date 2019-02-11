@@ -34,15 +34,35 @@
             }).get();
             //console.log(ids);
             if (ids.length === 0) {
-                alert("Bạn chưa chọn bản ghi nào.");
+                PNotifyAlert("Bạn chưa chọn bản ghi nào.");
                 event.preventDefault();
                 event.isPropagationStopped();
                 return false;
             }
-            _form.find("#ids").val(ids);
-            return confirmDelete($(this));
-            _form.unbind("submit");
 
+            $.confirm({
+                title:   '{{__("admin.confirm delete item?")}}',
+                content: $(this).data("modal-title"),
+                type : "orange",
+                buttons: {
+                    confirm: {
+                        text:   "{{__('admin.yes')}}",
+                        btnClass: 'btn-warning',
+                        action: function () {
+                            _form.find("#ids").val(ids);
+                            _form.unbind("submit");
+                            _form.submit();
+                            return true;
+                        }
+                    },
+                    cancel:  {
+                        text:   "{{__('admin.buttons.cancel')}}",
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
         });
     </script>
 @endpush

@@ -22,4 +22,5 @@ return [
 	'first icon'    => " &laquo; Đầu",
 	'last'          => " Cuối",
 	'last icon'     => " &laquo; Cuối",
+	'finish'        => "Hoàn thành"
 ];

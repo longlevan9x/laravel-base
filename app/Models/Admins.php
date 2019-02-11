@@ -7,66 +7,81 @@ use App\Commons\Facade\CUser;
 use App\Models\Traits\ModelAuthTrait;
 use App\Models\Traits\ModelTrait;
 use App\Models\Traits\ModelUploadTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Silber\Bouncer\Database\Ability;
+use Silber\Bouncer\Database\HasRolesAndAbilities;
+use Silber\Bouncer\Database\Role;
 
 /**
  * Class Admins
  *
  * @package App\Models
- * @property int     $id
- * @property string  $username
- * @property string  $name
- * @property string  $password
- * @property string  $email
- * @property string  $image
- * @property string  $status
- * @property string  $phone
- * @property string  $address
- * @property string  $overview
- * @property integer $role
- * @property integer $is_active
- * @property integer $is_online
- * @property integer $gender
- * @property mixed   $last_login
- * @property mixed   $last_logout
- * @property mixed   $created_at
- * @property mixed   $updated_at
- * @property int|null $author_id
- * @property string|null $remember_token
- * @property-read \App\Models\Admins $authorUpdated
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins findSimilarSlugs($attribute, $config, $slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereIsActive($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereIsOnline($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereLastLogin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereLastLogout($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereOverview($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereRole($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereSlug($slug)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins whereUsername($value)
+ * @property int                                                        $id
+ * @property string                                                     $username
+ * @property string                                                     $name
+ * @property string                                                     $password
+ * @property string                                                     $email
+ * @property string                                                     $image
+ * @property string                                                     $status
+ * @property string                                                     $phone
+ * @property string                                                     $address
+ * @property string                                                     $overview
+ * @property integer                                                    $role
+ * @property integer                                                    $is_active
+ * @property integer                                                    $is_online
+ * @property integer                                                    $gender
+ * @property string                                                     $last_login
+ * @property string                                                     $last_logout
+ * @property string                                                     $created_at
+ * @property string                                                     $updated_at
+ * @property int|null                                                   $author_id
+ * @property string|null                                                $remember_token
+ * @property-read Admins                                                $authorUpdated
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @method static Builder|Admins findSimilarSlugs($attribute, $config, $slug)
+ * @method static Builder|Admins whereAddress($value)
+ * @method static Builder|Admins whereAuthorId($value)
+ * @method static Builder|Admins whereCreatedAt($value)
+ * @method static Builder|Admins whereEmail($value)
+ * @method static Builder|Admins whereGender($value)
+ * @method static Builder|Admins whereId($value)
+ * @method static Builder|Admins whereImage($value)
+ * @method static Builder|Admins whereIsActive($value)
+ * @method static Builder|Admins whereIsOnline($value)
+ * @method static Builder|Admins whereLastLogin($value)
+ * @method static Builder|Admins whereLastLogout($value)
+ * @method static Builder|Admins whereName($value)
+ * @method static Builder|Admins whereOverview($value)
+ * @method static Builder|Admins wherePassword($value)
+ * @method static Builder|Admins wherePhone($value)
+ * @method static Builder|Admins whereRememberToken($value)
+ * @method static Builder|Admins whereRole($value)
+ * @method static Builder|Admins whereSlug($slug)
+ * @method static Builder|Admins whereStatus($value)
+ * @method static Builder|Admins whereUpdatedAt($value)
+ * @method static Builder|Admins whereUsername($value)
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins active($value = 1)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins inActive()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins orderBySortOrder()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins orderBySortOrderDesc()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins myPluck($column, $key = null, $title = '')
+ * @method static Builder|Admins active($value = 1)
+ * @method static Builder|Admins inActive()
+ * @method static Builder|Admins orderBySortOrder()
+ * @method static Builder|Admins orderBySortOrderDesc()
+ * @method static Builder|Admins myPluck($column, $key = null, $title = '')
+ * @property-read \Illuminate\Database\Eloquent\Collection|Ability[]    $abilities
+ * @property-read \Illuminate\Database\Eloquent\Collection|Role[]       $roles
+ * @method static Builder|Admins newModelQuery()
+ * @method static Builder|Admins newQuery()
+ * @method static Builder|Admins query()
+ * @method static Builder|Admins whereIs($role)
+ * @method static Builder|Admins whereIsAll($role)
+ * @method static Builder|Admins whereIsNot($role)
+ * @method static Builder|Admins withTranslations()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relationship[] $relationships
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Admins postTime($time = '')
  */
 class Admins extends Authenticatable
 {
@@ -74,25 +89,13 @@ class Admins extends Authenticatable
 	use ModelTrait;
 	use ModelUploadTrait;
 	use ModelAuthTrait;
+	use HasRolesAndAbilities;
 
 	const ROLE_SUPER_ADMIN = 30;
 	const ROLE_ADMIN       = 25;
 	const ROLE_MANAGEMENT  = 20;
 	const ROLE_AUTHOR      = 5;
 	const ROLE_ALL         = "*";
-
-	public static $roles = [
-		25 => 'Administrator',
-		20 => 'Management',
-		/*10 => 'Staff',*/
-		5  => 'Author'
-	];
-
-	public static function getCollectionRoles() {
-		$roles = [0 => __('admin.select') . " " . __('admin/user.role')] + self::$roles;
-
-		return new Collection($roles);
-	}
 
 	/**
 	 * The attributes that are mass assignable.
@@ -128,6 +131,13 @@ class Admins extends Authenticatable
 		'password',
 		'remember_token',
 	];
+
+	/**
+	 * @param $author_id
+	 */
+	public function setAuthorIdAttribute($author_id) {
+		$this->attributes['author_id'] = CUser::userAdmin()->id;
+	}
 
 	public function setAuthor_id() {
 		return $this->author_id = CUser::userAdmin()->id;
@@ -173,13 +183,6 @@ class Admins extends Authenticatable
 		}
 
 		return false;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getRoleText() {
-		return self::$roles[$this->role];
 	}
 
 	public function getGenderLabel() {

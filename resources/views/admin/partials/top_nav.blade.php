@@ -36,12 +36,30 @@
                     </ul>
                 </li>
 
-                <li role="presentation" class="" title="Liên hệ">
-                    <a href="{{url_admin('website/contact')}}" class=" info-number" data-toggle="" aria-expanded="false">
-                        <i class="fa fa-linode"></i>
-                        <span class="badge bg-green">{{$totalNewContact ?? 0}}</span>
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="{{asset('images/round'. "/" . \Illuminate\Support\Facades\App::getLocale() . '.png')}}" alt="">
+                        <span class=" fa fa-angle-down"></span>
                     </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right" style="width: 165px;">
+                        @forelse(config('common.language.locales') as $locale => $value)
+                            <li>
+                                <a href="{{url_locale($locale)}}"><span class="">{{$value}}</span><img class="" style="width: 25%;float: right;" src="{{asset('images/' . config('common.language.type') . "/" . $locale . '.png')}}" alt=""></a>
+                            </li>
+                        @empty
+                        @endforelse
+                    </ul>
                 </li>
+
+                @forelse($notifications as $notification)
+                    <li role="presentation" class="" title="{{$notification['title']}}">
+                        <a href="{{$notification['url']}}" class=" info-number" data-toggle="" aria-expanded="false">
+                            <i class="{{$notification['icon']}}"></i>
+                            <span class="badge bg-green">{{$notification['total']}}</span>
+                        </a>
+                    </li>
+                @empty
+                @endforelse
             </ul>
 
         </nav>

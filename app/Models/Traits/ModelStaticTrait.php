@@ -24,7 +24,7 @@ trait ModelStaticTrait
 	 * @return Collection
 	 */
 	public static function pluck($column, $key = null, $title = '') {
-		$models = self::query()->pluck($column, $key);
+		$models = self::query()->get()->pluck($column, $key);
 		/** @var Collection $models */
 		$models->put(0, __('admin.select') . " " . $title);
 		$models = $models->toArray();

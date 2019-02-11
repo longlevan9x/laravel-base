@@ -52,7 +52,7 @@
     <script src="{{asset_admin_vendors('starrr/dist/starrr.js')}}" type="text/javascript"></script>
     <!--Bootstrapt fileinput-->
     <script src="{{asset_admin_vendors('bootstrap-fileinput/js/fileinput.js')}}" type="text/javascript"></script>
-    <script src="{{asset_admin_vendors('bootstrap-fileinput/js/locales/vi.js')}}" type="text/javascript"></script>
+    <script src="{{asset_admin_vendors('bootstrap-fileinput/js/locales/'.app()->getLocale().'.js')}}" type="text/javascript"></script>
     <!-- Jquery ui -->
     <script src="{{asset_admin_vendors('jqueryui/jquery-ui.js')}}" type="text/javascript"></script>
 
@@ -188,9 +188,9 @@
 
             /*Notification*/
             if ('{{Session::exists('error')}}') {
-                PNotifyError("Thông báo", '{{Session::get('error')}}');
+                PNotifySuccess("Thông báo", '{{Session::get('error')}}');
             } else if ('{{Session::exists('success')}}') {
-                PNotifyError("Thông báo", '{{Session::get('success')}}');
+                PNotifySuccess("Thông báo", '{{Session::get('success')}}');
             }
             /*Notification*/
         });
@@ -270,6 +270,60 @@
                 var scrollmem        = $("body").scrollTop() || $("html").scrollTop();
                 window.location.hash = this.hash;
                 $("html,body").scrollTop(scrollmem);
+            });
+
+            $(".side-menu").find("li").each(function (index, item) {
+                if ($(item).find("ul").hasClass("child_menu")) {
+                    if ($(item).find("ul.child_menu").find("li").length === 0) {
+                        $(item).addClass("hidden");
+                    }
+                }
+            });
+            
+            /*open form view*/
+            $(document).on('click', '[role="modal-view"]', function(evt){
+                evt.preventDefault();
+                let $url = $(this).attr('href');
+                $.dialog({
+                    title: '{{__('repositories.text.info_detail')}}',
+                    content: 'url:' + $url,
+                    animation: 'scale',
+                    columnClass: 'medium',
+                    closeAnimation: 'scale',
+                    backgroundDismiss: true,
+                });
+            });
+
+            /*open form view*/
+            //'onclick' => "return confirmDelete($(this));",
+            $(document).on('click', '[role="modal-delete"]', function(evt){
+                evt.preventDefault();
+                let self = $(this);
+                let $url = $(this).attr('href');
+                if (typeof $url == "undefined")  {
+                    $url = $(this).data('url');
+                }
+
+                $.confirm({
+                    title: '{{__("admin.confirm delete item?")}}',
+                    animation: 'scale',
+                    columnClass: 'medium',
+                    closeAnimation: 'scale',
+                    backgroundDismiss: true,
+                    type : 'orange',
+                    buttons : {
+                        ok : {
+                            text : '{{__('admin.yes')}}',
+                            btnClass : 'btn btn-warning',
+                            action: function() {
+                                self.parents('form').submit();
+                            }
+                        },
+                        cancel : {
+                            text : '{{__('admin.buttons.cancel')}}'
+                        }
+                    }
+                });
             });
         });
 

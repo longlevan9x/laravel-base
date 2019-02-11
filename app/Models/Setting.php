@@ -16,6 +16,7 @@ use Yadakhov\InsertOnDuplicateKey;
 
 /**
  * Class Setting
+ *
  * @package App\Models
  * @property string                  $website_name
  * @property string                  $website_description
@@ -59,6 +60,12 @@ use Yadakhov\InsertOnDuplicateKey;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting orderBySortOrder()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting orderBySortOrderDesc()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting myPluck($column, $key = null, $title = '')
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting withTranslations()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Relationship[] $relationships
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Setting postTime($time = '')
  */
 class Setting extends Model
 {
@@ -251,8 +258,9 @@ class Setting extends Model
 			return false;
 		}
 
-		if (Cache::has('settings')) {
-			return Cache::get('settings');
+		$keyCache = config('common.cache.keys.settings');
+		if (Cache::has($keyCache)) {
+			return Cache::get($keyCache);
 		}
 
 		if (!Schema::hasTable('settings')) {
@@ -268,7 +276,7 @@ class Setting extends Model
 			$this->{$key} = $value;
 		});
 
-		Cache::put('settings', $this, 120);
+		Cache::put($keyCache, $this, 120);
 
 		return $models;
 	}
@@ -315,9 +323,10 @@ class Setting extends Model
 	 * @throws \Exception
 	 */
 	public function getValue($key) {
-		if (Cache::has('settings')) {
+		$cacheKey = config('common.cache.keys.settings');
+		if (Cache::has($cacheKey)) {
 			/** @var Setting $models */
-			$models    = Cache::get('settings');
+			$models    = Cache::get($cacheKey);
 			$attribute = key_exists($key, $models);
 			if (isset($attribute) && !empty($attribute)) {
 				return $models->{$key};
@@ -353,11 +362,11 @@ class Setting extends Model
 	 * @return mixed
 	 */
 	public static function getModel() {
-		if (!Cache::has('settings')) {
+		if (!Cache::has(config('common.cache.keys.settings'))) {
 			return (new static)->loadModel();
 		}
 
-		return Cache::get('settings');
+		return Cache::get(config('common.cache.keys.settings'));
 	}
 
 	/**
@@ -372,7 +381,7 @@ class Setting extends Model
 
 	/**
 	 * @param array $options
-	 * @return bool|void
+	 * @return int
 	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
 	public function save(array $options = [
@@ -405,8 +414,9 @@ class Setting extends Model
 				];
 			}
 		}
-		Cache::delete('settings');
-		Setting::insertOnDuplicateKey($data, ['value', 'updated_at']);
+		Cache::delete(config('common.cache.keys.settings'));
+
+		return Setting::insertOnDuplicateKey($data, ['value', 'updated_at']);
 	}
 
 	/**
@@ -530,7 +540,7 @@ class Setting extends Model
 	 * @throws \Psr\SimpleCache\InvalidArgumentException
 	 */
 	public function saveModel() {
-		Cache::delete('settings');
+		Cache::delete(config('common.cache.keys.settings'));
 
 		return self::insertOnDuplicateKey($this->keyValues, ['value', 'updated_at', 'autoload', 'is_active']);
 	}
@@ -547,5 +557,31 @@ class Setting extends Model
 	 */
 	public function setKeyValues(array $keyValues): void {
 		$this->keyValues = $keyValues;
+	}
+
+	/**
+	 * @return mixed
+	 * @throws \Exception
+	 */
+	public function getLanguage() {
+		if (env("APP_NAME") == null) {
+			return config('app.locale');
+		}
+
+		if (env("APP_KEY") == null) {
+			return config('app.locale');
+		}
+
+		$locale = get_locale();
+		if (!empty($locale)) {
+			return $locale;
+		}
+
+		$locale = $this->getValue(self::KEY_LANG_DEFAULT);
+		if (!empty($locale)) {
+            return $locale;
+        }
+
+		return  config('app.locale');
 	}
 }

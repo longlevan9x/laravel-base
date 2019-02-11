@@ -98,7 +98,7 @@ if (!function_exists('asset_login')) {
 	 * @return string
 	 */
 	function asset_login($path = '') {
-		return asset("login/$path");
+		return asset("log_in/$path");
 	}
 }
 

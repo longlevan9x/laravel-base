@@ -9,8 +9,14 @@
 namespace App\Models\Traits;
 
 
+use App\Commons\Facade\Common;
 use App\Commons\Facade\CUser;
 use App\Models\Admins;
+use App\Models\Relationship;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Trait ModelRelateTrait
@@ -29,15 +35,7 @@ trait ModelRelateTrait
 	 * @return string
 	 */
 	public function getAuthorUpdatedName() {
-		if (isset($this->authorUpdated)) {
-			if ($this->authorUpdated->username == CUser::userAdmin()->username) {
-				return __("admin/common.you");
-			}
-
-			return $this->authorUpdated->username;
-		}
-
-		return '-';
+		return $this->getRelateValue($this->authorUpdated, 'username', '-');
 	}
 
 	/**
@@ -62,17 +60,33 @@ trait ModelRelateTrait
 	}
 
 	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany|Relationship
+	 */
+	public function relationships() {
+		return $this->hasMany(Relationship::class, 'relation2_id')->where('relation_type', $this->relationType());
+	}
+
+	/**
+	 * @return string
+	 */
+	public function relationType() {
+		return '';
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getAuthorName() {
-		if (isset($this->author)) {
-			if ($this->author->username == CUser::userAdmin()->username) {
-				return __("admin/common.you");
-			}
+		return $this->getRelateValue($this->author, 'username', '-');
+	}
 
-			return $this->author->username;
-		}
-
-		return '-';
+	/**
+	 * @param HasOne|BelongsTo|Model $relation
+	 * @param string           $key
+	 * @param string           $default
+	 * @return mixed|string
+	 */
+	public function getRelateValue($relation, $key, $default = '') {
+		return Common::getRelateValue($relation, $key, $default);
 	}
 }

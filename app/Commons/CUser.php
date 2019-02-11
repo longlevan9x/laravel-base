@@ -67,42 +67,6 @@ class CUser extends Common
 	}
 
 	/**
-	 * @param int|array|string $role
-	 * @param int|array|string $role_except
-	 * @return bool
-	 */
-	public function checkRole($role = Admins::ROLE_ALL, $role_except = '') {
-		$flag = false;
-
-		/*Check role*/
-		if (is_string($role) && $role == Admins::ROLE_ALL) {
-			$flag = true;
-		}
-		elseif (is_array($role) && count($role) == 1 && $role[0] == Admins::ROLE_ALL) {
-			$flag = true;
-		}
-		elseif (is_integer($role) && $this->getCurrentRoleAdmin() == $role) {
-			$flag = true;
-		}
-		elseif (is_array($role) && in_array($this->getCurrentRoleAdmin(), $role)) {
-			$flag = true;
-		}
-
-		if ($flag) {
-			/*Check role except*/
-			/*if current role == role_except then return false*/
-			if (is_integer($role_except) && $this->getCurrentRoleAdmin() == $role_except) {
-				$flag = false;
-			}
-			elseif (is_array($role_except) && in_array($this->getCurrentRoleAdmin(), $role_except)) {
-				$flag = false;
-			}
-		}
-
-		return $flag;
-	}
-
-	/**
 	 * @return mixed
 	 */
 	public function getUser() {

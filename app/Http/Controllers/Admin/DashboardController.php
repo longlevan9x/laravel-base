@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Post;
+use App\Models\OrderItem;
+use App\Models\OrderItemExpand;
+use Illuminate\Database\Query\Builder;
 
 class DashboardController extends Controller
 {
@@ -20,8 +22,9 @@ class DashboardController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index() {
-		$totalPost = 0;
-		$totalNews = 0;
+		$totalPost    = 0;
+		$totalNews    = 0;
+
 		return view('admin.dashboard.index', compact('totalPost', 'totalNews'));
 	}
 

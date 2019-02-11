@@ -8,6 +8,7 @@
 
 namespace App\Models\Traits;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -23,6 +24,9 @@ use Illuminate\Support\Collection;
  * @method  static Builder|Model updateOrCreate(array $attributes, array $values = [])
  * @method  static Builder whereId(int | string $id)
  * @method  static Builder whereIsActive(int $value)
+ * @method  static Builder|static active($value = 1)
+ * @method  static Builder|static inActive()
+ * @method  static Builder|static orderBySortOrder()
  * @see     Builder
  * @see     QueryBuilder
  */
@@ -31,7 +35,7 @@ trait ModelMethodTrait
 	/**
 	 * @param  QueryBuilder $query
 	 * @param int           $value
-	 * @return QueryBuilder
+	 * @return QueryBuilder|static
 	 */
 	public function scopeActive($query, $value = 1) {
 		return $query->where('is_active', $value);
@@ -39,7 +43,7 @@ trait ModelMethodTrait
 
 	/**
 	 * @param QueryBuilder $query
-	 * @return QueryBuilder
+	 * @return QueryBuilder|static
 	 */
 	public function scopeInActive($query) {
 		return $this->scopeActive($query, 0);
@@ -47,7 +51,7 @@ trait ModelMethodTrait
 
 	/**
 	 * @param QueryBuilder $query
-	 * @return QueryBuilder
+	 * @return QueryBuilder|static
 	 */
 	public function scopeOrderBySortOrder($query) {
 		return $query->orderBy('sort_order');
@@ -55,18 +59,32 @@ trait ModelMethodTrait
 
 	/**
 	 * @param QueryBuilder $query
-	 * @return QueryBuilder
+	 * @return QueryBuilder|static
 	 */
 	public function scopeOrderBySortOrderDesc($query) {
 		return $query->orderByDesc('sort_order');
 	}
 
+	/**
+	 * @param Builder $query
+	 * @param string  $time
+	 * @return mixed
+	 */
+	public function scopePostTime(Builder $query, $time = '') {
+		if ($time == '') {
+			$time = Carbon::now();
+		}
+
+		return $query->where('post_time', "<", $time);
+	}
+
 	public function scopeMyPluck($query, $column, $key = null, $title = '') {
-		$models = $query->pluck($column, $key);
+		$models = $query->get()->pluck($column, $key);
 		/** @var Collection $models */
 		$models->put(0, __('admin.select') . " " . $title);
 		$models = $models->toArray();
 		ksort($models, SORT_STRING);
+
 		//dd($models);
 		return new Collection($models);
 	}

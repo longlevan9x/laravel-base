@@ -6,7 +6,6 @@
         <div class="col-middle">
             <div class="text-center text-center">
                 <h1 class="error-number">{{$exception->getStatusCode()}}</h1>
-                <h2>Sorry, the page you are looking for could not be found</h2>
                 <h3>{{$exception->getMessage()}}</h3>
                 <div class="mid_center">
                     {{--<h3>Search</h3>--}}

@@ -9,12 +9,17 @@
 namespace App\Commons\Facade;
 
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * Class Common
  * @package App\Commons\Facade
  * @method static string showAppName(string $app_name)
+ * @method static string getRelateValue(HasOne|BelongsTo|Model $relation, $key, $default = '')
  * @see \App\Commons\Common
  */
 class Common extends Facade

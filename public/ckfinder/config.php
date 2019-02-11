@@ -66,24 +66,26 @@ $config['images'] = array(
 $self = $_SERVER['PHP_SELF'];
 $arr_self = explode('/', trim($self, '/'));
 $baseUrl = "http://" . $_SERVER['HTTP_HOST'];
+
 if (!empty($arr_self)) {
 	if ($arr_self[0] == 'public') {
 		$baseUrl .= '/storage/uploads/';
 	}
 	else {
-		$baseUrl .= "/" . $arr_self[0] . "/public/storage/uploads/";
+		//		$baseUrl .= "/" . $arr_self[0] . "/public/storage/uploads/";
+		$baseUrl .= "/public/storage/uploads/";
 	}
 }
-//$baseUrl .= '/storage/app/uploads/';
+$baseUrl = '/public/storage/uploads/';
 
 $config['backends'][] = array(
-    'name'         => 'default',
-    'adapter'      => 'local',
-    'baseUrl'      => $baseUrl,
-//  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
-    'chmodFiles'   => 0777,
-    'chmodFolders' => 0755,
-    'filesystemEncoding' => 'UTF-8',
+	'name'         => 'default',
+	'adapter'      => 'local',
+	'baseUrl'      => $baseUrl,
+	//  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
+	'chmodFiles'   => 0777,
+	'chmodFolders' => 0755,
+	'filesystemEncoding' => 'UTF-8',
 );
 
 /*================================ Resource Types =====================================*/

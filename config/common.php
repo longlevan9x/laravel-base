@@ -41,10 +41,9 @@ return [
 		'keys'      => [
 			'settings' => 'settings',
 			'website'  => [
-				'menus'           => 'menusWebsite'
+				'menus' => 'menusWebsite'
 			],
-			'products' => [
-			]
+			'products' => []
 		],
 	],
 

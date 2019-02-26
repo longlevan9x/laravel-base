@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ae6087614d889d11648d6325cbf923f3",
+    "content-hash": "b14ccc350724e036e58d17b4f5af6197",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -2304,6 +2304,49 @@
                 "promise"
             ],
             "time": "2016-01-26T13:27:02+00:00"
+        },
+        {
+            "name": "pika/api-query-builder-laravel",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/longlevan9x/api-query-builder-laravel.git",
+                "reference": "bee01942c84319ecf756258c997bb23b91256191"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/longlevan9x/api-query-builder-laravel/zipball/bee01942c84319ecf756258c997bb23b91256191",
+                "reference": "bee01942c84319ecf756258c997bb23b91256191",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": ">=5.0.0",
+                "illuminate/http": ">=5.0.0",
+                "illuminate/support": ">=5.0.0",
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Pika\\Api\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Long",
+                    "email": "vanlong121996@gmail.com"
+                }
+            ],
+            "description": "API QUERY Builer for laravel framework",
+            "keywords": [
+                "api",
+                "laravel"
+            ],
+            "time": "2019-02-19T03:41:31+00:00"
         },
         {
             "name": "psr/container",
@@ -6437,7 +6480,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "pika/api-query-builder-laravel": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

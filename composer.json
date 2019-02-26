@@ -15,6 +15,7 @@
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.6",
+        "pika/api-query-builder-laravel": "dev-master",
         "silber/bouncer": "v1.0.0-rc.4",
         "symfony/browser-kit": "^4.0",
         "symfony/dom-crawler": "^4.0",

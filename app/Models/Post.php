@@ -330,4 +330,11 @@ class Post extends Model
 	public function relationships() {
 		return $this->hasMany(Relationship::class, 'relation2_id')->where('relation_type', Tag::table() . Post::table());
 	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function category() {
+		return $this->belongsTo(Category::class);
+	}
 }

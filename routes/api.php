@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function() {
 	Route::prefix("post")->group(function() {
 		Route::get('/', 'Api\v1\PostController@index');
+		Route::get('/top', 'Api\v1\PostController@postTop');
+		Route::get('/popular', 'Api\v1\PostController@postPopular');
 		Route::get("{slug}", 'Api\v1\PostController@getBySlug');
 	});
 

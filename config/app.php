@@ -167,7 +167,6 @@ return [
 	    Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 	    Silber\Bouncer\BouncerServiceProvider::class,
 	    Dimsav\Translatable\TranslatableServiceProvider::class,
-	    Pika\Api\ApiQueryBuilderServiceProvider::class,
 	    /**
          * Custom Provider
         */
@@ -227,7 +226,6 @@ return [
 	    'Form' => Collective\Html\FormFacade::class,
 	    'Html' => Collective\Html\HtmlFacade::class,
 	    'Bouncer' => Silber\Bouncer\BouncerFacade::class,
-
 	    /**
          * Custom Facade
         */

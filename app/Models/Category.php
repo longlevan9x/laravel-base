@@ -85,7 +85,7 @@ class Category extends Model
 {
 	use ModelTrait;
 	use ModelUploadTrait;
-	//use Translatable;
+	use Translatable;
 
 	const TYPE_CATEGORY = 'category';
 	protected $fillable = [

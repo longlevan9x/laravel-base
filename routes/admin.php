@@ -63,9 +63,6 @@ Route::middleware(['admin', 'auth:admin'])->group(function() {
 	Route::get(CategoryController::getResourceName('type/{type}'), CategoryController::getControllerWithAction('type'));
 
 	//can remove
-	Route::resource(\App\Http\Controllers\Admin\TagController::getResourceName(), \App\Http\Controllers\Admin\TagController::getClassName());
-	Route::resource(\App\Http\Controllers\Admin\PostController::getResourceName(), \App\Http\Controllers\Admin\PostController::getClassName());
-
 	/*===========Route Ajax===========*/
 	Route::post(AjaxController::getResourceName('delete-file/{table}/{key}/{id?}'), AjaxController::getControllerWithAction('deleteFile'));
 	Route::get(AjaxController::getResourceName('select2/{table}/{column}'), AjaxController::getControllerWithAction('select2'));

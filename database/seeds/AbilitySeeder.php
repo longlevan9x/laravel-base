@@ -49,16 +49,6 @@ class AbilitySeeder extends Seeder
 			'website-config',
 			'admin-setting',
 			/*can remove*/
-			'tag-index',
-			'tag-show',
-			'tag-create',
-			'tag-edit',
-			'tag-destroy',
-			'post-index',
-			'post-show',
-			'post-create',
-			'post-edit',
-			'post-destroy',
 		];
 		foreach ($abilities as $ability) {
 			Bouncer::ability(['name' => $ability])->save();
